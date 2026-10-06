@@ -126,6 +126,12 @@ class ExtracurricularController extends Controller
 
         $userId = $request->input('user_id');
 
+        // VULN-08: Verify target is an active student in this academic year
+        $targetUser = User::find($userId);
+        if (!$targetUser || $targetUser->status !== 'aktif' || !$targetUser->hasRole('siswa', $activeYear->id)) {
+            return back()->with('error', 'Hanya siswa aktif yang dapat didaftarkan sebagai anggota ekstrakurikuler.');
+        }
+
         // Check if already active
         $existing = ExtracurricularMember::where('extracurricular_id', $eskul->id)
             ->where('user_id', $userId)
