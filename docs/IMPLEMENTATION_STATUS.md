@@ -55,11 +55,11 @@ Last updated: 2026-10-06 (Autonomous Session Start)
 - [x] Git repository initialized and clean baseline commit created.
 - [x] PRD v3.0, ERD v1.0, and Design System v1.0 analyzed and reconciled.
 - [x] Environment and database connectivity analyzed.
+- [x] **M1 — Frontend Foundation:** React 19, Inertia.js v2, Tailwind 4, Vite 7, Plus Jakarta Sans, and design tokens verified with successful production build and passing tests.
 
 ---
 
 ## 6. Incomplete Work (Milestones)
-- [ ] **M1 — Frontend Foundation:** React + Inertia + Tailwind 4 + Vite pipeline working.
 - [ ] **M2 — Database Foundation:** Migrations & Seeders per ERD order (Foundation, Eskul, Presensi, Kas).
 - [ ] **M3 — Authentication & RBAC:** Multi-role auth, workspace selector, policies, gates.
 - [ ] **M4 — Academic Year & Student Management:** Scoping, class enrollments, student profiles.
