@@ -202,6 +202,17 @@ class AttendanceController extends Controller
             abort(403, 'Anda tidak memiliki hak akses mencatat presensi untuk ekstrakurikuler ini.');
         }
 
+        // VULN-01: Ensure target user is an active member of this extracurricular
+        $isMember = ExtracurricularMember::where('extracurricular_id', $session->extracurricular_id)
+            ->where('user_id', $request->input('user_id'))
+            ->where('academic_year_id', $session->academic_year_id)
+            ->whereNull('left_at')
+            ->exists();
+
+        if (!$isMember) {
+            return back()->with('error', 'Siswa yang dipilih bukan anggota aktif di ekstrakurikuler ini.');
+        }
+
         // AC-D9: Edit window check (default 24 hours after session closed)
         if ($session->status === 'ditutup' && $session->closed_at) {
             $windowHours = (int) AppSetting::get('attendance_manual_window_hours', 24);
@@ -249,6 +260,11 @@ class AttendanceController extends Controller
         $user = $request->user();
         if (!$user->canManageExtracurricular($session->extracurricular_id, $session->academic_year_id)) {
             abort(403, 'Anda tidak memiliki hak akses menutup sesi untuk ekstrakurikuler ini.');
+        }
+
+        // VULN-04: Prevent closing already closed session to protect audit trail and manual edit window
+        if ($session->status === 'ditutup') {
+            return back()->with('warning', "Sesi '{$session->title}' sudah ditutup sebelumnya.");
         }
 
         $session->update([
