@@ -63,14 +63,18 @@ class AttendanceRecapController extends Controller
             $stats['total_members'] = $members->count();
 
             $sessionIds = $sessions->pluck('id');
-            $allAttendances = Attendance::whereIn('activity_session_id', $sessionIds)->get();
+            $attendanceStats = Attendance::whereIn('activity_session_id', $sessionIds)
+                ->selectRaw('user_id, status, count(*) as count')
+                ->groupBy('user_id', 'status')
+                ->get()
+                ->groupBy('user_id')
+                ->map(fn ($rows) => $rows->pluck('count', 'status'));
 
-            $totalHadirAll = 0;
-            $memberRecaps = $members->map(function ($member) use ($totalSessionsCount, $allAttendances) {
-                $userAttendances = $allAttendances->where('user_id', $member->user_id);
-                $hadir = $userAttendances->where('status', 'hadir')->count();
-                $izin = $userAttendances->where('status', 'izin')->count();
-                $sakit = $userAttendances->where('status', 'sakit')->count();
+            $memberRecaps = $members->map(function ($member) use ($totalSessionsCount, $attendanceStats) {
+                $userStats = $attendanceStats->get($member->user_id, collect());
+                $hadir = $userStats['hadir'] ?? 0;
+                $izin = $userStats['izin'] ?? 0;
+                $sakit = $userStats['sakit'] ?? 0;
                 $alpa = $totalSessionsCount > 0 ? max(0, $totalSessionsCount - ($hadir + $izin + $sakit)) : 0;
                 $rate = $totalSessionsCount > 0 ? round(($hadir / $totalSessionsCount) * 100, 1) : 0;
 
@@ -129,12 +133,17 @@ class AttendanceRecapController extends Controller
             ->get();
 
         $sessionIds = $sessions->pluck('id');
-        $allAttendances = Attendance::whereIn('activity_session_id', $sessionIds)->get();
-        $totalSessionsCount = $sessions->count();
+        $attendanceStats = Attendance::whereIn('activity_session_id', $sessionIds)
+            ->selectRaw('user_id, status, count(*) as count')
+            ->groupBy('user_id', 'status')
+            ->get()
+            ->groupBy('user_id')
+            ->map(fn ($rows) => $rows->pluck('count', 'status'));
 
+        $totalSessionsCount = $sessions->count();
         $fileName = 'rekap_presensi_' . str_replace(' ', '_', strtolower($eskul->name)) . '_' . date('Ymd_His') . '.csv';
 
-        return response()->stream(function () use ($members, $sessions, $allAttendances, $totalSessionsCount) {
+        return response()->stream(function () use ($members, $sessions, $attendanceStats, $totalSessionsCount) {
             $handle = fopen('php://output', 'w');
             
             // CSV Header
@@ -142,10 +151,10 @@ class AttendanceRecapController extends Controller
 
             $no = 1;
             foreach ($members as $member) {
-                $userAttendances = $allAttendances->where('user_id', $member->user_id);
-                $hadir = $userAttendances->where('status', 'hadir')->count();
-                $izin = $userAttendances->where('status', 'izin')->count();
-                $sakit = $userAttendances->where('status', 'sakit')->count();
+                $userStats = $attendanceStats->get($member->user_id, collect());
+                $hadir = $userStats['hadir'] ?? 0;
+                $izin = $userStats['izin'] ?? 0;
+                $sakit = $userStats['sakit'] ?? 0;
                 $alpa = $totalSessionsCount > 0 ? max(0, $totalSessionsCount - ($hadir + $izin + $sakit)) : 0;
                 $rate = $totalSessionsCount > 0 ? round(($hadir / $totalSessionsCount) * 100, 1) : 0;
 
