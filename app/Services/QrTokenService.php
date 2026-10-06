@@ -83,6 +83,10 @@ class QrTokenService
                 return ['success' => false, 'error' => 'Data siswa pemilik QR tidak ditemukan.'];
             }
 
+            if ($student->status !== 'aktif') {
+                return ['success' => false, 'error' => 'Akun siswa tidak aktif atau telah dinonaktifkan.'];
+            }
+
             return [
                 'success' => true,
                 'user' => $student,

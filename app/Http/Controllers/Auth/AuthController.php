@@ -109,15 +109,25 @@ class AuthController extends Controller
 
     public function updatePassword(Request $request): RedirectResponse
     {
-        $request->validate([
+        $user = $request->user();
+
+        $rules = [
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ], [
+        ];
+
+        // VULN-03: If user already changed their initial password, require current password
+        if (!$user->must_change_password) {
+            $rules['current_password'] = ['required', 'current_password'];
+        }
+
+        $request->validate($rules, [
+            'current_password.required' => 'Kata sandi saat ini wajib diisi.',
+            'current_password.current_password' => 'Kata sandi saat ini tidak cocok.',
             'password.required' => 'Kata sandi baru wajib diisi.',
             'password.min' => 'Kata sandi baru minimal 8 karakter.',
             'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
         ]);
 
-        $user = $request->user();
         $user->update([
             'password' => Hash::make($request->input('password')),
             'must_change_password' => false,
