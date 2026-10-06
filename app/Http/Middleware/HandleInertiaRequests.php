@@ -2,42 +2,70 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\AcademicYear;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
-    /**
-     * The root template that's loaded on the first page visit.
-     *
-     * @see https://inertiajs.com/server-side-setup#root-template
-     *
-     * @var string
-     */
     protected $rootView = 'app';
 
-    /**
-     * Determines the current asset version.
-     *
-     * @see https://inertiajs.com/asset-versioning
-     */
     public function version(Request $request): ?string
     {
         return parent::version($request);
     }
 
-    /**
-     * Define the props that are shared by default.
-     *
-     * @see https://inertiajs.com/shared-data
-     *
-     * @return array<string, mixed>
-     */
     public function share(Request $request): array
     {
+        $user = $request->user();
+        $activeYear = null;
+
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('academic_years')) {
+                $activeYear = AcademicYear::active();
+            }
+        } catch (\Throwable $e) {
+            // Fallback during initial installation or unmigrated tests
+        }
+
+        $userData = null;
+        if ($user) {
+            $activeRoles = $user->getActiveRoles($activeYear?->id);
+            $userData = [
+                'id' => $user->id,
+                'uuid' => $user->uuid,
+                'name' => $user->name,
+                'email' => $user->email,
+                'nisn' => $user->nisn,
+                'status' => $user->status,
+                'must_change_password' => $user->must_change_password,
+                'roles' => $activeRoles->map(fn ($r) => [
+                    'name' => $r->name,
+                    'label' => $r->label,
+                    'extracurricular_id' => $r->pivot->extracurricular_id,
+                ])->values()->all(),
+                'is_super_admin' => $user->isSuperAdmin(),
+                'is_admin' => $user->isAdmin($activeYear?->id),
+                'is_bendahara' => $user->isBendahara($activeYear?->id),
+                'is_pengurus' => $user->isPengurusEskul(null, $activeYear?->id),
+                'is_siswa' => $user->isSiswa($activeYear?->id),
+            ];
+        }
+
         return [
             ...parent::share($request),
-            //
+            'auth' => [
+                'user' => $userData,
+            ],
+            'activeAcademicYear' => $activeYear ? [
+                'id' => $activeYear->id,
+                'name' => $activeYear->name,
+            ] : null,
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
+                'warning' => fn () => $request->session()->get('warning'),
+            ],
         ];
     }
 }

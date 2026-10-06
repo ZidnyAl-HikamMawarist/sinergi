@@ -1,11 +1,65 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Eskul\ActivitySessionController;
+use App\Http\Controllers\Eskul\AttendanceController;
+use App\Http\Controllers\Eskul\EskulDashboardController;
+use App\Http\Controllers\Kas\CashTransactionController;
+use App\Http\Controllers\Kas\KasDashboardController;
+use App\Http\Controllers\Portal\PortalDashboardController;
+use App\Http\Controllers\WorkspaceController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// Public Homepage & Authentication
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'appName' => config('app.name', 'SINERGI'),
         'version' => '1.0 MVP',
     ]);
 })->name('home');
+
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // Mandatory initial password change
+    Route::get('/password/change', [AuthController::class, 'showChangePassword'])->name('password.change');
+    Route::post('/password/change', [AuthController::class, 'updatePassword'])->name('password.update');
+
+    // Multi-role workspace selection
+    Route::get('/workspace/select', [WorkspaceController::class, 'select'])->name('workspace.select');
+
+    // 1. Student Portal Workspace
+    Route::prefix('portal')->name('portal.')->middleware('role:siswa,admin,super_admin')->group(function () {
+        Route::get('/dashboard', [PortalDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/qr-token', [PortalDashboardController::class, 'getFreshQrToken'])->name('qr.token');
+    });
+
+    // 2. Extracurricular Workspace
+    Route::prefix('eskul')->name('eskul.')->middleware('role:pengurus_eskul,admin,super_admin')->group(function () {
+        Route::get('/dashboard', [EskulDashboardController::class, 'index'])->name('dashboard');
+        Route::post('/sessions', [ActivitySessionController::class, 'store'])->name('sessions.store');
+        Route::post('/sessions/{session}/close', [AttendanceController::class, 'closeSession'])->name('sessions.close');
+        Route::get('/scanner', [AttendanceController::class, 'showScanner'])->name('scanner');
+        Route::post('/attendance/scan', [AttendanceController::class, 'scan'])->name('attendance.scan');
+        Route::post('/attendance/manual', [AttendanceController::class, 'manual'])->name('attendance.manual');
+    });
+
+    // 3. Cash Management (Buku Kas) Workspace
+    Route::prefix('kas')->name('kas.')->middleware('role:bendahara,admin,super_admin')->group(function () {
+        Route::get('/dashboard', [KasDashboardController::class, 'index'])->name('dashboard');
+        Route::post('/transactions', [CashTransactionController::class, 'store'])->name('transactions.store');
+        Route::post('/transactions/{uuid}/void', [CashTransactionController::class, 'void'])->name('transactions.void');
+    });
+
+    // 4. Admin OSIS Workspace
+    Route::prefix('admin')->name('admin.')->middleware('role:admin,super_admin')->group(function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    });
+});
