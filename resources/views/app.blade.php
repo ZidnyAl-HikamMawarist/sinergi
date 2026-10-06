@@ -10,6 +10,12 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
+        <!-- PWA Manifest & Mobile Styling -->
+        <link rel="manifest" href="/manifest.json">
+        <meta name="theme-color" content="#2563EB">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.jsx'])
         @inertiaHead

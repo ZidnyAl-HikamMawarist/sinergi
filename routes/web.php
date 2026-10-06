@@ -61,5 +61,11 @@ Route::middleware('auth')->group(function () {
     // 4. Admin OSIS Workspace
     Route::prefix('admin')->name('admin.')->middleware('role:admin,super_admin')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/import', [\App\Http\Controllers\Admin\StudentImportController::class, 'index'])->name('import.index');
+        Route::post('/import/preview', [\App\Http\Controllers\Admin\StudentImportController::class, 'preview'])->name('import.preview');
+        Route::get('/import/{batch:uuid}', [\App\Http\Controllers\Admin\StudentImportController::class, 'show'])->name('import.show');
+        Route::post('/import/{batch:uuid}/commit', [\App\Http\Controllers\Admin\StudentImportController::class, 'commit'])->name('import.commit');
+        Route::get('/import/{batch:uuid}/credentials', [\App\Http\Controllers\Admin\StudentImportController::class, 'downloadCredentials'])->name('import.credentials');
+        Route::get('/audit-logs', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit-logs.index');
     });
 });
