@@ -17,7 +17,7 @@ class CashTransactionController extends Controller
         $request->validate([
             'type' => ['required', 'in:masuk,keluar'],
             'cash_category_id' => ['required', 'exists:cash_categories,id'],
-            'amount' => ['required', 'integer', 'min:1000'],
+            'amount' => ['required', 'integer', 'min:1000', 'max:1000000000'],
             'description' => ['required', 'string', 'max:255'],
             'transaction_date' => ['required', 'date'],
             'proof' => ['required', 'file', 'mimes:jpeg,jpg,png,pdf', 'max:5120'], // AC-E1, AC-E5 (max 5MB)
@@ -57,7 +57,7 @@ class CashTransactionController extends Controller
             'description' => $request->input('description'),
             'transaction_date' => $request->input('transaction_date'),
             'proof_path' => $proofPath,
-            'proof_mime' => $proofFile->getClientMimeType(),
+            'proof_mime' => $proofFile->getMimeType() ?: 'application/octet-stream',
             'proof_size' => $proofFile->getSize(),
             'status' => 'valid',
             'created_by' => auth()->id(),
@@ -139,7 +139,11 @@ class CashTransactionController extends Controller
         return Storage::disk('local')->response(
             $tx->proof_path,
             basename($tx->proof_path),
-            ['Content-Type' => $tx->proof_mime ?? 'application/octet-stream']
+            [
+                'Content-Type' => $tx->proof_mime ?? 'application/octet-stream',
+                'X-Content-Type-Options' => 'nosniff',
+                'Content-Security-Policy' => "default-src 'none'",
+            ]
         );
     }
 }
