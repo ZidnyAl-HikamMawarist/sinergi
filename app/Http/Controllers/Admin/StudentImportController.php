@@ -108,6 +108,13 @@ class StudentImportController extends Controller
 
         while (($row = fgetcsv($handle, 1000, ',')) !== false) {
             $rowNumber++;
+            if ($rowNumber > 2001) { // Max 2,000 data rows per batch to prevent DoS
+                fclose($handle);
+                $batch->rows()->delete();
+                $batch->delete();
+                return back()->with('error', 'Berkas CSV melebihi batas maksimum 2.000 baris dalam satu batch import.');
+            }
+
             if (empty(array_filter($row))) continue; // Skip empty rows
 
             $nisn = trim($row[$nisnIdx] ?? '');
@@ -169,12 +176,18 @@ class StudentImportController extends Controller
 
     public function commit(ImportBatch $batch): RedirectResponse
     {
-        if ($batch->status !== 'preview') {
-            return back()->with('warning', 'Batch ini sudah pernah diproses atau dibatalkan.');
+        // VULN-25: Atomic status transition prevents double-commit race condition
+        $locked = ImportBatch::where('id', $batch->id)
+            ->where('status', 'preview')
+            ->update(['status' => 'processing']);
+
+        if ($locked === 0) {
+            return back()->with('warning', 'Batch ini sedang atau sudah pernah diproses.');
         }
 
         $activeYear = AcademicYear::active();
         if (!$activeYear) {
+            $batch->update(['status' => 'preview']);
             return back()->with('error', 'Tidak ada tahun ajaran aktif.');
         }
 
@@ -244,12 +257,21 @@ class StudentImportController extends Controller
                 }
             }
 
-            // Save credentials CSV for one-time download
+            // VULN-06: Save credentials CSV using proper fputcsv and formula sanitization (CWE-1236)
             if (!empty($credentials)) {
-                $credCsv = "NISN,Nama,Password_Awal\n";
+                $memStream = fopen('php://memory', 'r+');
+                fputcsv($memStream, ['NISN', 'Nama', 'Password_Awal']);
                 foreach ($credentials as $c) {
-                    $credCsv .= "\"{$c['nisn']}\",\"{$c['nama']}\",\"{$c['password_awal']}\"\n";
+                    fputcsv($memStream, [
+                        $this->sanitizeCsvCell($c['nisn']),
+                        $this->sanitizeCsvCell($c['nama']),
+                        $c['password_awal'],
+                    ]);
                 }
+                rewind($memStream);
+                $credCsv = stream_get_contents($memStream);
+                fclose($memStream);
+
                 $credPath = "credentials/batch_{$batch->uuid}.csv";
                 Storage::put($credPath, $credCsv);
                 $batch->credentials_path = $credPath;
@@ -341,5 +363,17 @@ class StudentImportController extends Controller
             'grade_level' => $gradeLevel,
             'major' => $major,
         ];
+    }
+
+    /**
+     * Neutralizes spreadsheet formula injection (CWE-1236).
+     */
+    protected function sanitizeCsvCell(mixed $value): string
+    {
+        $str = (string) $value;
+        if (in_array(substr($str, 0, 1), ['=', '+', '-', '@', "\t", "\r"])) {
+            return "'" . $str;
+        }
+        return $str;
     }
 }

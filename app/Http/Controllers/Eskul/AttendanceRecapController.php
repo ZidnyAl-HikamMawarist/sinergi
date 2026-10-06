@@ -160,9 +160,9 @@ class AttendanceRecapController extends Controller
 
                 fputcsv($handle, [
                     $no++,
-                    $member->user->nisn ?? '-',
-                    $member->user->name,
-                    $member->user->enrollments->first()?->schoolClass?->name ?? '-',
+                    $this->sanitizeCsvCell($member->user->nisn ?? '-'),
+                    $this->sanitizeCsvCell($member->user->name),
+                    $this->sanitizeCsvCell($member->user->enrollments->first()?->schoolClass?->name ?? '-'),
                     $hadir,
                     $izin,
                     $sakit,
@@ -176,5 +176,17 @@ class AttendanceRecapController extends Controller
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment; filename=\"{$fileName}\"",
         ]);
+    }
+
+    /**
+     * Neutralizes spreadsheet formula injection (CWE-1236).
+     */
+    protected function sanitizeCsvCell(mixed $value): string
+    {
+        $str = (string) $value;
+        if (in_array(substr($str, 0, 1), ['=', '+', '-', '@', "\t", "\r"])) {
+            return "'" . $str;
+        }
+        return $str;
     }
 }
