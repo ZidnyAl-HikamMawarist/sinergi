@@ -143,19 +143,31 @@ npm run build
 ```
 - Vite: v7.3.7
 - CSS Bundle: `public/build/assets/app-C3wb_99J.css` (76.42 kB)
-- JS Bundle: `public/build/assets/app-CRzrMblx.js` (879.68 kB)
-- Result: **0 errors, build successful in 12.82s**.
+- JS Bundle: `public/build/assets/app-BmxQTVuZ.js` (879.69 kB)
+- Result: **0 errors, build successful in 8.10s**.
 
 ---
 
-## 9. Git Commits
-- `8f6a049`: Initial repository checkpoint
-- `a5290d8`: docs(audit): complete M0 repository audit
-- `380687b`: feat(frontend): setup React 19, Inertia.js, Tailwind 4
-- `97aa775`: feat(database): ERD migrations, models, immutability rules, seeders
-- `ecbe69b`: feat(auth-rbac): multi-role auth, dynamic QR, cash register, dashboards
-- `19f5c0e`: feat(import-audit-pwa): student CSV import, audit explorer, PWA manifest
-- *(Current Milestone)*: `feat(management-recap-pwa)`: eskul management, attendance recap CSV export, student directory, offline service worker
+## 9. Red Team Adversarial Security Audit & Verification (Rounds 1–5)
+- **VULN-01 (Manual Attendance BOLA):** Resolved. Added membership verification ensuring only active members can be marked present manually.
+- **VULN-02 (Inactive Student QR Acceptance):** Resolved. `QrTokenService::verifyToken` and scanner endpoint now reject inactive or suspended students.
+- **VULN-03 (Account Takeover via Password Change):** Resolved. Enforced `current_password` validation for users whose initial mandatory setup is complete.
+- **VULN-04 (Closed Session Timestamp Reset Bypass):** Resolved. Re-closing an already closed session is rejected without resetting `closed_at`.
+- **VULN-05 (Receipt Proof Upload MIME Spoofing & Sniffing):** Resolved. Uses server-detected MIME type and adds `X-Content-Type-Options: nosniff` header.
+- **VULN-06 (CSV Formula Injection CWE-1236):** Resolved. Formula-triggering characters (`=`, `+`, `-`, `@`, `\t`, `\r`) are escaped with a leading quote.
+- **VULN-07 (Student Import DoS):** Resolved. Bound import preview to maximum 2,000 data rows and added atomic status locking.
+- **VULN-08 (Extracurricular Non-Student Member):** Resolved. Validates that added members are active users with the `siswa` role.
+- **Automated Test Suite:** **62 tests passed (197 assertions, 100% pass rate)** including 11 adversarial tests in `tests/Feature/RedTeamAbuseTest.php`.
+
+---
+
+## 10. Git Commits (Atomic History)
+- `d42f640`: `fix(attendance): enforce extracurricular membership in manual attendance and lock closed sessions (VULN-01, VULN-04)`
+- `7f2b124`: `fix(auth): reject inactive students in QR verification and require current password for updates (VULN-02, VULN-03)`
+- `867fb3b`: `fix(cash): enforce server mime detection, nosniff headers, and amount bounds (VULN-05)`
+- `ea4c6f2`: `fix(security): sanitize CSV formula injection and bound import rows to prevent DoS (VULN-06, VULN-07)`
+- `3b608c4`: `fix(eskul): restrict member enrollment to active students only (VULN-08)`
+- `27aef69`: `test(red-team): add adversarial abuse suite covering VULN-01 through VULN-08`
 
 ---
 
