@@ -14,6 +14,7 @@ class ImportBatch extends Model
 
     protected $fillable = [
         'uuid',
+        'academic_year_id',
         'uploaded_by',
         'filename',
         'status',
@@ -43,6 +44,11 @@ class ImportBatch extends Model
                 $batch->uuid = (string) Str::uuid();
             }
         });
+    }
+
+    public function academicYear(): BelongsTo
+    {
+        return $this->belongsTo(AcademicYear::class);
     }
 
     public function uploader(): BelongsTo

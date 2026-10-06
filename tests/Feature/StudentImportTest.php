@@ -70,4 +70,28 @@ class StudentImportTest extends TestCase
         $responseDownload2->assertRedirect();
         $responseDownload2->assertSessionHas('warning');
     }
+
+    public function test_import_intelligently_parses_grade_and_major(): void
+    {
+        $this->seed();
+        $admin = User::where('email', 'admin@sinergi.test')->first();
+
+        $csvContent = "nisn,nama,kelas\n0088112233,Budi XII,XII RPL 1\n0088112234,Andi XI,XI-TKJ-2\n";
+        $file = UploadedFile::fake()->createWithContent('grades.csv', $csvContent);
+
+        $this->actingAs($admin)->post('/admin/import/preview', ['file' => $file]);
+        $batch = ImportBatch::latest()->first();
+
+        $this->actingAs($admin)->post("/admin/import/{$batch->uuid}/commit");
+
+        $class12 = \App\Models\SchoolClass::where('name', 'XII RPL 1')->first();
+        $this->assertNotNull($class12);
+        $this->assertEquals(12, $class12->grade_level);
+        $this->assertEquals('RPL', $class12->major);
+
+        $class11 = \App\Models\SchoolClass::where('name', 'XI-TKJ-2')->first();
+        $this->assertNotNull($class11);
+        $this->assertEquals(11, $class11->grade_level);
+        $this->assertEquals('TKJ', $class11->major);
+    }
 }

@@ -91,7 +91,10 @@ class StudentImportController extends Controller
             return back()->with('error', 'Kolom wajib "nisn" dan "nama" tidak ditemukan pada baris judul CSV.');
         }
 
+        $activeYear = AcademicYear::active();
+
         $batch = ImportBatch::create([
+            'academic_year_id' => $activeYear?->id,
             'uploaded_by' => auth()->id(),
             'filename' => $filename,
             'status' => 'preview',
@@ -228,9 +231,10 @@ class StudentImportController extends Controller
 
                 // Class enrollment if class specified
                 if (!empty($className)) {
+                    $classMeta = $this->parseClassMetadata($className);
                     $class = SchoolClass::firstOrCreate(
                         ['academic_year_id' => $activeYear->id, 'name' => $className],
-                        ['major' => 'Umum', 'grade_level' => 10]
+                        ['major' => $classMeta['major'], 'grade_level' => $classMeta['grade_level']]
                     );
 
                     StudentEnrollment::updateOrCreate(
@@ -273,16 +277,69 @@ class StudentImportController extends Controller
             return back()->with('error', 'Berkas kredensial tidak ditemukan atau telah kedaluwarsa.');
         }
 
-        // AC-B4: Kredensial hanya dapat diunduh SEKALI oleh Admin
-        if ($batch->credentials_downloaded_at) {
+        // AC-B4 & SEC-09: Atomic conditional update prevents race condition on one-time credential download
+        $affected = ImportBatch::where('id', $batch->id)
+            ->whereNull('credentials_downloaded_at')
+            ->update(['credentials_downloaded_at' => now()]);
+
+        if ($affected === 0) {
             return back()->with('warning', 'Kredensial awal hanya dapat diunduh sekali demi keamanan data.');
         }
-
-        $batch->update(['credentials_downloaded_at' => now()]);
 
         return response()->download(
             Storage::path($batch->credentials_path),
             "kredensial_awal_siswa_{$batch->created_at->format('Ymd')}.csv"
         );
+    }
+
+    /**
+     * Intelligently parses class name to extract grade level and major.
+     * Examples: 'XII RPL 1' -> [12, 'RPL'], 'X MIPA 2' -> [10, 'MIPA'], 'XI-TKJ-3' -> [11, 'TKJ']
+     */
+    protected function parseClassMetadata(string $className): array
+    {
+        $className = trim($className);
+        $gradeLevel = 10;
+        $major = 'Umum';
+
+        // Detect grade level: XII (12), XI (11), X (10), or numeric (10, 11, 12, 7, 8, 9)
+        if (preg_match('/^(XII|12)[\s\-\._]/i', $className) || preg_match('/^(XII|12)$/i', $className)) {
+            $gradeLevel = 12;
+        } elseif (preg_match('/^(XI|11)[\s\-\._]/i', $className) || preg_match('/^(XI|11)$/i', $className)) {
+            $gradeLevel = 11;
+        } elseif (preg_match('/^(X|10)[\s\-\._]/i', $className) || preg_match('/^(X|10)$/i', $className)) {
+            $gradeLevel = 10;
+        } elseif (preg_match('/^([7-9])[\s\-\._]?/i', $className, $m)) {
+            $gradeLevel = (int) $m[1];
+        }
+
+        // Recognized vocational & general school majors
+        $knownMajors = [
+            'RPL', 'TKJ', 'MM', 'DKV', 'AKL', 'OTKP', 'BDP', 'TB', 'TBSM', 'TKR',
+            'TPM', 'TITL', 'MIPA', 'IPA', 'IPS', 'BAHASA', 'SIJA', 'ANIMASI'
+        ];
+
+        foreach ($knownMajors as $km) {
+            if (preg_match('/(?:^|[\s\-\._])' . preg_quote($km, '/') . '(?:[\s\-\._0-9]|$)/i', $className)) {
+                $major = $km;
+                break;
+            }
+        }
+
+        // If still 'Umum', attempt to extract middle token (e.g. 'XII ABC 1' -> 'ABC')
+        if ($major === 'Umum') {
+            $tokens = preg_split('/[\s\-\._]+/', $className);
+            if (count($tokens) >= 2 && !is_numeric($tokens[1])) {
+                $candidate = strtoupper($tokens[1]);
+                if (strlen($candidate) >= 2 && strlen($candidate) <= 10) {
+                    $major = $candidate;
+                }
+            }
+        }
+
+        return [
+            'grade_level' => $gradeLevel,
+            'major' => $major,
+        ];
     }
 }
