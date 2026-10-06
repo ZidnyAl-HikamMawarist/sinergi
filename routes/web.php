@@ -60,6 +60,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [KasDashboardController::class, 'index'])->name('dashboard');
         Route::post('/transactions', [CashTransactionController::class, 'store'])->name('transactions.store');
         Route::post('/transactions/{uuid}/void', [CashTransactionController::class, 'void'])->name('transactions.void');
+        Route::get('/transactions/{uuid}/proof', [CashTransactionController::class, 'showProof'])->name('transactions.proof');
     });
 
     // 4. Admin OSIS Workspace

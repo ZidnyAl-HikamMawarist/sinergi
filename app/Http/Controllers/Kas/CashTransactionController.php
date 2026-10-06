@@ -47,7 +47,7 @@ class CashTransactionController extends Controller
         }
 
         $proofFile = $request->file('proof');
-        $proofPath = $proofFile->store('receipts', 'public');
+        $proofPath = $proofFile->store('receipts', 'local');
 
         $tx = CashTransaction::create([
             'academic_year_id' => $activeYear->id,
@@ -121,5 +121,25 @@ class CashTransactionController extends Controller
         );
 
         return back()->with('success', 'Transaksi berhasil di-void dan saldo telah dikoreksi.');
+    }
+
+    public function showProof(Request $request, string $uuid)
+    {
+        $tx = CashTransaction::where('uuid', $uuid)->firstOrFail();
+        $user = $request->user();
+
+        if (!$user->isSuperAdmin() && !$user->isAdmin($tx->academic_year_id) && !$user->isBendahara($tx->academic_year_id)) {
+            abort(403, 'Anda tidak memiliki hak akses melihat bukti transaksi ini.');
+        }
+
+        if (!Storage::disk('local')->exists($tx->proof_path)) {
+            abort(404, 'File bukti transaksi tidak ditemukan.');
+        }
+
+        return Storage::disk('local')->response(
+            $tx->proof_path,
+            basename($tx->proof_path),
+            ['Content-Type' => $tx->proof_mime ?? 'application/octet-stream']
+        );
     }
 }

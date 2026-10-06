@@ -121,4 +121,34 @@ class CashAuthorizationSecurityTest extends TestCase
         $txYear1->refresh();
         $this->assertEquals('valid', $txYear1->status);
     }
+
+    public function test_authorized_user_can_view_proof_and_unauthorized_user_is_forbidden(): void
+    {
+        Storage::disk('local')->put('receipts/struk_valid.jpg', 'fake-image-binary');
+
+        $tx = CashTransaction::create([
+            'academic_year_id' => $this->year2->id,
+            'cash_category_id' => $this->catMasuk->id,
+            'type' => 'masuk',
+            'amount' => 50000,
+            'description' => 'Kas Valid',
+            'transaction_date' => '2026-10-07',
+            'proof_path' => 'receipts/struk_valid.jpg',
+            'proof_mime' => 'image/jpeg',
+            'status' => 'valid',
+            'created_by' => $this->bendahara2->id,
+        ]);
+
+        // Bendahara 2 (year 2) -> Allowed
+        $response = $this->actingAs($this->bendahara2)->get(route('kas.transactions.proof', $tx->uuid));
+        $response->assertOk();
+
+        // Student -> Forbidden
+        $responseStudent = $this->actingAs($this->student)->get(route('kas.transactions.proof', $tx->uuid));
+        $responseStudent->assertForbidden();
+
+        // Bendahara 1 (year 1) -> Forbidden
+        $responseBendahara1 = $this->actingAs($this->bendahara1)->get(route('kas.transactions.proof', $tx->uuid));
+        $responseBendahara1->assertForbidden();
+    }
 }

@@ -240,7 +240,7 @@ export default function KasDashboard({
                                             <td className="px-5 py-3.5 whitespace-nowrap">
                                                 {tx.proof_path ? (
                                                     <a
-                                                        href={`/storage/${tx.proof_path}`}
+                                                        href={`/kas/transactions/${tx.uuid}/proof`}
                                                         target="_blank"
                                                         rel="noreferrer"
                                                         className="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold"
