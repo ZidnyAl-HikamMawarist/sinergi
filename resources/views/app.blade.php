@@ -22,5 +22,14 @@
     </head>
     <body class="h-full font-sans antialiased text-slate-800 bg-slate-50 selection:bg-blue-500 selection:text-white">
         @inertia
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/sw.js').catch(err => {
+                        console.warn('SW registration skipped:', err);
+                    });
+                });
+            }
+        </script>
     </body>
 </html>
