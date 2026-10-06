@@ -115,16 +115,19 @@ The autonomous engineering session completed the end-to-end MVP implementation o
 ```bash
 php artisan test
 ```
-**Results:** 35 tests, 105 assertions, 0 failures, 100% pass rate.
+**Results:** 45 tests, 124 assertions, 0 failures, 100% pass rate.
 - `Tests\Unit\ExampleTest`: 1 passed
 - `Tests\Feature\AttendanceRecapTest`: 2 passed
 - `Tests\Feature\AuditLogTest`: 2 passed
 - `Tests\Feature\AuthTest`: 6 passed
+- `Tests\Feature\CashAuthorizationSecurityTest`: 3 passed (Student blocked, Category type mismatch, Cross-year void boundary)
 - `Tests\Feature\CashManagementTest`: 2 passed
 - `Tests\Feature\DatabaseFoundationTest`: 4 passed
 - `Tests\Feature\DynamicQrTest`: 5 passed
 - `Tests\Feature\ExampleTest`: 1 passed
+- `Tests\Feature\ExtracurricularAuthorizationTest`: 5 passed (Cross-eskul session create, close, manual attendance, and recap export 403 checks)
 - `Tests\Feature\ExtracurricularManagementTest`: 4 passed
+- `Tests\Feature\QrCollisionAndSecurityTest`: 2 passed (Cross-eskul scanner block, Race-condition collision returning 422 JSON)
 - `Tests\Feature\RbacTest`: 4 passed
 - `Tests\Feature\StudentDirectoryTest`: 2 passed
 - `Tests\Feature\StudentImportTest`: 2 passed

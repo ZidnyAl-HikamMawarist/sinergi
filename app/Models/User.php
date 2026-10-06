@@ -139,6 +139,27 @@ class User extends Authenticatable
         return $this->isSuperAdmin() || $this->hasRole('pengurus_eskul', $academicYearId, $eskulId);
     }
 
+    public function canManageExtracurricular(int $eskulId, ?int $academicYearId = null): bool
+    {
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        if ($this->isAdmin($academicYearId)) {
+            return true;
+        }
+
+        $query = $this->roles()
+            ->where('roles.name', 'pengurus_eskul')
+            ->wherePivot('extracurricular_id', $eskulId);
+
+        if ($academicYearId) {
+            $query->wherePivot('academic_year_id', $academicYearId);
+        }
+
+        return $query->exists();
+    }
+
     public function isSiswa(?int $academicYearId = null): bool
     {
         return $this->hasRole('siswa', $academicYearId) || !empty($this->nisn);

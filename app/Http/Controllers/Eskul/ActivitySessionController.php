@@ -26,6 +26,13 @@ class ActivitySessionController extends Controller
             return back()->with('error', 'Tidak ada tahun ajaran aktif.');
         }
 
+        $user = $request->user();
+        $eskulId = (int) $request->input('extracurricular_id');
+
+        if (!$user->canManageExtracurricular($eskulId, $activeYear->id)) {
+            abort(403, 'Anda tidak memiliki hak akses membuat sesi untuk ekstrakurikuler ini.');
+        }
+
         $session = ActivitySession::create([
             'extracurricular_id' => $request->input('extracurricular_id'),
             'academic_year_id' => $activeYear->id,

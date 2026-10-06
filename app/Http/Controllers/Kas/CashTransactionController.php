@@ -32,12 +32,26 @@ class CashTransactionController extends Controller
             return back()->with('error', 'Tidak ada tahun ajaran aktif.');
         }
 
+        $user = $request->user();
+        if (!$user->isSuperAdmin() && !$user->isAdmin($activeYear->id) && !$user->isBendahara($activeYear->id)) {
+            abort(403, 'Anda tidak memiliki hak akses mencatat transaksi kas pada tahun ajaran ini.');
+        }
+
+        // Validate that category matches the transaction type
+        $category = \App\Models\CashCategory::where('id', $request->input('cash_category_id'))
+            ->where('is_active', true)
+            ->first();
+
+        if (!$category || $category->type !== $request->input('type')) {
+            return back()->withErrors(['cash_category_id' => 'Kategori kas tidak valid atau tidak sesuai dengan tipe transaksi.']);
+        }
+
         $proofFile = $request->file('proof');
         $proofPath = $proofFile->store('receipts', 'public');
 
         $tx = CashTransaction::create([
             'academic_year_id' => $activeYear->id,
-            'cash_category_id' => $request->input('cash_category_id'),
+            'cash_category_id' => $category->id,
             'type' => $request->input('type'),
             'amount' => $request->input('amount'),
             'description' => $request->input('description'),
@@ -75,6 +89,11 @@ class CashTransactionController extends Controller
         ]);
 
         $tx = CashTransaction::where('uuid', $uuid)->firstOrFail();
+        $user = $request->user();
+
+        if (!$user->isSuperAdmin() && !$user->isAdmin($tx->academic_year_id) && !$user->isBendahara($tx->academic_year_id)) {
+            abort(403, 'Anda tidak memiliki hak akses membatalkan (void) transaksi pada tahun ajaran ini.');
+        }
 
         if ($tx->status === 'void') {
             return back()->with('warning', 'Transaksi ini sudah pernah dibatalkan (void).');

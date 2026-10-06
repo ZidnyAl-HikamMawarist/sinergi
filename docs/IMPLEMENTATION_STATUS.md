@@ -55,17 +55,20 @@ Last updated: 2026-10-06 (Autonomous Implementation Complete)
 ---
 
 ## 4. Test Suite Verification
-- **Total Tests:** 35 Feature & Unit tests
-- **Assertions:** 105 assertions passing (100% pass rate)
+- **Total Tests:** 45 Feature & Unit tests
+- **Assertions:** 124 assertions passing (100% pass rate)
 - **Suites:**
   - `DatabaseFoundationTest`: 4 tests (Roles, Seeder, Cash Immutability, Void transition)
   - `AuthTest`: 6 tests (Login via Email & NISN, Inactive rejection, Mandatory password change, Workspace selector, Logout)
   - `RbacTest`: 4 tests (Unauthenticated rejection, Siswa authorization boundary, Bendahara cash boundary, Super Admin multi-access)
   - `DynamicQrTest`: 5 tests (HMAC generation & verification, Tampered token rejection, Expiry rejection, Attendance recording with replay protection, Non-member rejection)
+  - `QrCollisionAndSecurityTest`: 2 tests (Cross-eskul scanner block, Race-condition collision returning 422 JSON)
+  - `ExtracurricularAuthorizationTest`: 5 tests (Cross-eskul session create, close, manual attendance, and recap export 403 checks)
+  - `ExtracurricularManagementTest`: 4 tests (Admin index, creation with audit log, add/remove member preserving history, student rejection)
+  - `CashAuthorizationSecurityTest`: 3 tests (Student blocked, Category type mismatch, Cross-year void boundary)
   - `CashManagementTest`: 2 tests (Receipt proof validation, Void reason requirement & recalculation)
   - `StudentImportTest`: 2 tests (CSV preview validation, Batch commit & single-download credentials)
   - `AuditLogTest`: 2 tests (Immutability & filter exploration)
-  - `ExtracurricularManagementTest`: 4 tests (Admin index, creation with audit log, add/remove member preserving history, student rejection)
   - `AttendanceRecapTest`: 2 tests (Pengurus recap view calculation, Streamed CSV export)
   - `StudentDirectoryTest`: 2 tests (Admin directory view, search filter)
   - `ExampleTest`: 2 tests (Unit & Feature root checks)

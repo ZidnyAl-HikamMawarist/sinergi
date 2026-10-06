@@ -106,16 +106,8 @@ class AttendanceController extends Controller
         }
 
         // Verify scanner authorization
-        if (!$user->isSuperAdmin() && !$user->isAdmin($session->academic_year_id)) {
-            $isPengurus = $user->roles()
-                ->where('roles.name', 'pengurus_eskul')
-                ->wherePivot('academic_year_id', $session->academic_year_id)
-                ->wherePivot('extracurricular_id', $session->extracurricular_id)
-                ->exists();
-
-            if (!$isPengurus) {
-                return response()->json(['success' => false, 'message' => 'Anda tidak memiliki hak akses memindai untuk eskul ini.'], 403);
-            }
+        if (!$user->canManageExtracurricular($session->extracurricular_id, $session->academic_year_id)) {
+            return response()->json(['success' => false, 'message' => 'Anda tidak memiliki hak akses memindai untuk eskul ini.'], 403);
         }
 
         // Validate cryptographic QR token (AC-D1, AC-D2)
@@ -153,24 +145,31 @@ class AttendanceController extends Controller
             ], 422);
         }
 
-        // Atomic recording of attendance and token replay protection
-        DB::transaction(function () use ($session, $student, $user, $tokenHash) {
-            Attendance::create([
-                'activity_session_id' => $session->id,
-                'user_id' => $student->id,
-                'status' => 'hadir',
-                'method' => 'qr',
-                'recorded_by' => $user->id,
-                'recorded_at' => now(),
-            ]);
+        // Atomic recording of attendance and token replay protection with race-condition collision handling
+        try {
+            DB::transaction(function () use ($session, $student, $user, $tokenHash) {
+                Attendance::create([
+                    'activity_session_id' => $session->id,
+                    'user_id' => $student->id,
+                    'status' => 'hadir',
+                    'method' => 'qr',
+                    'recorded_by' => $user->id,
+                    'recorded_at' => now(),
+                ]);
 
-            QrTokenUse::create([
-                'token_hash' => $tokenHash,
-                'user_id' => $student->id,
-                'activity_session_id' => $session->id,
-                'used_at' => now(),
-            ]);
-        });
+                QrTokenUse::create([
+                    'token_hash' => $tokenHash,
+                    'user_id' => $student->id,
+                    'activity_session_id' => $session->id,
+                    'used_at' => now(),
+                ]);
+            });
+        } catch (\Illuminate\Database\UniqueConstraintViolationException|\Illuminate\Database\QueryException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Token QR telah digunakan atau presensi untuk siswa ini sudah tercatat.',
+            ], 422);
+        }
 
         return response()->json([
             'success' => true,
@@ -197,6 +196,11 @@ class AttendanceController extends Controller
 
         $session = ActivitySession::where('uuid', $request->input('session_uuid'))->firstOrFail();
         $user = $request->user();
+
+        // Check if user is authorized to manage this extracurricular
+        if (!$user->canManageExtracurricular($session->extracurricular_id, $session->academic_year_id)) {
+            abort(403, 'Anda tidak memiliki hak akses mencatat presensi untuk ekstrakurikuler ini.');
+        }
 
         // AC-D9: Edit window check (default 24 hours after session closed)
         if ($session->status === 'ditutup' && $session->closed_at) {
@@ -240,8 +244,13 @@ class AttendanceController extends Controller
         return back()->with('success', 'Presensi manual berhasil diperbarui.');
     }
 
-    public function closeSession(ActivitySession $session): RedirectResponse
+    public function closeSession(Request $request, ActivitySession $session): RedirectResponse
     {
+        $user = $request->user();
+        if (!$user->canManageExtracurricular($session->extracurricular_id, $session->academic_year_id)) {
+            abort(403, 'Anda tidak memiliki hak akses menutup sesi untuk ekstrakurikuler ini.');
+        }
+
         $session->update([
             'status' => 'ditutup',
             'closed_at' => now(),

@@ -112,6 +112,11 @@ class AttendanceRecapController extends Controller
         $yearId = $activeYear?->id;
         $eskul = Extracurricular::findOrFail($request->input('eskul_id'));
 
+        $user = $request->user();
+        if (!$user->canManageExtracurricular($eskul->id, $yearId)) {
+            abort(403, 'Anda tidak memiliki hak akses mengunduh rekap untuk ekstrakurikuler ini.');
+        }
+
         $sessions = ActivitySession::where('extracurricular_id', $eskul->id)
             ->when($yearId, fn ($q) => $q->where('academic_year_id', $yearId))
             ->orderBy('session_date')
