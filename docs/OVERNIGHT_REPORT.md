@@ -115,12 +115,15 @@ The autonomous engineering session completed the end-to-end MVP implementation o
 ```bash
 php artisan test
 ```
-**Results:** 45 tests, 124 assertions, 0 failures, 100% pass rate.
+**Results:** 51 tests, 170 assertions, 0 failures, 100% pass rate.
 - `Tests\Unit\ExampleTest`: 1 passed
+- `Tests\Feature\AuthorizationMatrixTest`: 2 passed (Full matrix: own eskul access vs other eskul 403 blocks)
+- `Tests\Feature\CashIntegrityTest`: 1 passed (Direct edit amount/category/desc rejection, direct delete block, double void block, void->valid block, type mismatch block)
+- `Tests\Feature\QrSecurityTest`: 1 passed (Full matrix: valid QR, tampered payload, expired token, replay token, non-member, cross-eskul scanner, closed session)
 - `Tests\Feature\AttendanceRecapTest`: 2 passed
 - `Tests\Feature\AuditLogTest`: 2 passed
 - `Tests\Feature\AuthTest`: 6 passed
-- `Tests\Feature\CashAuthorizationSecurityTest`: 3 passed (Student blocked, Category type mismatch, Cross-year void boundary)
+- `Tests\Feature\CashAuthorizationSecurityTest`: 4 passed (Student blocked, Category type mismatch, Cross-year void boundary, Authorized proof stream)
 - `Tests\Feature\CashManagementTest`: 2 passed
 - `Tests\Feature\DatabaseFoundationTest`: 4 passed
 - `Tests\Feature\DynamicQrTest`: 5 passed
@@ -130,7 +133,7 @@ php artisan test
 - `Tests\Feature\QrCollisionAndSecurityTest`: 2 passed (Cross-eskul scanner block, Race-condition collision returning 422 JSON)
 - `Tests\Feature\RbacTest`: 4 passed
 - `Tests\Feature\StudentDirectoryTest`: 2 passed
-- `Tests\Feature\StudentImportTest`: 2 passed
+- `Tests\Feature\StudentImportTest`: 3 passed (CSV preview validation, Batch commit & single-download credentials, Intelligent grade/major parsing)
 
 ---
 

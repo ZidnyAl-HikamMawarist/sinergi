@@ -50,14 +50,21 @@ Last updated: 2026-10-06 (Autonomous Implementation Complete)
 - [x] **M7 — Immutable Cash System:** Transactions with mandatory receipt upload, server-side calculated balance, and void mechanism.
 - [x] **M8 — Audit Logs & Subsystem:** Append-only audit logger, student CSV batch import with preview & one-time credentials export.
 - [x] **M9 — PWA & Service Worker:** Manifest, standalone mobile meta tags, offline fallback cache service worker (`public/sw.js`).
-- [x] **M10 — Recap & Reporting:** Per-student attendance recap calculation (% rate) with CSV export stream.
+- [x] **M10 — Recap & Reporting:** Per-student attendance recap calculation (% rate) with SQL aggregation (PERF-01) and CSV export stream.
+- [x] **M11 — Security Hardening:**
+  - Resource-level authorization: Cross-eskul session creation, closing, manual attendance, and recap export prevention (SEC-01, SEC-02, SEC-03, SEC-04).
+  - Cash ledger protection: Category type mismatch validation (SEC-05), local private receipt storage with authorized streaming route (SEC-06).
+  - Batch import & data quality: Academic year binding (SEC-08), atomic credential download lock (SEC-09), and intelligent grade/major class parsing (DATA-01).
 
 ---
 
 ## 4. Test Suite Verification
-- **Total Tests:** 45 Feature & Unit tests
-- **Assertions:** 124 assertions passing (100% pass rate)
+- **Total Tests:** 51 Feature & Unit tests
+- **Assertions:** 170 assertions passing (100% pass rate)
 - **Suites:**
+  - `AuthorizationMatrixTest`: 2 tests (Full matrix: own eskul access vs other eskul 403 blocks)
+  - `CashIntegrityTest`: 1 test (Direct edit amount/category/desc rejection, direct delete block, double void block, void->valid block, type mismatch block)
+  - `QrSecurityTest`: 1 test (Full matrix: valid QR, tampered payload, expired token, replay token, non-member, cross-eskul scanner, closed session)
   - `DatabaseFoundationTest`: 4 tests (Roles, Seeder, Cash Immutability, Void transition)
   - `AuthTest`: 6 tests (Login via Email & NISN, Inactive rejection, Mandatory password change, Workspace selector, Logout)
   - `RbacTest`: 4 tests (Unauthenticated rejection, Siswa authorization boundary, Bendahara cash boundary, Super Admin multi-access)
@@ -65,9 +72,9 @@ Last updated: 2026-10-06 (Autonomous Implementation Complete)
   - `QrCollisionAndSecurityTest`: 2 tests (Cross-eskul scanner block, Race-condition collision returning 422 JSON)
   - `ExtracurricularAuthorizationTest`: 5 tests (Cross-eskul session create, close, manual attendance, and recap export 403 checks)
   - `ExtracurricularManagementTest`: 4 tests (Admin index, creation with audit log, add/remove member preserving history, student rejection)
-  - `CashAuthorizationSecurityTest`: 3 tests (Student blocked, Category type mismatch, Cross-year void boundary)
+  - `CashAuthorizationSecurityTest`: 4 tests (Student blocked, Category type mismatch, Cross-year void boundary, Authorized proof stream)
   - `CashManagementTest`: 2 tests (Receipt proof validation, Void reason requirement & recalculation)
-  - `StudentImportTest`: 2 tests (CSV preview validation, Batch commit & single-download credentials)
+  - `StudentImportTest`: 3 tests (CSV preview validation, Batch commit & single-download credentials, Intelligent grade/major parsing)
   - `AuditLogTest`: 2 tests (Immutability & filter exploration)
   - `AttendanceRecapTest`: 2 tests (Pengurus recap view calculation, Streamed CSV export)
   - `StudentDirectoryTest`: 2 tests (Admin directory view, search filter)
@@ -79,5 +86,5 @@ Last updated: 2026-10-06 (Autonomous Implementation Complete)
 - **Command:** `npm run build`
 - **Vite:** v7.3.7
 - **CSS Bundle:** `public/build/assets/app-C3wb_99J.css` (76.42 kB)
-- **JS Bundle:** `public/build/assets/app-CRzrMblx.js` (879.68 kB)
+- **JS Bundle:** `public/build/assets/app-BmxQTVuZ.js` (879.69 kB)
 - **Exit Code:** `0` (Zero compilation errors)
