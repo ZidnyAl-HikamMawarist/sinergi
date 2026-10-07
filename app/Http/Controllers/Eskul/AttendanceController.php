@@ -141,9 +141,11 @@ class AttendanceController extends Controller
             ->first();
 
         if ($existing) {
+            $formattedTime = Carbon::parse($existing->recorded_at)->timezone(config('app.timezone', 'Asia/Jakarta'))->format('H:i:s');
+
             return response()->json([
                 'success' => false,
-                'message' => "Siswa {$student->name} sudah tercatat hadir pada pukul ".Carbon::parse($existing->recorded_at)->format('H:i:s'),
+                'message' => "Siswa {$student->name} sudah tercatat hadir pada pukul {$formattedTime} WIB",
             ], 422);
         }
 
@@ -173,13 +175,15 @@ class AttendanceController extends Controller
             ], 422);
         }
 
+        $nowFormatted = now()->timezone(config('app.timezone', 'Asia/Jakarta'))->format('H:i:s');
+
         return response()->json([
             'success' => true,
             'message' => "Presensi Berhasil: {$student->name} tercatat HADIR.",
             'student' => [
                 'name' => $student->name,
                 'nisn' => $student->nisn,
-                'time' => now()->format('H:i:s'),
+                'time' => "{$nowFormatted} WIB",
             ],
         ]);
     }
