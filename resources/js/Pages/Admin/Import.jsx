@@ -43,8 +43,8 @@ export default function Import({ batches = [] }) {
             header="Import Data Siswa (CSV)"
             subtitle="Unggah berkas data siswa dari Dapodik/data sekolah. Sistem akan melakukan validasi dan pratinjau sebelum menyimpan."
             actions={
-                <Button variant="outline" size="sm" onClick={downloadTemplate}>
-                    <Download className="w-4 h-4 mr-1.5 text-blue-600" />
+                <Button variant="secondary" size="sm" onClick={downloadTemplate}>
+                    <Download className="w-4 h-4 mr-1.5 text-[#1769AA]" />
                     Unduh Template CSV
                 </Button>
             }
@@ -54,9 +54,9 @@ export default function Import({ batches = [] }) {
                 <div className="lg:col-span-5">
                     <Card title="Unggah Berkas CSV Siswa" accentColor="primary">
                         <form onSubmit={handleFileSubmit} className="space-y-4">
-                            <div className="border-2 border-dashed border-[#D9DEE3] hover:border-[#1F4E79] rounded-lg p-6 text-center transition-colors bg-[#F7F5F0]">
-                                <UploadCloud className="w-10 h-10 text-[#1F4E79] mx-auto mb-3" />
-                                <label className="block text-xs font-semibold text-[#17212B] cursor-pointer">
+                            <div className="border-2 border-dashed border-[#D7E0E8] hover:border-[#1769AA] rounded-lg p-6 text-center transition-colors bg-[#F3F8FC]">
+                                <UploadCloud className="w-10 h-10 text-[#1769AA] mx-auto mb-3" />
+                                <label className="block text-xs font-bold text-[#17202A] cursor-pointer">
                                     <span>Pilih berkas CSV dari komputer</span>
                                     <input
                                         type="file"
@@ -66,7 +66,7 @@ export default function Import({ batches = [] }) {
                                         className="sr-only"
                                     />
                                 </label>
-                                <p className="text-[11px] text-[#737D86] mt-1">
+                                <p className="text-[11px] text-[#718096] mt-1">
                                     {data.file ? data.file.name : 'Format .csv (maksimal 10 MB)'}
                                 </p>
                             </div>
@@ -75,10 +75,10 @@ export default function Import({ batches = [] }) {
                                 <p className="text-xs text-[#C24141] font-medium">{errors.file}</p>
                             )}
 
-                            <div className="bg-[#F7F5F0] border border-[#D9DEE3] p-3.5 rounded-lg text-[11px] text-[#46515C] space-y-1">
-                                <div className="font-semibold text-[#17212B] mb-1">Ketentuan Berkas:</div>
-                                <div>&bull; Kolom wajib: <code>nisn</code>, <code>nama</code></div>
-                                <div>&bull; Kolom opsional: <code>kelas</code>, <code>email</code></div>
+                            <div className="bg-[#F3F8FC] border border-[#D7E0E8] p-3.5 rounded-lg text-[11px] text-[#465362] space-y-1">
+                                <div className="font-bold text-[#17202A] mb-1">Ketentuan Berkas:</div>
+                                <div>&bull; Kolom wajib: <code className="text-[#1769AA]">nisn</code>, <code className="text-[#1769AA]">nama</code></div>
+                                <div>&bull; Kolom opsional: <code className="text-[#1769AA]">kelas</code>, <code className="text-[#1769AA]">email</code></div>
                                 <div>&bull; Jika NISN sudah ada, sistem akan memperbarui data tanpa membuat duplikat.</div>
                             </div>
 
@@ -105,28 +105,28 @@ export default function Import({ batches = [] }) {
                         accentColor="primary"
                     >
                         {batches.length === 0 ? (
-                            <div className="text-center py-10 text-[#737D86] text-xs">
+                            <div className="text-center py-10 text-[#718096] text-xs">
                                 Belum ada riwayat import data siswa.
                             </div>
                         ) : (
-                            <div className="divide-y divide-[#D9DEE3]">
+                            <div className="divide-y divide-[#D7E0E8]">
                                 {batches.map((batch) => (
                                     <div key={batch.id} className="py-3.5 flex items-center justify-between">
                                         <div>
                                             <Link
                                                 href={`/admin/import/${batch.uuid}`}
-                                                className="text-sm font-semibold text-[#17212B] hover:text-[#1F4E79] flex items-center gap-1.5"
+                                                className="text-sm font-bold text-[#17202A] hover:text-[#1769AA] flex items-center gap-1.5"
                                             >
                                                 {batch.filename}
-                                                <ArrowRight className="w-3.5 h-3.5 text-[#737D86]" />
+                                                <ArrowRight className="w-3.5 h-3.5 text-[#718096]" />
                                             </Link>
-                                            <div className="text-xs text-[#737D86] mt-0.5">
+                                            <div className="text-xs text-[#718096] mt-0.5">
                                                 {batch.total_rows} total baris &bull;{' '}
-                                                <span className="text-[#287D5A]">+{batch.new_rows} baru</span> &bull;{' '}
-                                                <span className="text-[#1F4E79]">~{batch.updated_rows} update</span> &bull;{' '}
-                                                <span className="text-[#C24141]">!{batch.error_rows} error</span>
+                                                <span className="text-[#25805A] font-semibold">+{batch.new_rows} baru</span> &bull;{' '}
+                                                <span className="text-[#1769AA] font-semibold">~{batch.updated_rows} update</span> &bull;{' '}
+                                                <span className="text-[#C24141] font-semibold">!{batch.error_rows} error</span>
                                             </div>
-                                            <div className="text-[10px] text-[#737D86] mt-0.5">
+                                            <div className="text-[10px] text-[#718096] mt-0.5">
                                                 Diupload oleh {batch.uploader?.name} &bull; {new Date(batch.created_at).toLocaleDateString('id-ID')}
                                             </div>
                                         </div>

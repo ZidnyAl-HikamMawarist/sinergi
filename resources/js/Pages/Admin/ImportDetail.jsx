@@ -119,8 +119,8 @@ export default function ImportDetail({ batch = {}, rows = { data: [] } }) {
                 accentColor="primary"
             >
                 <div className="overflow-x-auto -mx-5">
-                    <table className="w-full text-left text-xs text-[#46515C]">
-                        <thead className="bg-[#F7F5F0] text-[#46515C] font-semibold border-y border-[#D9DEE3] uppercase tracking-wider text-[11px]">
+                    <table className="w-full text-left text-xs text-[#465362]">
+                        <thead className="bg-[#F3F8FC] text-[#718096] font-bold border-y border-[#D7E0E8] uppercase tracking-wider text-[11px]">
                             <tr>
                                 <th className="px-5 py-3">Baris</th>
                                 <th className="px-5 py-3">NISN</th>
@@ -130,7 +130,7 @@ export default function ImportDetail({ batch = {}, rows = { data: [] } }) {
                                 <th className="px-5 py-3">Keterangan / Error</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-[#D9DEE3]">
+                        <tbody className="divide-y divide-[#D7E0E8]">
                             {rows.data.map((row) => {
                                 const isErr = row.action === 'error';
                                 const isNew = row.action === 'new';
@@ -138,20 +138,20 @@ export default function ImportDetail({ batch = {}, rows = { data: [] } }) {
                                 return (
                                     <tr
                                         key={row.id}
-                                        className={`transition-colors hover:bg-[#F7F5F0]/60 ${
+                                        className={`transition-colors hover:bg-[#F6F8FB] ${
                                             isErr ? 'bg-[#FDF2F2]' : ''
                                         }`}
                                     >
-                                        <td className="px-5 py-3 font-mono text-[#737D86]">
+                                        <td className="px-5 py-3 font-mono text-[#718096]">
                                             #{row.row_number}
                                         </td>
-                                        <td className="px-5 py-3 font-mono font-bold text-[#17212B]">
+                                        <td className="px-5 py-3 font-mono font-bold text-[#17202A]">
                                             {row.payload?.nisn || '-'}
                                         </td>
-                                        <td className="px-5 py-3 font-semibold text-[#17212B]">
+                                        <td className="px-5 py-3 font-bold text-[#17202A]">
                                             {row.payload?.name || '-'}
                                         </td>
-                                        <td className="px-5 py-3 text-[#46515C]">
+                                        <td className="px-5 py-3 text-[#465362]">
                                             {row.payload?.class || '-'}
                                         </td>
                                         <td className="px-5 py-3">
@@ -163,13 +163,13 @@ export default function ImportDetail({ batch = {}, rows = { data: [] } }) {
                                                 <Badge status="sakit">Update</Badge>
                                             )}
                                         </td>
-                                        <td className="px-5 py-3 text-[#737D86]">
+                                        <td className="px-5 py-3 text-[#718096]">
                                             {row.error_message ? (
-                                                <span className="text-[#C24141] font-medium">
+                                                <span className="text-[#C24141] font-semibold">
                                                     {row.error_message}
                                                 </span>
                                             ) : (
-                                                <span className="text-[#287D5A] font-medium">
+                                                <span className="text-[#25805A] font-semibold">
                                                     Siap diproses
                                                 </span>
                                             )}

@@ -17,21 +17,21 @@ export default function ChangePassword() {
     };
 
     return (
-        <div className="min-h-screen bg-[#F7F5F0] flex flex-col justify-center items-center p-4 selection:bg-[#1F4E79] selection:text-white">
+        <div className="min-h-screen bg-[#F6F8FB] flex flex-col justify-center items-center p-4 selection:bg-[#1769AA] selection:text-white">
             <Head title="Ganti Kata Sandi" />
 
             <div className="w-full max-w-sm">
                 <FlashMessage />
 
-                <div className="bg-white rounded-lg p-6 shadow-xs border border-[#D9DEE3]">
+                <div className="bg-white rounded-lg p-6 shadow-xs border border-[#D7E0E8]">
                     <div className="w-9 h-9 rounded-md bg-[#FEF8EC] text-[#B7791F] flex items-center justify-center mb-3">
                         <KeyRound className="w-5 h-5" />
                     </div>
 
-                    <h1 className="text-base font-bold text-[#17212B]">
+                    <h1 className="text-base font-bold text-[#17202A]">
                         Pembaruan Kata Sandi
                     </h1>
-                    <p className="text-xs text-[#737D86] mt-1 mb-5">
+                    <p className="text-xs text-[#718096] mt-1 mb-5">
                         Demi keamanan akun Anda (terutama saat login pertama kali), harap buat kata sandi baru minimal 8 karakter.
                     </p>
 

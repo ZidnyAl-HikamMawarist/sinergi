@@ -26,21 +26,21 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen bg-[#F7F5F0] flex flex-col justify-center items-center p-4 selection:bg-[#1F4E79] selection:text-white">
+        <div className="min-h-screen bg-[#F6F8FB] flex flex-col justify-center items-center p-4 selection:bg-[#1769AA] selection:text-white">
             <Head title="Masuk ke Sistem" />
 
             <div className="w-full max-w-sm">
                 {/* Brand Header */}
                 <div className="text-center mb-6">
                     <Link href="/" className="inline-flex items-center space-x-2.5">
-                        <div className="w-9 h-9 rounded-md bg-[#1F4E79] flex items-center justify-center text-white font-bold text-base">
+                        <div className="w-9 h-9 rounded-md bg-[#123B5D] flex items-center justify-center text-white font-bold text-base shadow-xs">
                             <Building2 className="w-5 h-5" />
                         </div>
-                        <span className="text-2xl font-bold tracking-tight text-[#17212B]">
+                        <span className="text-2xl font-extrabold tracking-tight text-[#123B5D]">
                             SINERGI
                         </span>
                     </Link>
-                    <p className="mt-1 text-xs text-[#737D86]">
+                    <p className="mt-1 text-xs text-[#718096]">
                         Sistem Integrasi Ekstrakurikuler dan Organisasi
                     </p>
                 </div>
@@ -48,10 +48,10 @@ export default function Login() {
                 <FlashMessage />
 
                 {/* Login Card */}
-                <div className="bg-white rounded-lg p-6 shadow-xs border border-[#D9DEE3]">
-                    <div className="mb-5 pb-3 border-b border-[#D9DEE3]">
-                        <h1 className="text-base font-bold text-[#17212B]">Masuk ke Akun</h1>
-                        <p className="text-xs text-[#737D86] mt-0.5">
+                <div className="bg-white rounded-lg p-6 shadow-xs border border-[#D7E0E8]">
+                    <div className="mb-5 pb-3 border-b border-[#D7E0E8]">
+                        <h1 className="text-base font-bold text-[#17202A]">Masuk ke Akun</h1>
+                        <p className="text-xs text-[#718096] mt-0.5">
                             Gunakan NISN (siswa) atau alamat email resmi.
                         </p>
                     </div>
@@ -82,12 +82,12 @@ export default function Login() {
                         />
 
                         <div className="flex items-center justify-between text-xs pt-0.5">
-                            <label className="flex items-center text-[#46515C] cursor-pointer select-none">
+                            <label className="flex items-center text-[#465362] cursor-pointer select-none">
                                 <input
                                     type="checkbox"
                                     checked={data.remember}
                                     onChange={(e) => setData('remember', e.target.checked)}
-                                    className="rounded border-[#D9DEE3] text-[#1F4E79] focus:ring-[#1F4E79] w-4 h-4 mr-2"
+                                    className="rounded border-[#D7E0E8] text-[#1769AA] focus:ring-[#1769AA] w-4 h-4 mr-2"
                                 />
                                 Ingat di perangkat ini
                             </label>
@@ -106,9 +106,9 @@ export default function Login() {
                     </form>
 
                     {/* Quick Dev Accounts Helper */}
-                    <div className="mt-6 pt-5 border-t border-[#D9DEE3]">
+                    <div className="mt-6 pt-5 border-t border-[#D7E0E8]">
                         <div className="flex items-center justify-between mb-2">
-                            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#737D86]">
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-[#718096]">
                                 Akun Uji Coba:
                             </span>
                         </div>
@@ -116,28 +116,28 @@ export default function Login() {
                             <button
                                 type="button"
                                 onClick={() => fillDevAccount('admin@sinergi.test', 'password123')}
-                                className="p-2 rounded-md border border-[#D9DEE3] bg-[#FCFBF9] hover:bg-[#EAF2F8] text-[#17212B] font-medium text-left transition-colors"
+                                className="p-2 rounded-md border border-[#D7E0E8] bg-[#F3F8FC] hover:bg-[#E8F2FA] text-[#17202A] font-semibold text-left transition-colors"
                             >
                                 Admin OSIS
                             </button>
                             <button
                                 type="button"
                                 onClick={() => fillDevAccount('bendahara@sinergi.test', 'password123')}
-                                className="p-2 rounded-md border border-[#D9DEE3] bg-[#FCFBF9] hover:bg-[#EAF2F8] text-[#17212B] font-medium text-left transition-colors"
+                                className="p-2 rounded-md border border-[#D7E0E8] bg-[#F3F8FC] hover:bg-[#E8F2FA] text-[#17202A] font-semibold text-left transition-colors"
                             >
                                 Bendahara
                             </button>
                             <button
                                 type="button"
                                 onClick={() => fillDevAccount('pengurus@sinergi.test', 'password123')}
-                                className="p-2 rounded-md border border-[#D9DEE3] bg-[#FCFBF9] hover:bg-[#EAF2F8] text-[#1F4E79] font-medium text-left transition-colors"
+                                className="p-2 rounded-md border border-[#D7E0E8] bg-[#F3F8FC] hover:bg-[#E8F2FA] text-[#123B5D] font-semibold text-left transition-colors"
                             >
                                 Pengurus Eskul
                             </button>
                             <button
                                 type="button"
                                 onClick={() => fillDevAccount('0051234562', 'password123')}
-                                className="p-2 rounded-md border border-[#D9DEE3] bg-[#FCFBF9] hover:bg-[#EAF2F8] text-[#17212B] font-medium text-left transition-colors"
+                                className="p-2 rounded-md border border-[#D7E0E8] bg-[#F3F8FC] hover:bg-[#E8F2FA] text-[#17202A] font-semibold text-left transition-colors"
                             >
                                 Siswa (Ahmad)
                             </button>
@@ -145,8 +145,8 @@ export default function Login() {
                     </div>
                 </div>
 
-                <div className="mt-5 text-center text-xs text-[#737D86]">
-                    <Link href="/" className="hover:text-[#1F4E79] transition-colors">
+                <div className="mt-5 text-center text-xs text-[#718096]">
+                    <Link href="/" className="hover:text-[#1769AA] transition-colors font-medium">
                         &larr; Kembali ke Beranda
                     </Link>
                 </div>

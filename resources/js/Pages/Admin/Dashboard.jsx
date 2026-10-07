@@ -38,8 +38,8 @@ export default function AdminDashboard({
             actions={
                 <div className="flex gap-2">
                     <Link href="/admin/import">
-                        <Button variant="outline" size="sm">
-                            <FileSpreadsheet className="w-4 h-4 mr-1.5 text-blue-600" />
+                        <Button variant="secondary" size="sm">
+                            <FileSpreadsheet className="w-4 h-4 mr-1.5 text-[#1769AA]" />
                             Import Siswa
                         </Button>
                     </Link>
@@ -80,7 +80,7 @@ export default function AdminDashboard({
                     value={formatRupiah(stats.cashBalance)}
                     subtitle="Akuntabel & terverifikasi"
                     icon={CreditCard}
-                    color="primary"
+                    color="accent"
                 />
             </div>
 
@@ -94,29 +94,29 @@ export default function AdminDashboard({
                         action={
                             <Link
                                 href="/eskul/sessions"
-                                className="text-xs font-semibold text-[#1F4E79] hover:text-[#173A5C]"
+                                className="text-xs font-bold text-[#1769AA] hover:text-[#0F4F82]"
                             >
                                 Lihat Semua &rarr;
                             </Link>
                         }
                     >
                         {recentSessions.length === 0 ? (
-                            <div className="text-center py-8 text-[#737D86] text-sm">
+                            <div className="text-center py-8 text-[#718096] text-sm">
                                 Belum ada sesi kegiatan yang tercatat pada periode ini.
                             </div>
                         ) : (
-                            <div className="divide-y divide-[#D9DEE3]">
+                            <div className="divide-y divide-[#D7E0E8]">
                                 {recentSessions.map((session) => (
                                     <div key={session.id} className="py-3.5 flex items-center justify-between">
                                         <div className="flex items-center space-x-3">
-                                            <div className="w-10 h-10 rounded-md bg-[#EAF2F8] text-[#1F4E79] flex items-center justify-center font-bold text-xs shrink-0">
-                                                <Calendar className="w-5 h-5" />
+                                            <div className="w-10 h-10 rounded-md bg-[#E8F2FA] text-[#123B5D] flex items-center justify-center font-bold text-xs shrink-0">
+                                                <Calendar className="w-5 h-5 text-[#1769AA]" />
                                             </div>
                                             <div>
-                                                <h4 className="text-sm font-semibold text-[#17212B]">
+                                                <h4 className="text-sm font-bold text-[#17202A]">
                                                     {session.title}
                                                 </h4>
-                                                <p className="text-xs text-[#737D86] mt-0.5">
+                                                <p className="text-xs text-[#718096] mt-0.5">
                                                     {session.extracurricular?.name} &bull; {session.session_date}
                                                 </p>
                                             </div>
@@ -141,29 +141,29 @@ export default function AdminDashboard({
                         action={
                             <Link
                                 href="/admin/audit-logs"
-                                className="text-xs font-semibold text-[#1F4E79] hover:text-[#173A5C]"
+                                className="text-xs font-bold text-[#1769AA] hover:text-[#0F4F82]"
                             >
                                 Log Lengkap &rarr;
                             </Link>
                         }
                     >
                         {recentLogs.length === 0 ? (
-                            <div className="text-center py-8 text-[#737D86] text-sm">
+                            <div className="text-center py-8 text-[#718096] text-sm">
                                 Belum ada catatan audit.
                             </div>
                         ) : (
-                            <div className="space-y-3">
+                            <div className="space-y-2.5">
                                 {recentLogs.map((log) => (
-                                    <div key={log.id} className="p-3 rounded-lg bg-[#F7F5F0] border border-[#D9DEE3] text-xs">
-                                        <div className="flex items-center justify-between font-semibold text-[#17212B]">
+                                    <div key={log.id} className="p-3 rounded-lg bg-[#F3F8FC] border border-[#D7E0E8] text-xs">
+                                        <div className="flex items-center justify-between font-bold text-[#17202A]">
                                             <span className="capitalize">{log.action.replace('_', ' ')}</span>
-                                            <span className="text-[10px] text-[#737D86] font-normal">
+                                            <span className="text-[10px] text-[#718096] font-normal">
                                                 {new Date(log.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
                                             </span>
                                         </div>
-                                        <div className="text-[#46515C] mt-1 flex items-center justify-between text-[11px]">
+                                        <div className="text-[#465362] mt-1 flex items-center justify-between text-[11px]">
                                             <span>Oleh: {log.user?.name || 'Sistem'}</span>
-                                            <span className="font-mono text-[#737D86]">{log.entity_type}</span>
+                                            <span className="font-mono text-[#718096]">{log.entity_type}</span>
                                         </div>
                                     </div>
                                 ))}

@@ -10,28 +10,28 @@ export default function StatCard({
 }) {
     const colorStyles = {
         primary: {
-            bg: 'bg-[#EAF2F8] text-[#1F4E79]',
-            border: 'border-l-3 border-l-[#1F4E79]',
+            bg: 'bg-[#E8F2FA] text-[#123B5D]',
+            border: 'border-l-4 border-l-[#1769AA]',
         },
         success: {
-            bg: 'bg-[#EBF5F0] text-[#287D5A]',
-            border: 'border-l-3 border-l-[#287D5A]',
+            bg: 'bg-[#EBF5F0] text-[#25805A]',
+            border: 'border-l-4 border-l-[#25805A]',
         },
         warning: {
             bg: 'bg-[#FEF8EC] text-[#B7791F]',
-            border: 'border-l-3 border-l-[#B7791F]',
+            border: 'border-l-4 border-l-[#B7791F]',
         },
         accent: {
-            bg: 'bg-[#FEF8EC] text-[#B7791F]',
-            border: 'border-l-3 border-l-[#B7791F]',
+            bg: 'bg-[#FEF8EC] text-[#D9901A]',
+            border: 'border-l-4 border-l-[#D9901A]',
         },
         danger: {
             bg: 'bg-[#FDF2F2] text-[#C24141]',
-            border: 'border-l-3 border-l-[#C24141]',
+            border: 'border-l-4 border-l-[#C24141]',
         },
         neutral: {
-            bg: 'bg-[#F7F5F0] text-[#46515C]',
-            border: 'border-l-3 border-l-[#737D86]',
+            bg: 'bg-[#F3F8FC] text-[#465362]',
+            border: 'border-l-4 border-l-[#718096]',
         },
     };
 
@@ -39,25 +39,25 @@ export default function StatCard({
 
     return (
         <div
-            className={`bg-white rounded-lg p-4 border border-[#D9DEE3] shadow-xs ${scheme.border} ${className}`}
+            className={`bg-white rounded-lg p-5 border border-[#D7E0E8] shadow-xs ${scheme.border} ${className}`}
         >
             <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-[#737D86] block truncate">
+                <div className="min-w-0 flex-1">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#718096] block truncate">
                         {title}
                     </span>
-                    <div className="text-2xl font-bold text-[#17212B] tracking-tight mt-1 truncate">
+                    <div className="text-2xl sm:text-3xl font-extrabold text-[#17202A] tracking-tight mt-2 truncate">
                         {value}
                     </div>
                     {subtitle && (
-                        <p className="mt-0.5 text-xs text-[#737D86] truncate">
+                        <p className="mt-1.5 text-xs text-[#718096] truncate">
                             {subtitle}
                         </p>
                     )}
                 </div>
                 {Icon && (
-                    <div className={`p-2 rounded-md shrink-0 ${scheme.bg}`}>
-                        <Icon className="w-4 h-4" />
+                    <div className={`p-2.5 rounded-lg shrink-0 ${scheme.bg}`}>
+                        <Icon className="w-5 h-5" />
                     </div>
                 )}
             </div>

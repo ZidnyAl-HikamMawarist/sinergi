@@ -7,38 +7,51 @@
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
-    /* SINERGI Brand Institutional Blue (#1F4E79) */
-    --color-primary-50: #f2f7fb;
-    --color-primary-100: #eaf2f8;
-    --color-primary-200: #cee0f0;
-    --color-primary-300: #a3c4e2;
-    --color-primary-400: #6ea2d0;
-    --color-primary-500: #3b7bb6;
-    --color-primary-600: #1f4e79;
-    --color-primary-700: #173a5c;
-    --color-primary-800: #132d47;
-    --color-primary-900: #0e1e30;
+    /* SINERGI Brand Institutional Colors */
+    --color-brand-navy: #123b5d;
+    --color-primary-blue: #1769aa;
+    --color-primary-hover: #0f4f82;
+    --color-blue-soft: #e8f2fa;
+    --color-blue-tint: #f3f8fc;
+    --color-page: #f6f8fb;
+    --color-surface: #ffffff;
 
     /* Semantic Neutral & Institutional Ink */
-    --color-ink: #17212b;
-    --color-body: #46515c;
-    --color-muted: #737d86;
-    --color-page: #f7f5f0;
-    --color-surface: #ffffff;
-    --color-line: #d9dee3;
+    --color-ink: #17202a;
+    --color-body: #465362;
+    --color-muted: #718096;
+    --color-border: #d7e0e8;
 
-    /* Semantic Status Colors (NO generic rainbow) */
+    /* Complementary Accent & Semantic Status */
+    --color-accent: #d9901a;
+    --color-success: #25805a;
+    --color-warning: #b7791f;
+    --color-danger: #c24141;
+
+    /* Primary color scale for Tailwind utilities */
+    --color-primary-50: #f3f8fc;
+    --color-primary-100: #e8f2fa;
+    --color-primary-200: #c7dfee;
+    --color-primary-300: #93c2df;
+    --color-primary-400: #559ecb;
+    --color-primary-500: #297eb8;
+    --color-primary-600: #1769aa;
+    --color-primary-700: #125184;
+    --color-primary-800: #0f4f82;
+    --color-primary-900: #123b5d;
+
+    /* Semantic Status Scales */
     --color-success-50: #ebf5f0;
     --color-success-100: #d6ebe1;
-    --color-success-500: #287d5a;
-    --color-success-600: #20674a;
-    --color-success-700: #18523a;
+    --color-success-500: #25805a;
+    --color-success-600: #1d6949;
+    --color-success-700: #175239;
 
     --color-warning-50: #fef8ec;
     --color-warning-100: #fdf0d5;
     --color-warning-500: #b7791f;
     --color-warning-600: #975f14;
-    --color-warning-700: #7b4c0e;
+    --color-warning-700: #7a4c0f;
 
     --color-danger-50: #fdf2f2;
     --color-danger-100: #fbe4e4;
@@ -47,20 +60,20 @@
     --color-danger-700: #882525;
 
     /* Restrained Institutional Shadows (NO glowing or colored shadows) */
-    --shadow-subtle: 0 1px 2px 0 rgba(23, 33, 43, 0.05);
-    --shadow-card: 0 1px 3px 0 rgba(23, 33, 43, 0.06), 0 1px 2px -1px rgba(23, 33, 43, 0.06);
-    --shadow-card-hover: 0 2px 6px 0 rgba(23, 33, 43, 0.08);
+    --shadow-subtle: 0 1px 2px 0 rgba(23, 32, 42, 0.05);
+    --shadow-card: 0 1px 3px 0 rgba(23, 32, 42, 0.06), 0 1px 2px -1px rgba(23, 32, 42, 0.06);
+    --shadow-card-hover: 0 2px 6px 0 rgba(23, 32, 42, 0.08);
 }
 
 :root {
     --card-bg: #ffffff;
-    --card-border: #d9dee3;
+    --card-border: #d7e0e8;
     --card-radius: 0.75rem;
 }
 
 body {
-    background-color: #f7f5f0;
-    color: #17212b;
+    background-color: #f6f8fb;
+    color: #17202a;
 }
 
 /* Functional scanner keyframes without flashy neon */

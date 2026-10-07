@@ -103,14 +103,14 @@ export default function Members({
                 );
             case 'wakil':
                 return (
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#EAF2F8] text-[#1F4E79] border border-[#1F4E79]/30">
-                        <ShieldCheck className="w-3.5 h-3.5 text-[#1F4E79]" />
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#E8F2FA] text-[#123B5D] border border-[#1769AA]/30">
+                        <ShieldCheck className="w-3.5 h-3.5 text-[#1769AA]" />
                         Wakil Ketua
                     </span>
                 );
             default:
                 return (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#F7F5F0] text-[#46515C] border border-[#D9DEE3]">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#F3F8FC] text-[#465362] border border-[#D7E0E8]">
                         Anggota
                     </span>
                 );
@@ -140,17 +140,17 @@ export default function Members({
             <Head title="Anggota Eskul — SINERGI" />
 
             {/* Eskul Selector Filter Bar */}
-            <Card className="mb-6 border-[#D9DEE3] bg-white">
+            <Card className="mb-6 border-[#D7E0E8] bg-white">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex items-center space-x-3">
-                        <div className="p-2.5 bg-[#1F4E79] text-white rounded-md shrink-0">
+                        <div className="p-2.5 bg-[#123B5D] text-white rounded-md shrink-0 shadow-xs">
                             <Building2 className="w-5 h-5" />
                         </div>
                         <div>
-                            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#1F4E79]">
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-[#123B5D]">
                                 Ekstrakurikuler Dikelola
                             </span>
-                            <h3 className="text-base font-bold text-[#17212B]">
+                            <h3 className="text-base font-bold text-[#17202A]">
                                 {selectedEskul ? selectedEskul.name : 'Pilih Ekstrakurikuler'}
                             </h3>
                         </div>
@@ -158,13 +158,13 @@ export default function Members({
 
                     {myEskuls.length > 1 && (
                         <div className="flex items-center space-x-2">
-                            <label className="text-xs font-semibold text-[#737D86] whitespace-nowrap">
+                            <label className="text-xs font-bold text-[#718096] whitespace-nowrap">
                                 Ganti Eskul:
                             </label>
                             <select
                                 value={selectedEskulId || ''}
                                 onChange={handleEskulChange}
-                                className="text-xs font-semibold rounded-md border border-[#D9DEE3] bg-white focus:border-[#1F4E79] py-1.5 px-3 text-[#17212B]"
+                                className="text-xs font-semibold rounded-md border border-[#D7E0E8] bg-white focus:border-[#1769AA] focus:ring-1 focus:ring-[#1769AA] py-1.5 px-3 text-[#17202A]"
                             >
                                 {myEskuls.map((eskul) => (
                                     <option key={eskul.id} value={eskul.id}>
@@ -212,25 +212,25 @@ export default function Members({
                 accentColor="primary"
                 actions={
                     <div className="relative w-64">
-                        <Search className="w-4 h-4 text-[#737D86] absolute left-3 top-1/2 -translate-y-1/2" />
+                        <Search className="w-4 h-4 text-[#718096] absolute left-3 top-1/2 -translate-y-1/2" />
                         <input
                             type="text"
                             placeholder="Cari nama, NISN, atau kelas..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-md border border-[#D9DEE3] focus:outline-none focus:border-[#1F4E79] bg-white text-[#17212B]"
+                            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-md border border-[#D7E0E8] focus:outline-none focus:border-[#1769AA] focus:ring-1 focus:ring-[#1769AA] bg-white text-[#17202A]"
                         />
                     </div>
                 }
             >
                 {filteredMembers.length === 0 ? (
-                    <div className="text-center py-12 text-[#737D86] text-sm">
+                    <div className="text-center py-12 text-[#718096] text-sm">
                         {search ? 'Tidak ada anggota yang cocok dengan pencarian.' : 'Belum ada anggota di ekstrakurikuler ini.'}
                     </div>
                 ) : (
                     <div className="overflow-x-auto -mx-5">
-                        <table className="w-full text-left text-xs text-[#46515C]">
-                            <thead className="bg-[#F7F5F0] text-[#46515C] font-semibold border-y border-[#D9DEE3] uppercase tracking-wider text-[11px]">
+                        <table className="w-full text-left text-xs text-[#465362]">
+                            <thead className="bg-[#F3F8FC] text-[#718096] font-bold border-y border-[#D7E0E8] uppercase tracking-wider text-[11px]">
                                 <tr>
                                     <th className="px-5 py-3 w-12 text-center">No</th>
                                     <th className="px-5 py-3">Nama Anggota & Email</th>
@@ -241,33 +241,33 @@ export default function Members({
                                     <th className="px-5 py-3 text-right">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-[#D9DEE3]">
+                            <tbody className="divide-y divide-[#D7E0E8]">
                                 {filteredMembers.map((member, index) => {
                                     const className = member.user?.enrollments?.[0]?.school_class?.name || '-';
                                     const isLead = member.position === 'ketua' || member.position === 'wakil';
                                     return (
-                                        <tr key={member.id} className="hover:bg-[#F7F5F0]/60 transition-colors">
-                                            <td className="px-5 py-3.5 text-center font-medium text-[#737D86]">
+                                        <tr key={member.id} className="hover:bg-[#F6F8FB] transition-colors">
+                                            <td className="px-5 py-3.5 text-center font-medium text-[#718096]">
                                                 {index + 1}
                                             </td>
                                             <td className="px-5 py-3.5">
-                                                <div className="font-semibold text-[#17212B] flex items-center gap-1.5">
+                                                <div className="font-bold text-[#17202A] flex items-center gap-1.5">
                                                     {member.user?.name}
                                                 </div>
-                                                <div className="text-[#737D86] text-[11px]">
+                                                <div className="text-[#718096] text-[11px]">
                                                     {member.user?.email || '-'}
                                                 </div>
                                             </td>
-                                            <td className="px-5 py-3.5 font-mono text-[#737D86]">
+                                            <td className="px-5 py-3.5 font-mono text-[#718096]">
                                                 {member.user?.nisn || '-'}
                                             </td>
-                                            <td className="px-5 py-3.5 font-semibold text-[#1F4E79]">
+                                            <td className="px-5 py-3.5 font-bold text-[#1769AA]">
                                                 {className}
                                             </td>
                                             <td className="px-5 py-3.5">
                                                 {getPositionBadge(member.position)}
                                             </td>
-                                            <td className="px-5 py-3.5 text-[#737D86] whitespace-nowrap">
+                                            <td className="px-5 py-3.5 text-[#718096] whitespace-nowrap">
                                                 {member.joined_at ? new Date(member.joined_at).toLocaleDateString('id-ID', {
                                                     day: 'numeric',
                                                     month: 'short',
@@ -278,7 +278,7 @@ export default function Members({
                                                 <button
                                                     type="button"
                                                     onClick={() => handleOpenDelete(member)}
-                                                    className="inline-flex items-center text-xs font-semibold text-[#C24141] hover:text-[#992222] hover:bg-[#FDF2F2] px-2 py-1 rounded-md transition-colors"
+                                                    className="inline-flex items-center text-xs font-semibold text-[#C24141] hover:text-[#A53232] hover:bg-[#FDF2F2] px-2 py-1 rounded-md transition-colors"
                                                     title="Nonaktifkan anggota"
                                                 >
                                                     <UserMinus className="w-3.5 h-3.5 mr-1" />
@@ -309,7 +309,7 @@ export default function Members({
                         <select
                             value={addData.user_id}
                             onChange={(e) => setAddData('user_id', e.target.value)}
-                            className="w-full text-xs rounded-md border border-[#D9DEE3] focus:border-[#1F4E79] py-2 px-3 text-[#17212B] bg-white"
+                            className="w-full text-xs rounded-md border border-[#D7E0E8] focus:border-[#1769AA] focus:ring-1 focus:ring-[#1769AA] py-2 px-3 text-[#17202A] bg-white"
                             required
                         >
                             <option value="">-- Pilih Siswa Sekolah --</option>
@@ -325,13 +325,13 @@ export default function Members({
                     </div>
 
                     <div>
-                        <label className="block text-xs font-semibold text-[#46515C] uppercase tracking-wider mb-1">
+                        <label className="block text-xs font-bold text-[#465362] uppercase tracking-wider mb-1">
                             Jabatan Organisasi
                         </label>
                         <select
                             value={addData.position}
                             onChange={(e) => setAddData('position', e.target.value)}
-                            className="w-full text-xs rounded-md border border-[#D9DEE3] focus:border-[#1F4E79] py-2 px-3 text-[#17212B] bg-white"
+                            className="w-full text-xs rounded-md border border-[#D7E0E8] focus:border-[#1769AA] focus:ring-1 focus:ring-[#1769AA] py-2 px-3 text-[#17202A] bg-white"
                             required
                         >
                             <option value="anggota">Anggota Biasa</option>
@@ -343,7 +343,7 @@ export default function Members({
                         )}
                     </div>
 
-                    <div className="flex justify-end gap-2 pt-3 border-t border-[#D9DEE3]">
+                    <div className="flex justify-end gap-2 pt-3 border-t border-[#D7E0E8]">
                         <Button
                             type="button"
                             variant="secondary"

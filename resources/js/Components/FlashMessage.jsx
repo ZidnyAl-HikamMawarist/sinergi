@@ -17,15 +17,15 @@ export default function FlashMessage() {
     return (
         <div className="mb-5 space-y-2">
             {flash.success && (
-                <div className="flex items-center justify-between p-3.5 rounded-lg bg-[#EBF5F0] border border-[#287D5A]/30 text-[#287D5A] shadow-xs">
+                <div className="flex items-center justify-between p-3.5 rounded-lg bg-[#EBF5F0] border border-[#25805A]/30 text-[#25805A] shadow-xs">
                     <div className="flex items-center space-x-2.5">
-                        <CheckCircle2 className="w-4 h-4 text-[#287D5A] shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-[#25805A] shrink-0" />
                         <span className="text-xs font-semibold">{flash.success}</span>
                     </div>
                     <button
                         type="button"
                         onClick={() => setDismissed(true)}
-                        className="text-[#287D5A] hover:opacity-75 p-0.5 rounded-md"
+                        className="text-[#25805A] hover:opacity-75 p-0.5 rounded-md"
                         aria-label="Tutup"
                     >
                         <X className="w-4 h-4" />

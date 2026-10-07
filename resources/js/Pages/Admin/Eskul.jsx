@@ -102,7 +102,7 @@ export default function Eskul({
                 {/* List of Eskuls */}
                 <div className="lg:col-span-1 space-y-3">
                     <div className="flex items-center justify-between px-1">
-                        <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                        <span className="text-xs font-bold uppercase tracking-wider text-[#718096]">
                             Daftar Eskul ({eskuls.length})
                         </span>
                     </div>
@@ -116,8 +116,8 @@ export default function Eskul({
                                     onClick={() => handleSelectEskul(eskul.uuid)}
                                     className={`p-4 rounded-lg border transition-all cursor-pointer ${
                                         isSelected
-                                            ? 'bg-[#EAF2F8] border-[#1F4E79] shadow-xs'
-                                            : 'bg-white border-[#D9DEE3] hover:border-[#1F4E79]/40 hover:bg-[#F7F5F0]/50'
+                                            ? 'bg-[#E8F2FA] border-[#1769AA] shadow-xs'
+                                            : 'bg-white border-[#D7E0E8] hover:border-[#1769AA]/40 hover:bg-[#F3F8FC]'
                                     }`}
                                 >
                                     <div className="flex items-start justify-between">
@@ -125,15 +125,15 @@ export default function Eskul({
                                             <div
                                                 className={`w-10 h-10 rounded-md flex items-center justify-center font-bold text-sm ${
                                                     isSelected
-                                                        ? 'bg-[#1F4E79] text-white'
-                                                        : 'bg-[#F7F5F0] text-[#46515C]'
+                                                        ? 'bg-[#123B5D] text-white'
+                                                        : 'bg-[#F3F8FC] text-[#465362]'
                                                 }`}
                                             >
                                                 <Building2 className="w-5 h-5" />
                                             </div>
                                             <div>
-                                                <h3 className="font-semibold text-sm text-[#17212B]">{eskul.name}</h3>
-                                                <p className="text-xs text-[#737D86] line-clamp-1">
+                                                <h3 className="font-bold text-sm text-[#17202A]">{eskul.name}</h3>
+                                                <p className="text-xs text-[#718096] line-clamp-1">
                                                     {eskul.description || 'Tidak ada deskripsi'}
                                                 </p>
                                             </div>
@@ -143,13 +143,13 @@ export default function Eskul({
                                         </Badge>
                                     </div>
 
-                                    <div className="mt-3 pt-3 border-t border-[#D9DEE3] flex items-center justify-between text-xs text-[#737D86]">
+                                    <div className="mt-3 pt-3 border-t border-[#D7E0E8] flex items-center justify-between text-xs text-[#718096]">
                                         <span className="flex items-center gap-1 font-medium">
-                                            <Users className="w-3.5 h-3.5 text-[#1F4E79]" />
+                                            <Users className="w-3.5 h-3.5 text-[#1769AA]" />
                                             {eskul.members_count ?? 0} Anggota
                                         </span>
                                         <span className="flex items-center gap-1 font-medium">
-                                            <Calendar className="w-3.5 h-3.5 text-[#1F4E79]" />
+                                            <Calendar className="w-3.5 h-3.5 text-[#1769AA]" />
                                             {eskul.activity_sessions_count ?? 0} Sesi
                                         </span>
                                     </div>
@@ -163,11 +163,11 @@ export default function Eskul({
                 <div className="lg:col-span-2">
                     {selectedEskul ? (
                         <div className="space-y-6">
-                            <Card className="border-l-4 border-l-[#1F4E79]">
+                            <Card className="border-l-4 border-l-[#1769AA] border-[#D7E0E8]">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                     <div>
                                         <div className="flex items-center space-x-2">
-                                            <h2 className="text-xl font-bold text-[#17212B]">
+                                            <h2 className="text-xl font-bold text-[#17202A]">
                                                 {selectedEskul.name}
                                             </h2>
                                             <Badge variant={selectedEskul.status === 'aktif' ? 'success' : 'neutral'}>
@@ -191,13 +191,13 @@ export default function Eskul({
                             </Card>
 
                             {/* Members Table */}
-                            <Card padding={false} className="overflow-hidden">
-                                <div className="p-4 sm:p-5 border-b border-[#D9DEE3] flex items-center justify-between">
+                            <Card padding={false} className="overflow-hidden border-[#D7E0E8]">
+                                <div className="p-4 sm:p-5 border-b border-[#D7E0E8] flex items-center justify-between">
                                     <div>
-                                        <h3 className="text-base font-semibold text-[#17212B]">
+                                        <h3 className="text-base font-bold text-[#17202A]">
                                             Daftar Anggota Aktif ({members.length})
                                         </h3>
-                                        <p className="text-xs text-[#737D86]">
+                                        <p className="text-xs text-[#718096]">
                                             Tahun Ajaran aktif yang sedang berjalan
                                         </p>
                                     </div>
@@ -205,9 +205,9 @@ export default function Eskul({
 
                                 {members.length === 0 ? (
                                     <div className="p-12 text-center">
-                                        <Users className="w-12 h-12 text-[#737D86] mx-auto mb-3" />
-                                        <h4 className="text-sm font-semibold text-[#17212B]">Belum Ada Anggota</h4>
-                                        <p className="text-xs text-[#737D86] mt-1 max-w-sm mx-auto">
+                                        <Users className="w-12 h-12 text-[#718096] mx-auto mb-3" />
+                                        <h4 className="text-sm font-bold text-[#17202A]">Belum Ada Anggota</h4>
+                                        <p className="text-xs text-[#718096] mt-1 max-w-sm mx-auto">
                                             Klik tombol "Tambah Anggota" di atas untuk mendaftarkan siswa ke dalam eskul ini.
                                         </p>
                                     </div>
@@ -215,7 +215,7 @@ export default function Eskul({
                                     <div className="overflow-x-auto">
                                         <table className="w-full text-left border-collapse text-xs sm:text-sm">
                                             <thead>
-                                                <tr className="bg-[#F7F5F0] border-b border-[#D9DEE3] text-[#46515C] font-semibold uppercase tracking-wider text-[11px]">
+                                                <tr className="bg-[#F3F8FC] border-b border-[#D7E0E8] text-[#718096] font-bold uppercase tracking-wider text-[11px]">
                                                     <th className="py-3 px-4">Nama Siswa</th>
                                                     <th className="py-3 px-4">NISN</th>
                                                     <th className="py-3 px-4">Kelas</th>
@@ -224,16 +224,16 @@ export default function Eskul({
                                                     <th className="py-3 px-4 text-right">Aksi</th>
                                                 </tr>
                                             </thead>
-                                            <tbody className="divide-y divide-[#D9DEE3]">
+                                            <tbody className="divide-y divide-[#D7E0E8]">
                                                 {members.map((member) => (
-                                                    <tr key={member.id} className="hover:bg-[#F7F5F0]/60 transition-colors">
-                                                        <td className="py-3.5 px-4 font-semibold text-[#17212B]">
+                                                    <tr key={member.id} className="hover:bg-[#F6F8FB] transition-colors">
+                                                        <td className="py-3.5 px-4 font-bold text-[#17202A]">
                                                             {member.user?.name}
                                                         </td>
-                                                        <td className="py-3.5 px-4 font-mono text-[#737D86] text-xs">
+                                                        <td className="py-3.5 px-4 font-mono text-[#718096] text-xs">
                                                             {member.user?.nisn || '-'}
                                                         </td>
-                                                        <td className="py-3.5 px-4 text-[#46515C]">
+                                                        <td className="py-3.5 px-4 text-[#465362]">
                                                             {member.user?.student_profile?.class_room?.name || '-'}
                                                         </td>
                                                         <td className="py-3.5 px-4">
@@ -241,14 +241,14 @@ export default function Eskul({
                                                                 {member.position || 'Anggota'}
                                                             </Badge>
                                                         </td>
-                                                        <td className="py-3.5 px-4 text-[#737D86] text-xs">
+                                                        <td className="py-3.5 px-4 text-[#718096] text-xs">
                                                             {member.joined_at ? new Date(member.joined_at).toLocaleDateString('id-ID') : '-'}
                                                         </td>
                                                         <td className="py-3.5 px-4 text-right">
                                                             <button
                                                                 type="button"
                                                                 onClick={() => handleRemoveMember(member.id)}
-                                                                className="text-xs text-[#C24141] hover:text-[#992222] font-semibold px-2 py-0.5 hover:bg-[#FDF2F2] rounded transition-colors"
+                                                                className="text-xs text-[#C24141] hover:text-[#A53232] font-semibold px-2 py-0.5 hover:bg-[#FDF2F2] rounded transition-colors"
                                                                 title="Nonaktifkan Anggota"
                                                             >
                                                                 Keluarkan
@@ -264,9 +264,9 @@ export default function Eskul({
                         </div>
                     ) : (
                         <Card className="text-center py-12">
-                            <Building2 className="w-12 h-12 text-[#737D86] mx-auto mb-3" />
-                            <h3 className="text-base font-semibold text-[#17212B]">Pilih Ekstrakurikuler</h3>
-                            <p className="text-xs text-[#737D86] mt-1">Pilih eskul dari menu sebelah kiri untuk melihat detail.</p>
+                            <Building2 className="w-12 h-12 text-[#718096] mx-auto mb-3" />
+                            <h3 className="text-base font-bold text-[#17202A]">Pilih Ekstrakurikuler</h3>
+                            <p className="text-xs text-[#718096] mt-1">Pilih eskul dari menu sebelah kiri untuk melihat detail.</p>
                         </Card>
                     )}
                 </div>
@@ -289,7 +289,7 @@ export default function Eskul({
                     />
 
                     <div>
-                        <label className="text-xs font-semibold text-[#46515C] uppercase tracking-wider block mb-1">
+                        <label className="text-xs font-bold text-[#46515C] uppercase tracking-wider block mb-1">
                             Deskripsi Singkat
                         </label>
                         <textarea
@@ -297,11 +297,11 @@ export default function Eskul({
                             placeholder="Deskripsi kegiatan atau profil eskul..."
                             value={createForm.data.description}
                             onChange={(e) => createForm.setData('description', e.target.value)}
-                            className="w-full text-sm rounded-md border border-[#D9DEE3] px-3 py-2 focus:border-[#1F4E79] focus:outline-none bg-white text-[#17212B]"
+                            className="w-full text-sm rounded-md border border-[#D7E0E8] px-3 py-2 focus:border-[#1769AA] focus:ring-1 focus:ring-[#1769AA] focus:outline-none bg-white text-[#17202A]"
                         ></textarea>
                     </div>
 
-                    <div className="flex justify-end space-x-2 pt-2 border-t border-[#D9DEE3]">
+                    <div className="flex justify-end space-x-2 pt-2 border-t border-[#D7E0E8]">
                         <Button
                             type="button"
                             variant="secondary"
@@ -328,24 +328,24 @@ export default function Eskul({
             >
                 <form onSubmit={handleAddMemberSubmit} className="space-y-4">
                     <div>
-                        <label className="text-xs font-semibold text-[#46515C] uppercase tracking-wider block mb-1">
+                        <label className="text-xs font-bold text-[#46515C] uppercase tracking-wider block mb-1">
                             Pilih Siswa
                         </label>
                         <div className="relative mb-2">
-                            <Search className="w-4 h-4 absolute left-3 top-3 text-[#737D86]" />
+                            <Search className="w-4 h-4 absolute left-3 top-3 text-[#718096]" />
                             <input
                                 type="text"
                                 placeholder="Cari nama atau NISN siswa..."
                                 value={searchStudent}
                                 onChange={(e) => setSearchStudent(e.target.value)}
-                                className="w-full pl-9 pr-3 py-2 text-xs border border-[#D9DEE3] rounded-md focus:border-[#1F4E79] focus:outline-none bg-white text-[#17212B]"
+                                className="w-full pl-9 pr-3 py-2 text-xs border border-[#D7E0E8] rounded-md focus:border-[#1769AA] focus:ring-1 focus:ring-[#1769AA] focus:outline-none bg-white text-[#17202A]"
                             />
                         </div>
 
                         <select
                             value={addMemberForm.data.user_id}
                             onChange={(e) => addMemberForm.setData('user_id', e.target.value)}
-                            className="w-full text-xs border border-[#D9DEE3] rounded-md px-3 py-2 focus:border-[#1F4E79] focus:outline-none bg-white text-[#17212B]"
+                            className="w-full text-xs border border-[#D7E0E8] rounded-md px-3 py-2 focus:border-[#1769AA] focus:ring-1 focus:ring-[#1769AA] focus:outline-none bg-white text-[#17202A]"
                             required
                         >
                             <option value="">-- Pilih Siswa ({filteredStudents.length} tersedia) --</option>
@@ -361,7 +361,7 @@ export default function Eskul({
                     </div>
 
                     <div>
-                        <label className="text-xs font-semibold text-[#46515C] uppercase tracking-wider block mb-1">
+                        <label className="text-xs font-bold text-[#46515C] uppercase tracking-wider block mb-1">
                             Jabatan / Peran
                         </label>
                         <input
@@ -369,11 +369,11 @@ export default function Eskul({
                             placeholder="Contoh: Anggota, Ketua, Sekretaris"
                             value={addMemberForm.data.position}
                             onChange={(e) => addMemberForm.setData('position', e.target.value)}
-                            className="w-full text-xs border border-[#D9DEE3] rounded-md px-3 py-2 focus:border-[#1F4E79] focus:outline-none bg-white text-[#17212B]"
+                            className="w-full text-xs border border-[#D7E0E8] rounded-md px-3 py-2 focus:border-[#1769AA] focus:ring-1 focus:ring-[#1769AA] focus:outline-none bg-white text-[#17202A]"
                         />
                     </div>
 
-                    <div className="flex justify-end space-x-2 pt-2 border-t border-[#D9DEE3]">
+                    <div className="flex justify-end space-x-2 pt-2 border-t border-[#D7E0E8]">
                         <Button
                             type="button"
                             variant="secondary"
