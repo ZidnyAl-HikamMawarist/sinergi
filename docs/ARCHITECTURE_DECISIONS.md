@@ -18,8 +18,16 @@
 - **Decision:** No update or destroy endpoints exist for `cash_transactions`. Edits are strictly forbidden. Corrections occur exclusively through a `void` transition requiring `void_reason`, recording `voided_by` and `voided_at`, followed by a new transaction if necessary. Current balance is always calculated server-side.
 - **Consequences:** Provides full financial accountability and audit trail.
 
-## ADR 004: Academic Year Scoping
+## ADR 005: Attendance Check-in Architecture — Gatekeeper Model with Multi-Device Concurrency
 - **Status:** Accepted
-- **Context:** Students, classes, extracurricular memberships, and roles must be cleanly compartmentalized across school years without destroying historical data upon promotion or graduation.
-- **Decision:** `academic_years` table maintains one active year (`is_active = true`). All scoped tables (`student_enrollments`, `role_user`, `extracurricular_members`, `activity_sessions`, `cash_transactions`) include `academic_year_id`.
-- **Consequences:** Historical attendances and cash books remain preserved and queryable by year.
+- **Context:** Deciding between *Model A (Gatekeeper/Officer scans Student QR)* vs *Model B (Students scan Single Session QR on Screen/Projector)*.
+- **Decision:** Implement **Model A (Gatekeeper/Kiosk)**:
+  1. Students present their personal dynamic ID QR on their smartphone portal.
+  2. Officers (Ketua/Wakil/Seksi Presensi) scan the QR using the `/eskul/scanner` interface.
+  3. Support multi-device concurrent scanning: multiple officers can scan concurrently for the same session without race conditions or duplicate entries (backed by database atomic locking & uniqueness constraints).
+  4. Provide instant "Presensi Manual" modal directly in the scanner interface for students with depleted batteries or broken screens.
+- **Consequences:**
+  - Guarantees physical presence verification (eliminates fraud from forwarding session QR pictures via WhatsApp).
+  - Works even when student mobile data/internet quota is depleted (only the officer's device requires active connection).
+  - Zero queue bottleneck when scaling: 50–100+ members can be routed through multiple parallel officer checkpoints (Gate 1, Gate 2).
+
