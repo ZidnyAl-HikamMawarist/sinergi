@@ -21,7 +21,7 @@ class EskulDashboardController extends Controller
         // Determine accessible extracurriculars for the user
         $eskulQuery = Extracurricular::where('status', 'aktif');
 
-        if (!$user->isSuperAdmin() && !$user->isAdmin($yearId)) {
+        if (! $user->isSuperAdmin() && ! $user->isAdmin($yearId)) {
             $userEskulIds = $user->roles()
                 ->where('roles.name', 'pengurus_eskul')
                 ->wherePivot('academic_year_id', $yearId)

@@ -9,6 +9,7 @@ use App\Models\CashCategory;
 use App\Models\CashTransaction;
 use App\Models\Extracurricular;
 use App\Models\ExtracurricularMember;
+use App\Models\ImportBatch;
 use App\Models\Role;
 use App\Models\User;
 use App\Services\QrTokenService;
@@ -24,15 +25,25 @@ class RedTeamAbuseTest extends TestCase
     use RefreshDatabase;
 
     protected AcademicYear $academicYear;
+
     protected Role $siswaRole;
+
     protected Role $pengurusRole;
+
     protected Role $bendaharaRole;
+
     protected Role $adminRole;
+
     protected Extracurricular $eskulA;
+
     protected Extracurricular $eskulB;
+
     protected User $pengurusA;
+
     protected User $studentA;
+
     protected User $studentB;
+
     protected User $admin;
 
     protected function setUp(): void
@@ -364,9 +375,9 @@ class RedTeamAbuseTest extends TestCase
     public function test_unbounded_csv_rows_exceeding_safe_limit_are_rejected(): void
     {
         // Generate CSV with 2,005 rows
-        $lines = ["nisn,nama,kelas"];
+        $lines = ['nisn,nama,kelas'];
         for ($i = 1; $i <= 2005; $i++) {
-            $lines[] = "999" . str_pad($i, 7, '0', STR_PAD_LEFT) . ",Siswa {$i},X RPL 1";
+            $lines[] = '999'.str_pad($i, 7, '0', STR_PAD_LEFT).",Siswa {$i},X RPL 1";
         }
         $csvContent = implode("\n", $lines);
         $file = UploadedFile::fake()->createWithContent('huge_students.csv', $csvContent);
@@ -423,7 +434,7 @@ class RedTeamAbuseTest extends TestCase
      */
     public function test_concurrent_double_commit_prevention(): void
     {
-        $batch = \App\Models\ImportBatch::create([
+        $batch = ImportBatch::create([
             'academic_year_id' => $this->academicYear->id,
             'uploaded_by' => $this->admin->id,
             'filename' => 'batch_double.csv',

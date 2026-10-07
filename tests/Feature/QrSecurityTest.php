@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\AcademicYear;
 use App\Models\ActivitySession;
-use App\Models\Attendance;
 use App\Models\Extracurricular;
 use App\Models\ExtracurricularMember;
 use App\Models\Role;
@@ -19,12 +18,19 @@ class QrSecurityTest extends TestCase
     use RefreshDatabase;
 
     protected AcademicYear $year;
+
     protected Extracurricular $eskulA;
+
     protected Extracurricular $eskulB;
+
     protected User $pengurusA;
+
     protected User $pengurusB;
+
     protected User $studentA;
+
     protected User $studentNonMember;
+
     protected QrTokenService $tokenService;
 
     protected function setUp(): void

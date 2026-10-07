@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\AcademicYear;
 use App\Models\ImportBatch;
+use App\Models\SchoolClass;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -84,12 +84,12 @@ class StudentImportTest extends TestCase
 
         $this->actingAs($admin)->post("/admin/import/{$batch->uuid}/commit");
 
-        $class12 = \App\Models\SchoolClass::where('name', 'XII RPL 1')->first();
+        $class12 = SchoolClass::where('name', 'XII RPL 1')->first();
         $this->assertNotNull($class12);
         $this->assertEquals(12, $class12->grade_level);
         $this->assertEquals('RPL', $class12->major);
 
-        $class11 = \App\Models\SchoolClass::where('name', 'XI-TKJ-2')->first();
+        $class11 = SchoolClass::where('name', 'XI-TKJ-2')->first();
         $this->assertNotNull($class11);
         $this->assertEquals(11, $class11->grade_level);
         $this->assertEquals('TKJ', $class11->major);

@@ -18,8 +18,11 @@ class CashIntegrityTest extends TestCase
     use RefreshDatabase;
 
     protected AcademicYear $year;
+
     protected User $bendahara;
+
     protected CashCategory $catMasuk;
+
     protected CashCategory $catKeluar;
 
     protected function setUp(): void

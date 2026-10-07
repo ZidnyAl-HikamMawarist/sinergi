@@ -33,11 +33,11 @@ class AuditLog extends Model
     protected static function booted(): void
     {
         static::updating(function () {
-            throw new RuntimeException("Audit log bersifat append-only dan tidak dapat diubah.");
+            throw new RuntimeException('Audit log bersifat append-only dan tidak dapat diubah.');
         });
 
         static::deleting(function () {
-            throw new RuntimeException("Audit log tidak dapat dihapus.");
+            throw new RuntimeException('Audit log tidak dapat dihapus.');
         });
     }
 

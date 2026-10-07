@@ -17,8 +17,11 @@ class AttendanceRecapTest extends TestCase
     use RefreshDatabase;
 
     protected User $pengurus;
+
     protected User $student;
+
     protected Extracurricular $eskul;
+
     protected AcademicYear $year;
 
     protected function setUp(): void

@@ -11,14 +11,12 @@ class CheckRole
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  string  ...$roles
      */
     public function handle(Request $request, Closure $next, string ...$roles): Response
     {
         $user = $request->user();
 
-        if (!$user) {
+        if (! $user) {
             return redirect()->route('login');
         }
 
@@ -26,6 +24,7 @@ class CheckRole
             auth()->logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
+
             return redirect()->route('login')->withErrors(['login' => 'Akun Anda tidak aktif. Hubungi administrator sekolah.']);
         }
 

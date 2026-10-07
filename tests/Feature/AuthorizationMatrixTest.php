@@ -16,10 +16,15 @@ class AuthorizationMatrixTest extends TestCase
     use RefreshDatabase;
 
     protected AcademicYear $year;
+
     protected Extracurricular $eskulA;
+
     protected Extracurricular $eskulB;
+
     protected User $pengurusA;
+
     protected User $studentA;
+
     protected User $studentB;
 
     protected function setUp(): void

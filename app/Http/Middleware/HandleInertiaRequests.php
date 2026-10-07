@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -21,7 +22,7 @@ class HandleInertiaRequests extends Middleware
         $activeYear = null;
 
         try {
-            if (\Illuminate\Support\Facades\Schema::hasTable('academic_years')) {
+            if (Schema::hasTable('academic_years')) {
                 $activeYear = AcademicYear::active();
             }
         } catch (\Throwable $e) {

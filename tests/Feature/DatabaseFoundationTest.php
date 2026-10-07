@@ -3,13 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\AcademicYear;
-use App\Models\AppSetting;
-use App\Models\Attendance;
 use App\Models\CashCategory;
 use App\Models\CashTransaction;
-use App\Models\Extracurricular;
-use App\Models\Role;
-use App\Models\SchoolClass;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use RuntimeException;

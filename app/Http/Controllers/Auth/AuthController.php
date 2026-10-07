@@ -52,7 +52,7 @@ class AuthController extends Controller
             ->orWhere('nisn', $identifier)
             ->first();
 
-        if (!$user || !Hash::check($request->input('password'), $user->password)) {
+        if (! $user || ! Hash::check($request->input('password'), $user->password)) {
             RateLimiter::hit($throttleKey, 600);
             throw ValidationException::withMessages([
                 'identifier' => 'Kredensial yang diberikan tidak cocok dengan data kami.',
@@ -116,7 +116,7 @@ class AuthController extends Controller
         ];
 
         // VULN-03: If user already changed their initial password, require current password
-        if (!$user->must_change_password) {
+        if (! $user->must_change_password) {
             $rules['current_password'] = ['required', 'current_password'];
         }
 

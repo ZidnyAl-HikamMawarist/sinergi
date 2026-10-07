@@ -7,8 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class AppSetting extends Model
 {
     protected $primaryKey = 'key';
+
     public $incrementing = false;
+
     protected $keyType = 'string';
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -21,6 +24,7 @@ class AppSetting extends Model
     public static function get(string $key, $default = null)
     {
         $setting = static::find($key);
+
         return $setting ? $setting->value : $default;
     }
 

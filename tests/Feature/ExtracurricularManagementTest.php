@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\AcademicYear;
-use App\Models\AuditLog;
 use App\Models\Extracurricular;
 use App\Models\ExtracurricularMember;
 use App\Models\Role;
@@ -16,7 +15,9 @@ class ExtracurricularManagementTest extends TestCase
     use RefreshDatabase;
 
     protected User $admin;
+
     protected User $student;
+
     protected AcademicYear $year;
 
     protected function setUp(): void

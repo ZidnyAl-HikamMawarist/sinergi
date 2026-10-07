@@ -53,7 +53,7 @@ class CashTransaction extends Model
             $allowedFields = ['status', 'void_reason', 'voided_by', 'voided_at', 'updated_at'];
 
             foreach (array_keys($dirty) as $field) {
-                if (!in_array($field, $allowedFields)) {
+                if (! in_array($field, $allowedFields)) {
                     throw new RuntimeException("Transaksi kas bersifat immutable. Kolom '{$field}' tidak dapat diubah.");
                 }
             }
@@ -61,14 +61,14 @@ class CashTransaction extends Model
             // Only transition from valid to void is allowed
             if ($tx->isDirty('status')) {
                 if ($tx->getOriginal('status') !== 'valid' || $tx->status !== 'void') {
-                    throw new RuntimeException("Transisi status hanya diperbolehkan dari valid ke void.");
+                    throw new RuntimeException('Transisi status hanya diperbolehkan dari valid ke void.');
                 }
             }
         });
 
         // Forbid deletion completely: PRD AC-E2
         static::deleting(function () {
-            throw new RuntimeException("Transaksi kas tidak boleh dihapus. Gunakan prosedur void.");
+            throw new RuntimeException('Transaksi kas tidak boleh dihapus. Gunakan prosedur void.');
         });
     }
 

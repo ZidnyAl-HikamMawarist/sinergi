@@ -13,6 +13,8 @@ use App\Models\QrTokenUse;
 use App\Models\User;
 use App\Services\QrTokenService;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -37,7 +39,7 @@ class AttendanceController extends Controller
             ->where('status', 'dibuka')
             ->when($yearId, fn ($q) => $q->where('academic_year_id', $yearId));
 
-        if (!$user->isSuperAdmin() && !$user->isAdmin($yearId)) {
+        if (! $user->isSuperAdmin() && ! $user->isAdmin($yearId)) {
             $userEskulIds = $user->roles()
                 ->where('roles.name', 'pengurus_eskul')
                 ->wherePivot('academic_year_id', $yearId)
@@ -96,7 +98,7 @@ class AttendanceController extends Controller
             ->where('uuid', $request->input('session_uuid'))
             ->first();
 
-        if (!$session) {
+        if (! $session) {
             return response()->json(['success' => false, 'message' => 'Sesi kegiatan tidak ditemukan.'], 404);
         }
 
@@ -106,13 +108,13 @@ class AttendanceController extends Controller
         }
 
         // Verify scanner authorization
-        if (!$user->canManageExtracurricular($session->extracurricular_id, $session->academic_year_id)) {
+        if (! $user->canManageExtracurricular($session->extracurricular_id, $session->academic_year_id)) {
             return response()->json(['success' => false, 'message' => 'Anda tidak memiliki hak akses memindai untuk eskul ini.'], 403);
         }
 
         // Validate cryptographic QR token (AC-D1, AC-D2)
         $verifyResult = $this->qrTokenService->verifyToken($request->input('token'));
-        if (!$verifyResult['success']) {
+        if (! $verifyResult['success']) {
             return response()->json(['success' => false, 'message' => $verifyResult['error']], 422);
         }
 
@@ -126,7 +128,7 @@ class AttendanceController extends Controller
             ->whereNull('left_at')
             ->exists();
 
-        if (!$isMember) {
+        if (! $isMember) {
             return response()->json([
                 'success' => false,
                 'message' => "Siswa {$student->name} bukan anggota aktif di eskul {$session->extracurricular->name}.",
@@ -141,7 +143,7 @@ class AttendanceController extends Controller
         if ($existing) {
             return response()->json([
                 'success' => false,
-                'message' => "Siswa {$student->name} sudah tercatat hadir pada pukul " . Carbon::parse($existing->recorded_at)->format('H:i:s'),
+                'message' => "Siswa {$student->name} sudah tercatat hadir pada pukul ".Carbon::parse($existing->recorded_at)->format('H:i:s'),
             ], 422);
         }
 
@@ -164,7 +166,7 @@ class AttendanceController extends Controller
                     'used_at' => now(),
                 ]);
             });
-        } catch (\Illuminate\Database\UniqueConstraintViolationException|\Illuminate\Database\QueryException $e) {
+        } catch (UniqueConstraintViolationException|QueryException $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Token QR telah digunakan atau presensi untuk siswa ini sudah tercatat.',
@@ -198,7 +200,7 @@ class AttendanceController extends Controller
         $user = $request->user();
 
         // Check if user is authorized to manage this extracurricular
-        if (!$user->canManageExtracurricular($session->extracurricular_id, $session->academic_year_id)) {
+        if (! $user->canManageExtracurricular($session->extracurricular_id, $session->academic_year_id)) {
             abort(403, 'Anda tidak memiliki hak akses mencatat presensi untuk ekstrakurikuler ini.');
         }
 
@@ -209,7 +211,7 @@ class AttendanceController extends Controller
             ->whereNull('left_at')
             ->exists();
 
-        if (!$isMember) {
+        if (! $isMember) {
             return back()->with('error', 'Siswa yang dipilih bukan anggota aktif di ekstrakurikuler ini.');
         }
 
@@ -218,7 +220,7 @@ class AttendanceController extends Controller
             $windowHours = (int) AppSetting::get('attendance_manual_window_hours', 24);
             $deadline = Carbon::parse($session->closed_at)->addHours($windowHours);
 
-            if (now()->greaterThan($deadline) && !$user->isSuperAdmin() && !$user->isAdmin($session->academic_year_id)) {
+            if (now()->greaterThan($deadline) && ! $user->isSuperAdmin() && ! $user->isAdmin($session->academic_year_id)) {
                 return back()->with('error', "Jendela waktu edit presensi manual ({$windowHours} jam) telah berakhir. Hubungi Admin.");
             }
         }
@@ -246,7 +248,7 @@ class AttendanceController extends Controller
         AuditLog::record(
             action: 'manual_attendance',
             entityType: 'Attendance',
-            entityId: $session->id . ':' . $request->input('user_id'),
+            entityId: $session->id.':'.$request->input('user_id'),
             oldValues: ['status' => $oldStatus],
             newValues: ['status' => $request->input('status'), 'note' => $request->input('note')],
             userId: $user->id
@@ -258,7 +260,7 @@ class AttendanceController extends Controller
     public function closeSession(Request $request, ActivitySession $session): RedirectResponse
     {
         $user = $request->user();
-        if (!$user->canManageExtracurricular($session->extracurricular_id, $session->academic_year_id)) {
+        if (! $user->canManageExtracurricular($session->extracurricular_id, $session->academic_year_id)) {
             abort(403, 'Anda tidak memiliki hak akses menutup sesi untuk ekstrakurikuler ini.');
         }
 

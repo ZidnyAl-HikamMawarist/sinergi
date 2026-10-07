@@ -15,6 +15,7 @@ class StudentDirectoryTest extends TestCase
     use RefreshDatabase;
 
     protected User $admin;
+
     protected AcademicYear $year;
 
     protected function setUp(): void

@@ -16,7 +16,7 @@ class EnsurePasswordChanged
         $user = $request->user();
 
         if ($user && $user->must_change_password) {
-            if (!$request->routeIs('password.change', 'password.update', 'logout')) {
+            if (! $request->routeIs('password.change', 'password.update', 'logout')) {
                 return redirect()->route('password.change')
                     ->with('warning', 'Demi keamanan akun Anda, silakan ubah kata sandi default terlebih dahulu.');
             }

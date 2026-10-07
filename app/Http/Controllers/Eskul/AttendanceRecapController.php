@@ -23,7 +23,7 @@ class AttendanceRecapController extends Controller
 
         // Accessible extracurriculars
         $eskulQuery = Extracurricular::where('status', 'aktif');
-        if (!$user->isSuperAdmin() && !$user->isAdmin($yearId)) {
+        if (! $user->isSuperAdmin() && ! $user->isAdmin($yearId)) {
             $userEskulIds = $user->roles()
                 ->where('roles.name', 'pengurus_eskul')
                 ->wherePivot('academic_year_id', $yearId)
@@ -117,7 +117,7 @@ class AttendanceRecapController extends Controller
         $eskul = Extracurricular::findOrFail($request->input('eskul_id'));
 
         $user = $request->user();
-        if (!$user->canManageExtracurricular($eskul->id, $yearId)) {
+        if (! $user->canManageExtracurricular($eskul->id, $yearId)) {
             abort(403, 'Anda tidak memiliki hak akses mengunduh rekap untuk ekstrakurikuler ini.');
         }
 
@@ -141,11 +141,11 @@ class AttendanceRecapController extends Controller
             ->map(fn ($rows) => $rows->pluck('count', 'status'));
 
         $totalSessionsCount = $sessions->count();
-        $fileName = 'rekap_presensi_' . str_replace(' ', '_', strtolower($eskul->name)) . '_' . date('Ymd_His') . '.csv';
+        $fileName = 'rekap_presensi_'.str_replace(' ', '_', strtolower($eskul->name)).'_'.date('Ymd_His').'.csv';
 
-        return response()->stream(function () use ($members, $sessions, $attendanceStats, $totalSessionsCount) {
+        return response()->stream(function () use ($members, $attendanceStats, $totalSessionsCount) {
             $handle = fopen('php://output', 'w');
-            
+
             // CSV Header
             fputcsv($handle, ['No', 'NISN', 'Nama Siswa', 'Kelas', 'Hadir', 'Izin', 'Sakit', 'Alpa', '% Kehadiran']);
 
@@ -167,7 +167,7 @@ class AttendanceRecapController extends Controller
                     $izin,
                     $sakit,
                     $alpa,
-                    $rate . '%',
+                    $rate.'%',
                 ]);
             }
 
@@ -185,8 +185,9 @@ class AttendanceRecapController extends Controller
     {
         $str = (string) $value;
         if (in_array(substr($str, 0, 1), ['=', '+', '-', '@', "\t", "\r"])) {
-            return "'" . $str;
+            return "'".$str;
         }
+
         return $str;
     }
 }

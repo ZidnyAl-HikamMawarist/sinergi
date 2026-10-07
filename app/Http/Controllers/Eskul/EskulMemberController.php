@@ -23,7 +23,7 @@ class EskulMemberController extends Controller
 
         // Accessible extracurriculars for this user
         $eskulQuery = Extracurricular::where('status', 'aktif');
-        if (!$user->isSuperAdmin() && !$user->isAdmin($yearId)) {
+        if (! $user->isSuperAdmin() && ! $user->isAdmin($yearId)) {
             $userEskulIds = $user->roles()
                 ->where('roles.name', 'pengurus_eskul')
                 ->wherePivot('academic_year_id', $yearId)
@@ -77,20 +77,20 @@ class EskulMemberController extends Controller
         ]);
 
         $activeYear = AcademicYear::active();
-        if (!$activeYear) {
+        if (! $activeYear) {
             return back()->with('error', 'Tidak ada tahun ajaran aktif.');
         }
 
         $user = $request->user();
         $eskulId = (int) $request->input('extracurricular_id');
 
-        if (!$user->canManageExtracurricular($eskulId, $activeYear->id)) {
+        if (! $user->canManageExtracurricular($eskulId, $activeYear->id)) {
             abort(403, 'Anda tidak memiliki hak akses mengelola anggota eskul ini.');
         }
 
         $userId = $request->input('user_id');
         $targetStudent = User::find($userId);
-        if (!$targetStudent || $targetStudent->status !== 'aktif' || !$targetStudent->hasRole('siswa', $activeYear->id)) {
+        if (! $targetStudent || $targetStudent->status !== 'aktif' || ! $targetStudent->hasRole('siswa', $activeYear->id)) {
             return back()->with('error', 'Hanya siswa aktif yang dapat ditambahkan sebagai anggota eskul.');
         }
 
@@ -132,7 +132,7 @@ class EskulMemberController extends Controller
         $user = $request->user();
         $activeYear = AcademicYear::active();
 
-        if (!$user->canManageExtracurricular($member->extracurricular_id, $member->academic_year_id ?? $activeYear?->id)) {
+        if (! $user->canManageExtracurricular($member->extracurricular_id, $member->academic_year_id ?? $activeYear?->id)) {
             abort(403, 'Anda tidak memiliki hak akses menonaktifkan anggota eskul ini.');
         }
 

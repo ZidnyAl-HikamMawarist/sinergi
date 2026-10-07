@@ -1,10 +1,16 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AuditLogController;
+use App\Http\Controllers\Admin\ExtracurricularController;
+use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\StudentImportController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Eskul\ActivitySessionController;
 use App\Http\Controllers\Eskul\AttendanceController;
+use App\Http\Controllers\Eskul\AttendanceRecapController;
 use App\Http\Controllers\Eskul\EskulDashboardController;
+use App\Http\Controllers\Eskul\EskulMemberController;
 use App\Http\Controllers\Kas\CashTransactionController;
 use App\Http\Controllers\Kas\KasDashboardController;
 use App\Http\Controllers\Portal\PortalDashboardController;
@@ -51,12 +57,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/scanner', [AttendanceController::class, 'showScanner'])->name('scanner');
         Route::post('/attendance/scan', [AttendanceController::class, 'scan'])->name('attendance.scan');
         Route::post('/attendance/manual', [AttendanceController::class, 'manual'])->name('attendance.manual');
-        Route::get('/rekap', [\App\Http\Controllers\Eskul\AttendanceRecapController::class, 'index'])->name('rekap');
-        Route::get('/rekap/export', [\App\Http\Controllers\Eskul\AttendanceRecapController::class, 'exportCsv'])->name('rekap.export');
+        Route::get('/rekap', [AttendanceRecapController::class, 'index'])->name('rekap');
+        Route::get('/rekap/export', [AttendanceRecapController::class, 'exportCsv'])->name('rekap.export');
         Route::get('/sessions', [EskulDashboardController::class, 'index'])->name('sessions.index');
-        Route::get('/members', [\App\Http\Controllers\Eskul\EskulMemberController::class, 'index'])->name('members.index');
-        Route::post('/members', [\App\Http\Controllers\Eskul\EskulMemberController::class, 'store'])->name('members.store');
-        Route::delete('/members/{member}', [\App\Http\Controllers\Eskul\EskulMemberController::class, 'destroy'])->name('members.destroy');
+        Route::get('/members', [EskulMemberController::class, 'index'])->name('members.index');
+        Route::post('/members', [EskulMemberController::class, 'store'])->name('members.store');
+        Route::delete('/members/{member}', [EskulMemberController::class, 'destroy'])->name('members.destroy');
     });
 
     // 3. Cash Management (Buku Kas) Workspace
@@ -72,18 +78,18 @@ Route::middleware('auth')->group(function () {
     // 4. Admin OSIS Workspace
     Route::prefix('admin')->name('admin.')->middleware('role:admin,super_admin')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-        Route::get('/eskul', [\App\Http\Controllers\Admin\ExtracurricularController::class, 'index'])->name('eskul.index');
-        Route::post('/eskul', [\App\Http\Controllers\Admin\ExtracurricularController::class, 'store'])->name('eskul.store');
-        Route::put('/eskul/{eskul:uuid}', [\App\Http\Controllers\Admin\ExtracurricularController::class, 'update'])->name('eskul.update');
-        Route::post('/eskul/{eskul:uuid}/members', [\App\Http\Controllers\Admin\ExtracurricularController::class, 'addMember'])->name('eskul.members.add');
-        Route::delete('/eskul/{eskul:uuid}/members/{member}', [\App\Http\Controllers\Admin\ExtracurricularController::class, 'removeMember'])->name('eskul.members.remove');
-        Route::get('/students', [\App\Http\Controllers\Admin\StudentController::class, 'index'])->name('students.index');
-        Route::get('/presensi/rekap', [\App\Http\Controllers\Eskul\AttendanceRecapController::class, 'index'])->name('presensi.rekap');
-        Route::get('/import', [\App\Http\Controllers\Admin\StudentImportController::class, 'index'])->name('import.index');
-        Route::post('/import/preview', [\App\Http\Controllers\Admin\StudentImportController::class, 'preview'])->name('import.preview');
-        Route::get('/import/{batch:uuid}', [\App\Http\Controllers\Admin\StudentImportController::class, 'show'])->name('import.show');
-        Route::post('/import/{batch:uuid}/commit', [\App\Http\Controllers\Admin\StudentImportController::class, 'commit'])->name('import.commit');
-        Route::get('/import/{batch:uuid}/credentials', [\App\Http\Controllers\Admin\StudentImportController::class, 'downloadCredentials'])->name('import.credentials');
-        Route::get('/audit-logs', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit-logs.index');
+        Route::get('/eskul', [ExtracurricularController::class, 'index'])->name('eskul.index');
+        Route::post('/eskul', [ExtracurricularController::class, 'store'])->name('eskul.store');
+        Route::put('/eskul/{eskul:uuid}', [ExtracurricularController::class, 'update'])->name('eskul.update');
+        Route::post('/eskul/{eskul:uuid}/members', [ExtracurricularController::class, 'addMember'])->name('eskul.members.add');
+        Route::delete('/eskul/{eskul:uuid}/members/{member}', [ExtracurricularController::class, 'removeMember'])->name('eskul.members.remove');
+        Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+        Route::get('/presensi/rekap', [AttendanceRecapController::class, 'index'])->name('presensi.rekap');
+        Route::get('/import', [StudentImportController::class, 'index'])->name('import.index');
+        Route::post('/import/preview', [StudentImportController::class, 'preview'])->name('import.preview');
+        Route::get('/import/{batch:uuid}', [StudentImportController::class, 'show'])->name('import.show');
+        Route::post('/import/{batch:uuid}/commit', [StudentImportController::class, 'commit'])->name('import.commit');
+        Route::get('/import/{batch:uuid}/credentials', [StudentImportController::class, 'downloadCredentials'])->name('import.credentials');
+        Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index');
     });
 });

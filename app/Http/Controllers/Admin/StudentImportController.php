@@ -63,13 +63,14 @@ class StudentImportController extends Controller
         $path = $file->getRealPath();
 
         $handle = fopen($path, 'r');
-        if (!$handle) {
+        if (! $handle) {
             return back()->with('error', 'Gagal membuka berkas CSV.');
         }
 
         $header = fgetcsv($handle, 1000, ',');
-        if (!$header) {
+        if (! $header) {
             fclose($handle);
+
             return back()->with('error', 'Format berkas CSV kosong atau tidak valid.');
         }
 
@@ -81,13 +82,18 @@ class StudentImportController extends Controller
         // Required columns: nisn, nama (or name)
         $nisnIdx = array_search('nisn', $cleanHeader);
         $nameIdx = array_search('nama', $cleanHeader);
-        if ($nameIdx === false) $nameIdx = array_search('name', $cleanHeader);
+        if ($nameIdx === false) {
+            $nameIdx = array_search('name', $cleanHeader);
+        }
         $classIdx = array_search('kelas', $cleanHeader);
-        if ($classIdx === false) $classIdx = array_search('class', $cleanHeader);
+        if ($classIdx === false) {
+            $classIdx = array_search('class', $cleanHeader);
+        }
         $emailIdx = array_search('email', $cleanHeader);
 
         if ($nisnIdx === false || $nameIdx === false) {
             fclose($handle);
+
             return back()->with('error', 'Kolom wajib "nisn" dan "nama" tidak ditemukan pada baris judul CSV.');
         }
 
@@ -112,10 +118,13 @@ class StudentImportController extends Controller
                 fclose($handle);
                 $batch->rows()->delete();
                 $batch->delete();
+
                 return back()->with('error', 'Berkas CSV melebihi batas maksimum 2.000 baris dalam satu batch import.');
             }
 
-            if (empty(array_filter($row))) continue; // Skip empty rows
+            if (empty(array_filter($row))) {
+                continue;
+            } // Skip empty rows
 
             $nisn = trim($row[$nisnIdx] ?? '');
             $name = trim($row[$nameIdx] ?? '');
@@ -186,8 +195,9 @@ class StudentImportController extends Controller
         }
 
         $activeYear = AcademicYear::active();
-        if (!$activeYear) {
+        if (! $activeYear) {
             $batch->update(['status' => 'preview']);
+
             return back()->with('error', 'Tidak ada tahun ajaran aktif.');
         }
 
@@ -204,11 +214,11 @@ class StudentImportController extends Controller
                 $nisn = $payload['nisn'];
                 $name = $payload['name'];
                 $className = $payload['class'] ?? '';
-                $email = !empty($payload['email']) ? $payload['email'] : null;
+                $email = ! empty($payload['email']) ? $payload['email'] : null;
 
                 $user = User::where('nisn', $nisn)->first();
 
-                if (!$user) {
+                if (! $user) {
                     // Generate random initial password (PRD 7.A)
                     $rawPassword = Str::random(10);
                     $user = User::create([
@@ -243,7 +253,7 @@ class StudentImportController extends Controller
                 ]);
 
                 // Class enrollment if class specified
-                if (!empty($className)) {
+                if (! empty($className)) {
                     $classMeta = $this->parseClassMetadata($className);
                     $class = SchoolClass::firstOrCreate(
                         ['academic_year_id' => $activeYear->id, 'name' => $className],
@@ -258,7 +268,7 @@ class StudentImportController extends Controller
             }
 
             // VULN-06: Save credentials CSV using proper fputcsv and formula sanitization (CWE-1236)
-            if (!empty($credentials)) {
+            if (! empty($credentials)) {
                 $memStream = fopen('php://memory', 'r+');
                 fputcsv($memStream, ['NISN', 'Nama', 'Password_Awal']);
                 foreach ($credentials as $c) {
@@ -295,7 +305,7 @@ class StudentImportController extends Controller
 
     public function downloadCredentials(ImportBatch $batch): BinaryFileResponse|RedirectResponse
     {
-        if (empty($batch->credentials_path) || !Storage::exists($batch->credentials_path)) {
+        if (empty($batch->credentials_path) || ! Storage::exists($batch->credentials_path)) {
             return back()->with('error', 'Berkas kredensial tidak ditemukan atau telah kedaluwarsa.');
         }
 
@@ -338,11 +348,11 @@ class StudentImportController extends Controller
         // Recognized vocational & general school majors
         $knownMajors = [
             'RPL', 'TKJ', 'MM', 'DKV', 'AKL', 'OTKP', 'BDP', 'TB', 'TBSM', 'TKR',
-            'TPM', 'TITL', 'MIPA', 'IPA', 'IPS', 'BAHASA', 'SIJA', 'ANIMASI'
+            'TPM', 'TITL', 'MIPA', 'IPA', 'IPS', 'BAHASA', 'SIJA', 'ANIMASI',
         ];
 
         foreach ($knownMajors as $km) {
-            if (preg_match('/(?:^|[\s\-\._])' . preg_quote($km, '/') . '(?:[\s\-\._0-9]|$)/i', $className)) {
+            if (preg_match('/(?:^|[\s\-\._])'.preg_quote($km, '/').'(?:[\s\-\._0-9]|$)/i', $className)) {
                 $major = $km;
                 break;
             }
@@ -351,7 +361,7 @@ class StudentImportController extends Controller
         // If still 'Umum', attempt to extract middle token (e.g. 'XII ABC 1' -> 'ABC')
         if ($major === 'Umum') {
             $tokens = preg_split('/[\s\-\._]+/', $className);
-            if (count($tokens) >= 2 && !is_numeric($tokens[1])) {
+            if (count($tokens) >= 2 && ! is_numeric($tokens[1])) {
                 $candidate = strtoupper($tokens[1]);
                 if (strlen($candidate) >= 2 && strlen($candidate) <= 10) {
                     $major = $candidate;
@@ -372,8 +382,9 @@ class StudentImportController extends Controller
     {
         $str = (string) $value;
         if (in_array(substr($str, 0, 1), ['=', '+', '-', '@', "\t", "\r"])) {
-            return "'" . $str;
+            return "'".$str;
         }
+
         return $str;
     }
 }

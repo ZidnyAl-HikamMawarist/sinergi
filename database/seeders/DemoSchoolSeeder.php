@@ -93,7 +93,7 @@ class DemoSchoolSeeder extends Seeder
                 [
                     'uuid' => (string) Str::uuid(),
                     'name' => $name,
-                    'email' => strtolower($fn) . '.' . strtolower($ln) . $i . '@sinergi.test',
+                    'email' => strtolower($fn).'.'.strtolower($ln).$i.'@sinergi.test',
                     'password' => $password,
                     'status' => 'aktif',
                     'must_change_password' => false,

@@ -92,7 +92,7 @@ class ExtracurricularController extends Controller
     public function update(Request $request, Extracurricular $eskul): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:100', 'unique:extracurriculars,name,' . $eskul->id],
+            'name' => ['required', 'string', 'max:100', 'unique:extracurriculars,name,'.$eskul->id],
             'description' => ['nullable', 'string', 'max:500'],
             'status' => ['required', 'in:aktif,nonaktif'],
         ]);
@@ -120,7 +120,7 @@ class ExtracurricularController extends Controller
         ]);
 
         $activeYear = AcademicYear::active();
-        if (!$activeYear) {
+        if (! $activeYear) {
             return back()->with('error', 'Tidak ada tahun ajaran aktif.');
         }
 
@@ -128,7 +128,7 @@ class ExtracurricularController extends Controller
 
         // VULN-08: Verify target is an active student in this academic year
         $targetUser = User::find($userId);
-        if (!$targetUser || $targetUser->status !== 'aktif' || !$targetUser->hasRole('siswa', $activeYear->id)) {
+        if (! $targetUser || $targetUser->status !== 'aktif' || ! $targetUser->hasRole('siswa', $activeYear->id)) {
             return back()->with('error', 'Hanya siswa aktif yang dapat didaftarkan sebagai anggota ekstrakurikuler.');
         }
 
@@ -165,7 +165,7 @@ class ExtracurricularController extends Controller
             userId: auth()->id()
         );
 
-        return back()->with('success', 'Anggota berhasil ditambahkan ke ' . $eskul->name);
+        return back()->with('success', 'Anggota berhasil ditambahkan ke '.$eskul->name);
     }
 
     public function removeMember(Extracurricular $eskul, ExtracurricularMember $member): RedirectResponse

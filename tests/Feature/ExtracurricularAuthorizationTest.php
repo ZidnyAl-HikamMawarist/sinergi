@@ -16,10 +16,15 @@ class ExtracurricularAuthorizationTest extends TestCase
     use RefreshDatabase;
 
     protected AcademicYear $year;
+
     protected Extracurricular $eskulA;
+
     protected Extracurricular $eskulB;
+
     protected User $pengurusA;
+
     protected User $pengurusB;
+
     protected User $student;
 
     protected function setUp(): void

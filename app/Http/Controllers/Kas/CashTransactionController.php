@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Kas;
 use App\Http\Controllers\Controller;
 use App\Models\AcademicYear;
 use App\Models\AuditLog;
+use App\Models\CashCategory;
 use App\Models\CashTransaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -28,21 +29,21 @@ class CashTransactionController extends Controller
         ]);
 
         $activeYear = AcademicYear::active();
-        if (!$activeYear) {
+        if (! $activeYear) {
             return back()->with('error', 'Tidak ada tahun ajaran aktif.');
         }
 
         $user = $request->user();
-        if (!$user->isSuperAdmin() && !$user->isAdmin($activeYear->id) && !$user->isBendahara($activeYear->id)) {
+        if (! $user->isSuperAdmin() && ! $user->isAdmin($activeYear->id) && ! $user->isBendahara($activeYear->id)) {
             abort(403, 'Anda tidak memiliki hak akses mencatat transaksi kas pada tahun ajaran ini.');
         }
 
         // Validate that category matches the transaction type
-        $category = \App\Models\CashCategory::where('id', $request->input('cash_category_id'))
+        $category = CashCategory::where('id', $request->input('cash_category_id'))
             ->where('is_active', true)
             ->first();
 
-        if (!$category || $category->type !== $request->input('type')) {
+        if (! $category || $category->type !== $request->input('type')) {
             return back()->withErrors(['cash_category_id' => 'Kategori kas tidak valid atau tidak sesuai dengan tipe transaksi.']);
         }
 
@@ -91,7 +92,7 @@ class CashTransactionController extends Controller
         $tx = CashTransaction::where('uuid', $uuid)->firstOrFail();
         $user = $request->user();
 
-        if (!$user->isSuperAdmin() && !$user->isAdmin($tx->academic_year_id) && !$user->isBendahara($tx->academic_year_id)) {
+        if (! $user->isSuperAdmin() && ! $user->isAdmin($tx->academic_year_id) && ! $user->isBendahara($tx->academic_year_id)) {
             abort(403, 'Anda tidak memiliki hak akses membatalkan (void) transaksi pada tahun ajaran ini.');
         }
 
@@ -128,11 +129,11 @@ class CashTransactionController extends Controller
         $tx = CashTransaction::where('uuid', $uuid)->firstOrFail();
         $user = $request->user();
 
-        if (!$user->isSuperAdmin() && !$user->isAdmin($tx->academic_year_id) && !$user->isBendahara($tx->academic_year_id)) {
+        if (! $user->isSuperAdmin() && ! $user->isAdmin($tx->academic_year_id) && ! $user->isBendahara($tx->academic_year_id)) {
             abort(403, 'Anda tidak memiliki hak akses melihat bukti transaksi ini.');
         }
 
-        if (!Storage::disk('local')->exists($tx->proof_path)) {
+        if (! Storage::disk('local')->exists($tx->proof_path)) {
             abort(404, 'File bukti transaksi tidak ditemukan.');
         }
 

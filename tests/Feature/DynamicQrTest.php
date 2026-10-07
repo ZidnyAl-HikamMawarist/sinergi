@@ -5,10 +5,8 @@ namespace Tests\Feature;
 use App\Models\AcademicYear;
 use App\Models\ActivitySession;
 use App\Models\Extracurricular;
-use App\Models\ExtracurricularMember;
 use App\Models\User;
 use App\Services\QrTokenService;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

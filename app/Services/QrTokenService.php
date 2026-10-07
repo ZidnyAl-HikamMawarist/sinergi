@@ -5,8 +5,6 @@ namespace App\Services;
 use App\Models\AppSetting;
 use App\Models\QrTokenUse;
 use App\Models\User;
-use Carbon\Carbon;
-use RuntimeException;
 
 class QrTokenService
 {
@@ -49,7 +47,7 @@ class QrTokenService
     {
         try {
             $decoded = json_decode(base64_decode($tokenString), true);
-            if (!$decoded || !isset($decoded['p']) || !isset($decoded['s'])) {
+            if (! $decoded || ! isset($decoded['p']) || ! isset($decoded['s'])) {
                 return ['success' => false, 'error' => 'Format token QR tidak valid.'];
             }
 
@@ -58,7 +56,7 @@ class QrTokenService
 
             // 1. Verify HMAC signature
             $expectedSignature = hash_hmac('sha256', json_encode($payload), config('app.key'));
-            if (!hash_equals($expectedSignature, $signature)) {
+            if (! hash_equals($expectedSignature, $signature)) {
                 return ['success' => false, 'error' => 'Tanda tangan token QR tidak valid.'];
             }
 
@@ -79,7 +77,7 @@ class QrTokenService
 
             // 4. Resolve student
             $student = User::where('uuid', $payload['u'])->first();
-            if (!$student) {
+            if (! $student) {
                 return ['success' => false, 'error' => 'Data siswa pemilik QR tidak ditemukan.'];
             }
 
@@ -94,7 +92,7 @@ class QrTokenService
                 'expires_at' => $expiresAt,
             ];
         } catch (\Throwable $e) {
-            return ['success' => false, 'error' => 'Terjadi kesalahan saat memvalidasi QR: ' . $e->getMessage()];
+            return ['success' => false, 'error' => 'Terjadi kesalahan saat memvalidasi QR: '.$e->getMessage()];
         }
     }
 }

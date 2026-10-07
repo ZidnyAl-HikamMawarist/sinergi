@@ -22,14 +22,14 @@ class ActivitySessionController extends Controller
         ]);
 
         $activeYear = AcademicYear::active();
-        if (!$activeYear) {
+        if (! $activeYear) {
             return back()->with('error', 'Tidak ada tahun ajaran aktif.');
         }
 
         $user = $request->user();
         $eskulId = (int) $request->input('extracurricular_id');
 
-        if (!$user->canManageExtracurricular($eskulId, $activeYear->id)) {
+        if (! $user->canManageExtracurricular($eskulId, $activeYear->id)) {
             abort(403, 'Anda tidak memiliki hak akses membuat sesi untuk ekstrakurikuler ini.');
         }
 

@@ -162,6 +162,6 @@ class User extends Authenticatable
 
     public function isSiswa(?int $academicYearId = null): bool
     {
-        return $this->hasRole('siswa', $academicYearId) || !empty($this->nisn);
+        return $this->hasRole('siswa', $academicYearId) || ! empty($this->nisn);
     }
 }

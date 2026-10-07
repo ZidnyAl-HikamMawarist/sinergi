@@ -54,6 +54,7 @@ class PortalDashboardController extends Controller
     public function getFreshQrToken(Request $request): JsonResponse
     {
         $qrData = $this->qrTokenService->generateToken($request->user());
+
         return response()->json($qrData);
     }
 }

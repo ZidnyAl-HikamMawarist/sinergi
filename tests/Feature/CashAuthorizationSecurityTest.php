@@ -17,11 +17,17 @@ class CashAuthorizationSecurityTest extends TestCase
     use RefreshDatabase;
 
     protected AcademicYear $year1;
+
     protected AcademicYear $year2;
+
     protected User $bendahara1;
+
     protected User $bendahara2;
+
     protected User $student;
+
     protected CashCategory $catMasuk;
+
     protected CashCategory $catKeluar;
 
     protected function setUp(): void
