@@ -1,6 +1,6 @@
 import React from 'react';
 import { Head, useForm, Link } from '@inertiajs/react';
-import { Sparkles, Lock, User, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Lock, User, ArrowRight, Building2 } from 'lucide-react';
 import Button from '@/Components/Button';
 import Input from '@/Components/Input';
 import FlashMessage from '@/Components/FlashMessage';
@@ -26,21 +26,21 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-amber-50 flex flex-col justify-center items-center p-4 sm:p-6 selection:bg-blue-600 selection:text-white">
+        <div className="min-h-screen bg-[#F7F5F0] flex flex-col justify-center items-center p-4 selection:bg-[#1F4E79] selection:text-white">
             <Head title="Masuk ke Sistem" />
 
-            <div className="w-full max-w-md">
+            <div className="w-full max-w-sm">
                 {/* Brand Header */}
-                <div className="text-center mb-8">
+                <div className="text-center mb-6">
                     <Link href="/" className="inline-flex items-center space-x-2.5">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-violet-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/25">
-                            <Sparkles className="w-6 h-6" />
+                        <div className="w-9 h-9 rounded-md bg-[#1F4E79] flex items-center justify-center text-white font-bold text-base">
+                            <Building2 className="w-5 h-5" />
                         </div>
-                        <span className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-violet-600 to-indigo-700 bg-clip-text text-transparent">
+                        <span className="text-2xl font-bold tracking-tight text-[#17212B]">
                             SINERGI
                         </span>
                     </Link>
-                    <p className="mt-2 text-sm text-slate-500 font-medium">
+                    <p className="mt-1 text-xs text-[#737D86]">
                         Sistem Integrasi Ekstrakurikuler dan Organisasi
                     </p>
                 </div>
@@ -48,11 +48,11 @@ export default function Login() {
                 <FlashMessage />
 
                 {/* Login Card */}
-                <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-blue-500/5 border border-slate-200/80">
-                    <div className="mb-6">
-                        <h2 className="text-xl font-bold text-slate-900 tracking-tight">Selamat Datang Kembali</h2>
-                        <p className="text-xs text-slate-500 mt-1">
-                            Masuk menggunakan NISN (siswa) atau alamat email resmi Anda.
+                <div className="bg-white rounded-lg p-6 shadow-xs border border-[#D9DEE3]">
+                    <div className="mb-5 pb-3 border-b border-[#D9DEE3]">
+                        <h1 className="text-base font-bold text-[#17212B]">Masuk ke Akun</h1>
+                        <p className="text-xs text-[#737D86] mt-0.5">
+                            Gunakan NISN (siswa) atau alamat email resmi.
                         </p>
                     </div>
 
@@ -81,72 +81,72 @@ export default function Login() {
                             required
                         />
 
-                        <div className="flex items-center justify-between text-xs pt-1">
-                            <label className="flex items-center text-slate-600 cursor-pointer select-none">
+                        <div className="flex items-center justify-between text-xs pt-0.5">
+                            <label className="flex items-center text-[#46515C] cursor-pointer select-none">
                                 <input
                                     type="checkbox"
                                     checked={data.remember}
                                     onChange={(e) => setData('remember', e.target.checked)}
-                                    className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-4 h-4 mr-2"
+                                    className="rounded border-[#D9DEE3] text-[#1F4E79] focus:ring-[#1F4E79] w-4 h-4 mr-2"
                                 />
-                                Ingat saya di perangkat ini
+                                Ingat di perangkat ini
                             </label>
                         </div>
 
                         <Button
                             type="submit"
                             variant="primary"
-                            size="lg"
+                            size="md"
                             className="w-full mt-2"
                             loading={processing}
                         >
                             Masuk Sekarang
-                            <ArrowRight className="w-4 h-4 ml-2" />
+                            <ArrowRight className="w-4 h-4 ml-1.5" />
                         </Button>
                     </form>
 
                     {/* Quick Dev Accounts Helper */}
-                    <div className="mt-8 pt-6 border-t border-slate-100">
+                    <div className="mt-6 pt-5 border-t border-[#D9DEE3]">
                         <div className="flex items-center justify-between mb-2">
-                            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                                Akun Demo (Uji Coba Lokal):
+                            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#737D86]">
+                                Akun Uji Coba:
                             </span>
                         </div>
-                        <div className="grid grid-cols-2 gap-2 text-[11px]">
+                        <div className="grid grid-cols-2 gap-1.5 text-xs">
                             <button
                                 type="button"
                                 onClick={() => fillDevAccount('admin@sinergi.test', 'password123')}
-                                className="p-2 rounded-xl bg-violet-50 hover:bg-violet-100 text-violet-700 font-semibold text-left transition-colors"
+                                className="p-2 rounded-md border border-[#D9DEE3] bg-[#FCFBF9] hover:bg-[#EAF2F8] text-[#17212B] font-medium text-left transition-colors"
                             >
-                                🔑 Admin OSIS
+                                Admin OSIS
                             </button>
                             <button
                                 type="button"
                                 onClick={() => fillDevAccount('bendahara@sinergi.test', 'password123')}
-                                className="p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold text-left transition-colors"
+                                className="p-2 rounded-md border border-[#D9DEE3] bg-[#FCFBF9] hover:bg-[#EAF2F8] text-[#17212B] font-medium text-left transition-colors"
                             >
-                                💰 Bendahara
+                                Bendahara
                             </button>
                             <button
                                 type="button"
                                 onClick={() => fillDevAccount('pengurus@sinergi.test', 'password123')}
-                                className="p-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold text-left transition-colors"
+                                className="p-2 rounded-md border border-[#D9DEE3] bg-[#FCFBF9] hover:bg-[#EAF2F8] text-[#1F4E79] font-medium text-left transition-colors"
                             >
-                                ⛺ Pengurus Pramuka
+                                Pengurus Eskul
                             </button>
                             <button
                                 type="button"
                                 onClick={() => fillDevAccount('0051234562', 'password123')}
-                                className="p-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-700 font-semibold text-left transition-colors"
+                                className="p-2 rounded-md border border-[#D9DEE3] bg-[#FCFBF9] hover:bg-[#EAF2F8] text-[#17212B] font-medium text-left transition-colors"
                             >
-                                🎓 Siswa (Ahmad)
+                                Siswa (Ahmad)
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <div className="mt-6 text-center text-xs text-slate-500">
-                    <Link href="/" className="hover:text-blue-600 transition-colors">
+                <div className="mt-5 text-center text-xs text-[#737D86]">
+                    <Link href="/" className="hover:text-[#1F4E79] transition-colors">
                         &larr; Kembali ke Beranda
                     </Link>
                 </div>

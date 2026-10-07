@@ -90,7 +90,7 @@ export default function ImportDetail({ batch = {}, rows = { data: [] } }) {
                     title="Pembaruan Data"
                     value={batch.updated_rows || 0}
                     icon={CheckCircle2}
-                    color="secondary"
+                    color="primary"
                 />
                 <StatCard
                     title="Baris Bermasalah"
@@ -102,9 +102,9 @@ export default function ImportDetail({ batch = {}, rows = { data: [] } }) {
 
             {/* Credentials One-Time Notice */}
             {isCommitted && !credentialsDownloaded && (
-                <div className="mb-6 p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-center justify-between shadow-xs">
+                <div className="mb-6 p-4 rounded-lg bg-[#FEF8EC] border border-[#B7791F]/30 text-[#B7791F] text-xs flex items-center justify-between shadow-xs">
                     <div className="flex items-center space-x-2">
-                        <ShieldAlert className="w-5 h-5 text-amber-600 shrink-0" />
+                        <ShieldAlert className="w-5 h-5 text-[#B7791F] shrink-0" />
                         <span>
                             <strong>Penting:</strong> Daftar kata sandi awal siswa yang baru dibuat hanya dapat diunduh <strong>SATU KALI</strong> demi privasi data. Pastikan Anda mengunduh dan menyimpannya di tempat yang aman.
                         </span>
@@ -119,8 +119,8 @@ export default function ImportDetail({ batch = {}, rows = { data: [] } }) {
                 accentColor="primary"
             >
                 <div className="overflow-x-auto -mx-5">
-                    <table className="w-full text-left text-xs text-slate-700">
-                        <thead className="bg-slate-50 text-slate-500 font-bold border-y border-slate-200 uppercase tracking-wider text-[11px]">
+                    <table className="w-full text-left text-xs text-[#46515C]">
+                        <thead className="bg-[#F7F5F0] text-[#46515C] font-semibold border-y border-[#D9DEE3] uppercase tracking-wider text-[11px]">
                             <tr>
                                 <th className="px-5 py-3">Baris</th>
                                 <th className="px-5 py-3">NISN</th>
@@ -130,7 +130,7 @@ export default function ImportDetail({ batch = {}, rows = { data: [] } }) {
                                 <th className="px-5 py-3">Keterangan / Error</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-100">
+                        <tbody className="divide-y divide-[#D9DEE3]">
                             {rows.data.map((row) => {
                                 const isErr = row.action === 'error';
                                 const isNew = row.action === 'new';
@@ -138,20 +138,20 @@ export default function ImportDetail({ batch = {}, rows = { data: [] } }) {
                                 return (
                                     <tr
                                         key={row.id}
-                                        className={`transition-colors hover:bg-slate-50 ${
-                                            isErr ? 'bg-rose-50/50' : ''
+                                        className={`transition-colors hover:bg-[#F7F5F0]/60 ${
+                                            isErr ? 'bg-[#FDF2F2]' : ''
                                         }`}
                                     >
-                                        <td className="px-5 py-3 font-mono text-slate-400">
+                                        <td className="px-5 py-3 font-mono text-[#737D86]">
                                             #{row.row_number}
                                         </td>
-                                        <td className="px-5 py-3 font-mono font-bold text-slate-800">
+                                        <td className="px-5 py-3 font-mono font-bold text-[#17212B]">
                                             {row.payload?.nisn || '-'}
                                         </td>
-                                        <td className="px-5 py-3 font-semibold text-slate-900">
+                                        <td className="px-5 py-3 font-semibold text-[#17212B]">
                                             {row.payload?.name || '-'}
                                         </td>
-                                        <td className="px-5 py-3">
+                                        <td className="px-5 py-3 text-[#46515C]">
                                             {row.payload?.class || '-'}
                                         </td>
                                         <td className="px-5 py-3">
@@ -163,13 +163,13 @@ export default function ImportDetail({ batch = {}, rows = { data: [] } }) {
                                                 <Badge status="sakit">Update</Badge>
                                             )}
                                         </td>
-                                        <td className="px-5 py-3 text-slate-500">
+                                        <td className="px-5 py-3 text-[#737D86]">
                                             {row.error_message ? (
-                                                <span className="text-rose-600 font-medium">
+                                                <span className="text-[#C24141] font-medium">
                                                     {row.error_message}
                                                 </span>
                                             ) : (
-                                                <span className="text-emerald-600 font-medium">
+                                                <span className="text-[#287D5A] font-medium">
                                                     Siap diproses
                                                 </span>
                                             )}

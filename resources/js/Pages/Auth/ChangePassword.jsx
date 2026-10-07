@@ -1,6 +1,6 @@
 import React from 'react';
 import { Head, useForm } from '@inertiajs/react';
-import { KeyRound, ShieldAlert, ArrowRight } from 'lucide-react';
+import { KeyRound, ArrowRight } from 'lucide-react';
 import Button from '@/Components/Button';
 import Input from '@/Components/Input';
 import FlashMessage from '@/Components/FlashMessage';
@@ -17,21 +17,21 @@ export default function ChangePassword() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-amber-50 flex flex-col justify-center items-center p-4 sm:p-6 selection:bg-blue-600 selection:text-white">
+        <div className="min-h-screen bg-[#F7F5F0] flex flex-col justify-center items-center p-4 selection:bg-[#1F4E79] selection:text-white">
             <Head title="Ganti Kata Sandi" />
 
-            <div className="w-full max-w-md">
+            <div className="w-full max-w-sm">
                 <FlashMessage />
 
-                <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-blue-500/5 border border-slate-200/80">
-                    <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4">
-                        <KeyRound className="w-6 h-6" />
+                <div className="bg-white rounded-lg p-6 shadow-xs border border-[#D9DEE3]">
+                    <div className="w-9 h-9 rounded-md bg-[#FEF8EC] text-[#B7791F] flex items-center justify-center mb-3">
+                        <KeyRound className="w-5 h-5" />
                     </div>
 
-                    <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-                        Wajib Ganti Kata Sandi
-                    </h2>
-                    <p className="text-xs text-slate-500 mt-1 mb-6">
+                    <h1 className="text-base font-bold text-[#17212B]">
+                        Pembaruan Kata Sandi
+                    </h1>
+                    <p className="text-xs text-[#737D86] mt-1 mb-5">
                         Demi keamanan akun Anda (terutama saat login pertama kali), harap buat kata sandi baru minimal 8 karakter.
                     </p>
 
@@ -62,12 +62,12 @@ export default function ChangePassword() {
                         <Button
                             type="submit"
                             variant="primary"
-                            size="lg"
+                            size="md"
                             className="w-full mt-2"
                             loading={processing}
                         >
                             Simpan & Lanjutkan
-                            <ArrowRight className="w-4 h-4 ml-2" />
+                            <ArrowRight className="w-4 h-4 ml-1.5" />
                         </Button>
                     </form>
                 </div>

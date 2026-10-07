@@ -54,9 +54,9 @@ export default function Import({ batches = [] }) {
                 <div className="lg:col-span-5">
                     <Card title="Unggah Berkas CSV Siswa" accentColor="primary">
                         <form onSubmit={handleFileSubmit} className="space-y-4">
-                            <div className="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-3xl p-6 text-center transition-colors">
-                                <UploadCloud className="w-12 h-12 text-blue-500 mx-auto mb-3" />
-                                <label className="block text-xs font-bold text-slate-800 cursor-pointer">
+                            <div className="border-2 border-dashed border-[#D9DEE3] hover:border-[#1F4E79] rounded-lg p-6 text-center transition-colors bg-[#F7F5F0]">
+                                <UploadCloud className="w-10 h-10 text-[#1F4E79] mx-auto mb-3" />
+                                <label className="block text-xs font-semibold text-[#17212B] cursor-pointer">
                                     <span>Pilih berkas CSV dari komputer</span>
                                     <input
                                         type="file"
@@ -66,17 +66,17 @@ export default function Import({ batches = [] }) {
                                         className="sr-only"
                                     />
                                 </label>
-                                <p className="text-[11px] text-slate-400 mt-1">
+                                <p className="text-[11px] text-[#737D86] mt-1">
                                     {data.file ? data.file.name : 'Format .csv (maksimal 10 MB)'}
                                 </p>
                             </div>
 
                             {errors.file && (
-                                <p className="text-xs text-rose-600 font-medium">{errors.file}</p>
+                                <p className="text-xs text-[#C24141] font-medium">{errors.file}</p>
                             )}
 
-                            <div className="bg-slate-50 p-3.5 rounded-2xl text-[11px] text-slate-600 space-y-1">
-                                <div className="font-bold text-slate-800 mb-1">Ketentuan Berkas:</div>
+                            <div className="bg-[#F7F5F0] border border-[#D9DEE3] p-3.5 rounded-lg text-[11px] text-[#46515C] space-y-1">
+                                <div className="font-semibold text-[#17212B] mb-1">Ketentuan Berkas:</div>
                                 <div>&bull; Kolom wajib: <code>nisn</code>, <code>nama</code></div>
                                 <div>&bull; Kolom opsional: <code>kelas</code>, <code>email</code></div>
                                 <div>&bull; Jika NISN sudah ada, sistem akan memperbarui data tanpa membuat duplikat.</div>
@@ -102,31 +102,31 @@ export default function Import({ batches = [] }) {
                     <Card
                         title="Riwayat Batch Import"
                         subtitle="Daftar batch berkas yang pernah diproses"
-                        accentColor="secondary"
+                        accentColor="primary"
                     >
                         {batches.length === 0 ? (
-                            <div className="text-center py-10 text-slate-400 text-xs">
+                            <div className="text-center py-10 text-[#737D86] text-xs">
                                 Belum ada riwayat import data siswa.
                             </div>
                         ) : (
-                            <div className="divide-y divide-slate-100">
+                            <div className="divide-y divide-[#D9DEE3]">
                                 {batches.map((batch) => (
                                     <div key={batch.id} className="py-3.5 flex items-center justify-between">
                                         <div>
                                             <Link
                                                 href={`/admin/import/${batch.uuid}`}
-                                                className="text-sm font-bold text-slate-900 hover:text-blue-600 flex items-center gap-1.5"
+                                                className="text-sm font-semibold text-[#17212B] hover:text-[#1F4E79] flex items-center gap-1.5"
                                             >
                                                 {batch.filename}
-                                                <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+                                                <ArrowRight className="w-3.5 h-3.5 text-[#737D86]" />
                                             </Link>
-                                            <div className="text-xs text-slate-500 mt-0.5">
+                                            <div className="text-xs text-[#737D86] mt-0.5">
                                                 {batch.total_rows} total baris &bull;{' '}
-                                                <span className="text-emerald-600">+{batch.new_rows} baru</span> &bull;{' '}
-                                                <span className="text-blue-600">~{batch.updated_rows} update</span> &bull;{' '}
-                                                <span className="text-rose-600">!{batch.error_rows} error</span>
+                                                <span className="text-[#287D5A]">+{batch.new_rows} baru</span> &bull;{' '}
+                                                <span className="text-[#1F4E79]">~{batch.updated_rows} update</span> &bull;{' '}
+                                                <span className="text-[#C24141]">!{batch.error_rows} error</span>
                                             </div>
-                                            <div className="text-[10px] text-slate-400 mt-0.5">
+                                            <div className="text-[10px] text-[#737D86] mt-0.5">
                                                 Diupload oleh {batch.uploader?.name} &bull; {new Date(batch.created_at).toLocaleDateString('id-ID')}
                                             </div>
                                         </div>

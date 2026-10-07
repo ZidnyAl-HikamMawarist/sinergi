@@ -1,23 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Head, Link } from '@inertiajs/react';
 import { QRCodeSVG } from 'qrcode.react';
 import axios from 'axios';
 import {
-    QrCode,
     RefreshCw,
-    ShieldCheck,
     WifiOff,
     CheckCircle2,
-    Calendar,
     Building2,
     Clock,
-    UserCheck,
-    Sparkles
 } from 'lucide-react';
 import AppLayout from '@/Layouts/AppLayout';
 import Card from '@/Components/Card';
 import Badge from '@/Components/Badge';
-import Button from '@/Components/Button';
 
 export default function PortalDashboard({
     student = {},
@@ -87,65 +80,62 @@ export default function PortalDashboard({
         >
             {/* Offline Alert (AC-D7) */}
             {!isOnline && (
-                <div className="mb-6 p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 flex items-center space-x-3 shadow-xs">
-                    <WifiOff className="w-5 h-5 text-amber-600 shrink-0" />
+                <div className="mb-5 p-3.5 rounded-lg bg-[#FEF8EC] border border-[#B7791F]/30 text-[#B7791F] flex items-center space-x-2.5 shadow-xs">
+                    <WifiOff className="w-4 h-4 text-[#B7791F] shrink-0" />
                     <div className="text-xs font-semibold">
-                        Koneksi terputus. Butuh akses internet untuk menampilkan dan memperbarui QR dinamis.
+                        Koneksi terputus. Akses internet diperlukan untuk memperbarui token QR dinamis.
                     </div>
                 </div>
             )}
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
                 {/* Digital Student ID Card */}
-                <div className="lg:col-span-6 flex flex-col items-center">
-                    <div className="w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-blue-500/5 border border-slate-200/80 text-center relative overflow-hidden">
-                        {/* Top decorative gradient bar */}
-                        <div className="absolute top-0 inset-x-0 h-3 bg-gradient-to-r from-blue-600 via-violet-600 to-indigo-600"></div>
-
+                <div className="lg:col-span-5 flex flex-col items-center">
+                    <div className="w-full bg-white rounded-lg p-6 shadow-xs border border-[#D9DEE3] text-center">
                         {/* Student Details */}
-                        <div className="mt-2">
-                            <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-blue-600 to-violet-600 text-white font-extrabold text-2xl flex items-center justify-center mx-auto shadow-md shadow-blue-500/20">
+                        <div>
+                            <div className="w-12 h-12 rounded-md bg-[#1F4E79] text-white font-bold text-lg flex items-center justify-center mx-auto mb-2.5">
                                 {student.name?.charAt(0) || 'S'}
                             </div>
-                            <h3 className="mt-3 text-lg font-extrabold text-slate-900 tracking-tight">
+                            <h2 className="text-base font-bold text-[#17212B] tracking-tight">
                                 {student.name}
-                            </h3>
-                            <p className="text-xs font-bold text-blue-600 mt-0.5">
+                            </h2>
+                            <p className="text-xs font-semibold text-[#1F4E79] mt-0.5">
                                 NISN: {student.nisn || '-'} &bull; {currentClass}
                             </p>
                         </div>
 
                         {/* QR Code Container */}
-                        <div className="my-6 p-4 rounded-2xl bg-slate-50 border border-slate-200/80 inline-block shadow-inner relative group">
+                        <div className="my-5 p-3 rounded-lg bg-[#F7F5F0] border border-[#D9DEE3] inline-block relative">
                             {isOnline && token ? (
                                 <QRCodeSVG
                                     value={token}
-                                    size={220}
+                                    size={200}
                                     level="M"
                                     includeMargin={true}
-                                    className="mx-auto"
+                                    className="mx-auto bg-white p-1 rounded-sm"
                                 />
                             ) : (
-                                <div className="w-[220px] h-[220px] flex flex-col items-center justify-center text-slate-400 text-xs">
-                                    <WifiOff className="w-10 h-10 mb-2 text-slate-300" />
+                                <div className="w-[200px] h-[200px] flex flex-col items-center justify-center text-[#737D86] text-xs">
+                                    <WifiOff className="w-8 h-8 mb-2 text-[#737D86]" />
                                     <span>QR Membutuhkan Internet</span>
                                 </div>
                             )}
 
                             {/* Refresh Indicator Overlay */}
                             {isRefreshing && (
-                                <div className="absolute inset-0 bg-white/80 backdrop-blur-xs flex items-center justify-center rounded-2xl">
-                                    <RefreshCw className="w-8 h-8 text-blue-600 animate-spin" />
+                                <div className="absolute inset-0 bg-white/80 flex items-center justify-center rounded-lg">
+                                    <RefreshCw className="w-7 h-7 text-[#1F4E79] animate-spin" />
                                 </div>
                             )}
                         </div>
 
                         {/* Countdown Timer (AC-D1) */}
-                        <div className="flex items-center justify-center space-x-2 text-xs font-semibold text-slate-600">
-                            <Clock className="w-4 h-4 text-blue-600" />
+                        <div className="flex items-center justify-center space-x-2 text-xs font-medium text-[#46515C]">
+                            <Clock className="w-4 h-4 text-[#1F4E79]" />
                             <span>
                                 QR berganti dalam:{' '}
-                                <strong className={`font-mono ${timeLeft <= 10 ? 'text-rose-600 animate-pulse' : 'text-blue-700'}`}>
+                                <strong className={`font-mono font-bold ${timeLeft <= 10 ? 'text-[#C24141]' : 'text-[#1F4E79]'}`}>
                                     {timeLeft}s
                                 </strong>
                             </span>
@@ -153,52 +143,52 @@ export default function PortalDashboard({
                                 type="button"
                                 onClick={fetchFreshQr}
                                 disabled={isRefreshing || !isOnline}
-                                className="p-1 rounded-lg hover:bg-slate-100 text-blue-600 transition-colors ml-1"
+                                className="p-1 rounded-md hover:bg-[#F7F5F0] text-[#1F4E79] transition-colors ml-0.5"
                                 title="Perbarui QR sekarang"
                             >
                                 <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
                             </button>
                         </div>
 
-                        <p className="mt-4 text-[11px] text-slate-400 leading-relaxed border-t border-slate-100 pt-3">
-                            Anti-titip absen: Kode QR diperbarui secara berkala dan dilindungi tanda tangan kriptografis. Tangkapan layar (screenshot) tidak akan valid.
+                        <p className="mt-4 text-[11px] text-[#737D86] leading-relaxed border-t border-[#D9DEE3] pt-3">
+                            Anti-titip absen: Kode QR diperbarui berkala dengan tanda tangan kriptografis HMAC. Tangkapan layar (*screenshot*) tidak berlaku.
                         </p>
                     </div>
                 </div>
 
                 {/* Enrolled Eskuls & Recent Attendances */}
-                <div className="lg:col-span-6 space-y-6 w-full">
+                <div className="lg:col-span-7 space-y-5 w-full">
                     {/* Ekstrakurikuler yang diikuti */}
                     <Card
                         title="Ekstrakurikuler Saya"
-                        subtitle="Keanggotaan aktif Anda pada periode berjalan"
+                        subtitle="Keanggotaan aktif Anda pada tahun ajaran ini"
                         accentColor="primary"
                     >
                         {memberships.length === 0 ? (
-                            <div className="text-center py-6 text-slate-400 text-xs">
-                                Anda belum terdaftar di ekstrakurikuler manapun. Hubungi pengurus eskul Anda.
+                            <div className="text-center py-6 text-[#737D86] text-xs">
+                                Anda belum terdaftar di ekstrakurikuler manapun.
                             </div>
                         ) : (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                                 {memberships.map((m) => (
                                     <div
                                         key={m.id}
-                                        className="p-3.5 rounded-2xl bg-blue-50/50 border border-blue-100 flex items-center justify-between"
+                                        className="p-3 rounded-md bg-[#FCFBF9] border border-[#D9DEE3] flex items-center justify-between"
                                     >
-                                        <div className="flex items-center space-x-3">
-                                            <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0">
+                                        <div className="flex items-center space-x-2.5">
+                                            <div className="w-8 h-8 rounded-md bg-[#EAF2F8] text-[#1F4E79] flex items-center justify-center font-bold text-xs shrink-0">
                                                 <Building2 className="w-4 h-4" />
                                             </div>
                                             <div>
-                                                <h4 className="text-xs font-bold text-slate-900">
+                                                <h3 className="text-xs font-bold text-[#17212B]">
                                                     {m.extracurricular?.name}
-                                                </h4>
-                                                <span className="text-[10px] text-blue-700 font-semibold uppercase">
+                                                </h3>
+                                                <span className="text-[10px] text-[#737D86] font-medium uppercase">
                                                     Jabatan: {m.position}
                                                 </span>
                                             </div>
                                         </div>
-                                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                                        <CheckCircle2 className="w-4 h-4 text-[#287D5A]" />
                                     </div>
                                 ))}
                             </div>
@@ -208,34 +198,33 @@ export default function PortalDashboard({
                     {/* Histori Kehadiran Terbaru */}
                     <Card
                         title="Riwayat Presensi Terbaru"
-                        subtitle="Catatan kehadiran Anda pada kegiatan eskul"
-                        accentColor="secondary"
+                        subtitle="Catatan kehadiran Anda pada sesi kegiatan eskul"
                     >
                         {recentAttendances.length === 0 ? (
-                            <div className="text-center py-6 text-slate-400 text-xs">
+                            <div className="text-center py-6 text-[#737D86] text-xs">
                                 Belum ada catatan riwayat kehadiran.
                             </div>
                         ) : (
-                            <div className="divide-y divide-slate-100">
+                            <div className="divide-y divide-[#D9DEE3] -mx-5 -my-2">
                                 {recentAttendances.map((att) => (
-                                    <div key={att.id} className="py-3 flex items-center justify-between">
+                                    <div key={att.id} className="px-5 py-2.5 flex items-center justify-between">
                                         <div>
-                                            <div className="text-xs font-bold text-slate-800">
+                                            <div className="text-xs font-semibold text-[#17212B]">
                                                 {att.activity_session?.title || 'Sesi Kegiatan'}
                                             </div>
-                                            <div className="text-[11px] text-slate-500 mt-0.5">
+                                            <div className="text-[11px] text-[#737D86] mt-0.5">
                                                 {att.activity_session?.extracurricular?.name} &bull;{' '}
                                                 {att.recorded_at ? new Date(att.recorded_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-'}
                                             </div>
                                             {att.note && (
-                                                <div className="text-[10px] text-slate-400 italic">
+                                                <div className="text-[10px] text-[#737D86] italic mt-0.5">
                                                     Catatan: {att.note}
                                                 </div>
                                             )}
                                         </div>
                                         <div className="flex items-center space-x-2">
                                             <Badge status={att.status}>{att.status}</Badge>
-                                            <span className="text-[10px] font-mono text-slate-400 uppercase">
+                                            <span className="text-[10px] font-mono text-[#737D86] uppercase">
                                                 {att.method}
                                             </span>
                                         </div>

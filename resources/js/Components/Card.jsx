@@ -9,24 +9,24 @@ export default function Card({
     className = '',
 }) {
     const accentStyles = {
-        primary: 'border-t-4 border-t-blue-500',
-        secondary: 'border-t-4 border-t-violet-500',
-        accent: 'border-t-4 border-t-amber-500',
-        success: 'border-t-4 border-t-emerald-500',
-        danger: 'border-t-4 border-t-rose-500',
+        primary: 'border-t-2 border-t-[#1F4E79]',
+        success: 'border-t-2 border-t-[#287D5A]',
+        warning: 'border-t-2 border-t-[#B7791F]',
+        danger: 'border-t-2 border-t-[#C24141]',
+        neutral: 'border-t-2 border-t-[#737D86]',
     };
 
     return (
         <div
-            className={`bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-all duration-200 overflow-hidden ${
-                accentColor ? accentStyles[accentColor] : ''
+            className={`bg-white rounded-lg border border-[#D9DEE3] shadow-xs overflow-hidden ${
+                accentColor ? accentStyles[accentColor] || '' : ''
             } ${className}`}
         >
             {(title || action) && (
-                <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+                <div className="px-5 py-3.5 border-b border-[#D9DEE3] bg-[#FCFBF9] flex items-center justify-between gap-4">
                     <div>
-                        {title && <h3 className="text-base font-bold text-slate-800">{title}</h3>}
-                        {subtitle && <p className="text-xs text-slate-500 mt-0.5">{subtitle}</p>}
+                        {title && <h3 className="text-sm font-semibold text-[#17212B]">{title}</h3>}
+                        {subtitle && <p className="text-xs text-[#737D86] mt-0.5">{subtitle}</p>}
                     </div>
                     {action && <div>{action}</div>}
                 </div>

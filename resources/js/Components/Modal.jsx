@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
 
 export default function Modal({
@@ -8,7 +8,7 @@ export default function Modal({
     children,
     maxWidth = 'md',
 }) {
-    React.useEffect(() => {
+    useEffect(() => {
         const handleKeyDown = (e) => {
             if (e.key === 'Escape' && show && onClose) {
                 onClose();
@@ -32,30 +32,35 @@ export default function Modal({
         <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 sm:p-6">
             {/* Backdrop */}
             <div
-                className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"
+                className="fixed inset-0 bg-[#17212B]/40 transition-opacity"
                 onClick={onClose}
+                aria-hidden="true"
             ></div>
 
             {/* Modal Dialog */}
             <div
                 className={`relative w-full ${
                     maxWidthClasses[maxWidth] || maxWidthClasses.md
-                } bg-white rounded-2xl shadow-2xl border border-slate-200/80 overflow-hidden transform transition-all z-10`}
+                } bg-white rounded-lg shadow-lg border border-[#D9DEE3] overflow-hidden transform transition-all z-10`}
+                role="dialog"
+                aria-modal="true"
             >
                 {title && (
-                    <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
-                        <h3 className="text-base font-bold text-slate-900">{title}</h3>
+                    <div className="px-5 py-3.5 border-b border-[#D9DEE3] bg-[#FCFBF9] flex items-center justify-between gap-4">
+                        <h3 className="text-sm font-semibold text-[#17212B]">{title}</h3>
                         {onClose && (
                             <button
+                                type="button"
                                 onClick={onClose}
-                                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+                                className="p-1 rounded-md text-[#737D86] hover:text-[#17212B] hover:bg-[#D9DEE3]/40 transition-colors focus:outline-none focus:ring-1 focus:ring-[#1F4E79]"
+                                aria-label="Tutup"
                             >
-                                <X className="w-5 h-5" />
+                                <X className="w-4 h-4" />
                             </button>
                         )}
                     </div>
                 )}
-                <div className="p-6">{children}</div>
+                <div className="p-5">{children}</div>
             </div>
         </div>
     );
