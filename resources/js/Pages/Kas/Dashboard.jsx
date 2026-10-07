@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Head, useForm, router } from '@inertiajs/react';
+import { Head, useForm, router, usePage } from '@inertiajs/react';
 import {
     CreditCard,
     ArrowUpCircle,
@@ -28,6 +28,13 @@ export default function KasDashboard({
     transactions = { data: [] },
     categories = [],
 }) {
+    const { url } = usePage();
+    const activeTab = url.includes('/kas/laporan')
+        ? 'laporan'
+        : url.includes('/kas/kategori')
+        ? 'kategori'
+        : 'mutasi';
+
     const [createModal, setCreateModal] = useState(false);
     const [voidModal, setVoidModal] = useState(false);
     const [selectedTx, setSelectedTx] = useState(null);
