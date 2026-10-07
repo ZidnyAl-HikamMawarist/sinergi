@@ -83,6 +83,14 @@ export default function AppLayout({
         <div className="min-h-screen bg-slate-50 flex flex-col selection:bg-blue-600 selection:text-white">
             <Head title={title ? `${title} — SINERGI` : 'SINERGI'} />
 
+            {/* Skip to Content for Screen Readers and Keyboard Navigation */}
+            <a
+                href="#main-content"
+                className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-lg focus:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+                Lewati ke konten utama
+            </a>
+
             {/* Topbar */}
             <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-slate-200/80 shadow-xs">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -92,14 +100,16 @@ export default function AppLayout({
                             <button
                                 type="button"
                                 onClick={() => setMobileOpen(!mobileOpen)}
-                                className="lg:hidden p-2 rounded-xl text-slate-500 hover:text-slate-700 hover:bg-slate-100 focus:outline-none"
+                                aria-label={mobileOpen ? 'Tutup menu navigasi' : 'Buka menu navigasi'}
+                                aria-expanded={mobileOpen}
+                                className="lg:hidden p-2 rounded-xl text-slate-500 hover:text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
-                                {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                                {mobileOpen ? <X className="w-6 h-6" aria-hidden="true" /> : <Menu className="w-6 h-6" aria-hidden="true" />}
                             </button>
 
                             <Link href="/" className="flex items-center space-x-2.5">
                                 <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-violet-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
-                                    <Sparkles className="w-5 h-5" />
+                                    <Sparkles className="w-5 h-5" aria-hidden="true" />
                                 </div>
                                 <span className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-violet-600 to-indigo-700 bg-clip-text text-transparent">
                                     SINERGI
@@ -120,9 +130,9 @@ export default function AppLayout({
                             {user && user.roles && user.roles.length > 1 && (
                                 <Link
                                     href="/workspace/select"
-                                    className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+                                    className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 >
-                                    <ArrowLeftRight className="w-3.5 h-3.5 text-blue-600" />
+                                    <ArrowLeftRight className="w-3.5 h-3.5 text-blue-600" aria-hidden="true" />
                                     Ganti Workspace
                                 </Link>
                             )}
@@ -133,9 +143,12 @@ export default function AppLayout({
                                     <button
                                         type="button"
                                         onClick={() => setProfileOpen(!profileOpen)}
-                                        className="flex items-center space-x-2 p-1.5 rounded-xl hover:bg-slate-100 text-left transition-colors focus:outline-none"
+                                        aria-label="Menu profil pengguna"
+                                        aria-haspopup="true"
+                                        aria-expanded={profileOpen}
+                                        className="flex items-center space-x-2 p-1.5 rounded-xl hover:bg-slate-100 text-left transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
-                                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-violet-600 text-white font-bold text-xs flex items-center justify-center shadow-xs">
+                                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-violet-600 text-white font-bold text-xs flex items-center justify-center shadow-xs" aria-hidden="true">
                                             {user.name.charAt(0)}
                                         </div>
                                         <div className="hidden sm:block">
@@ -294,7 +307,7 @@ export default function AppLayout({
                 )}
 
                 {/* Main Content Area */}
-                <main className="flex-1 min-w-0">
+                <main id="main-content" tabIndex={-1} className="flex-1 min-w-0 focus:outline-none">
                     {/* Page Header */}
                     {(header || subtitle || actions) && (
                         <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
