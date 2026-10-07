@@ -25,7 +25,7 @@ export default function Recap({
     stats = { total_sessions: 0, total_members: 0, avg_attendance_rate: 0 },
 }) {
     const handleEskulChange = (e) => {
-        router.get('/eskul/rekap', { eskul_id: e.target.value }, { preserveState: true });
+        router.get(window.location.pathname, { eskul_id: e.target.value }, { preserveState: true });
     };
 
     const handleExport = () => {

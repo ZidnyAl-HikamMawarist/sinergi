@@ -39,6 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('portal')->name('portal.')->middleware('role:siswa,admin,super_admin')->group(function () {
         Route::get('/dashboard', [PortalDashboardController::class, 'index'])->name('dashboard');
         Route::get('/qr-token', [PortalDashboardController::class, 'getFreshQrToken'])->name('qr.token');
+        Route::get('/presensi', [PortalDashboardController::class, 'index'])->name('presensi');
+        Route::get('/eskul', [PortalDashboardController::class, 'index'])->name('eskul');
     });
 
     // 2. Extracurricular Workspace
@@ -61,6 +63,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/transactions', [CashTransactionController::class, 'store'])->name('transactions.store');
         Route::post('/transactions/{uuid}/void', [CashTransactionController::class, 'void'])->name('transactions.void');
         Route::get('/transactions/{uuid}/proof', [CashTransactionController::class, 'showProof'])->name('transactions.proof');
+        Route::get('/laporan', [KasDashboardController::class, 'index'])->name('laporan');
+        Route::get('/kategori', [KasDashboardController::class, 'index'])->name('kategori');
     });
 
     // 4. Admin OSIS Workspace
@@ -72,6 +76,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/eskul/{eskul:uuid}/members', [\App\Http\Controllers\Admin\ExtracurricularController::class, 'addMember'])->name('eskul.members.add');
         Route::delete('/eskul/{eskul:uuid}/members/{member}', [\App\Http\Controllers\Admin\ExtracurricularController::class, 'removeMember'])->name('eskul.members.remove');
         Route::get('/students', [\App\Http\Controllers\Admin\StudentController::class, 'index'])->name('students.index');
+        Route::get('/presensi/rekap', [\App\Http\Controllers\Eskul\AttendanceRecapController::class, 'index'])->name('presensi.rekap');
         Route::get('/import', [\App\Http\Controllers\Admin\StudentImportController::class, 'index'])->name('import.index');
         Route::post('/import/preview', [\App\Http\Controllers\Admin\StudentImportController::class, 'preview'])->name('import.preview');
         Route::get('/import/{batch:uuid}', [\App\Http\Controllers\Admin\StudentImportController::class, 'show'])->name('import.show');
