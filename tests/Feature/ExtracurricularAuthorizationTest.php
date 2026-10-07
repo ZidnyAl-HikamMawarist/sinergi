@@ -158,4 +158,61 @@ class ExtracurricularAuthorizationTest extends TestCase
         $response = $this->actingAs($this->pengurusA)->get(route('eskul.rekap.export', ['eskul_id' => $this->eskulB->id]));
         $response->assertForbidden();
     }
+
+    public function test_pengurus_a_cannot_add_member_to_eskul_b(): void
+    {
+        $newStudent = User::factory()->create(['status' => 'aktif']);
+        $newStudent->roles()->attach(Role::where('name', 'siswa')->first()->id, ['academic_year_id' => $this->year->id]);
+
+        $response = $this->actingAs($this->pengurusA)->post(route('eskul.members.store'), [
+            'extracurricular_id' => $this->eskulB->id,
+            'user_id' => $newStudent->id,
+            'position' => 'anggota',
+        ]);
+
+        $response->assertForbidden();
+        $this->assertDatabaseMissing('extracurricular_members', [
+            'extracurricular_id' => $this->eskulB->id,
+            'user_id' => $newStudent->id,
+        ]);
+    }
+
+    public function test_pengurus_a_cannot_remove_member_from_eskul_b(): void
+    {
+        $memberB = ExtracurricularMember::where('extracurricular_id', $this->eskulB->id)
+            ->where('user_id', $this->student->id)
+            ->first();
+
+        $response = $this->actingAs($this->pengurusA)->delete(route('eskul.members.destroy', $memberB));
+        $response->assertForbidden();
+
+        $memberB->refresh();
+        $this->assertNull($memberB->left_at);
+    }
+
+    public function test_pengurus_a_can_add_and_remove_member_in_own_eskul(): void
+    {
+        $newStudent = User::factory()->create(['status' => 'aktif']);
+        $newStudent->roles()->attach(Role::where('name', 'siswa')->first()->id, ['academic_year_id' => $this->year->id]);
+
+        $response = $this->actingAs($this->pengurusA)->post(route('eskul.members.store'), [
+            'extracurricular_id' => $this->eskulA->id,
+            'user_id' => $newStudent->id,
+            'position' => 'anggota',
+        ]);
+
+        $response->assertRedirect();
+        $member = ExtracurricularMember::where('extracurricular_id', $this->eskulA->id)
+            ->where('user_id', $newStudent->id)
+            ->first();
+        $this->assertNotNull($member);
+
+        // Pengurus A deactivates member
+        $deleteResponse = $this->actingAs($this->pengurusA)->delete(route('eskul.members.destroy', $member));
+        $deleteResponse->assertRedirect();
+
+        $member->refresh();
+        $this->assertNotNull($member->left_at);
+    }
 }
+
