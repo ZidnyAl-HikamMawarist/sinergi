@@ -76,6 +76,13 @@ export default function AppLayout({
 
     const handleLogout = (e) => {
         e.preventDefault();
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+            try {
+                navigator.serviceWorker.controller.postMessage({ type: 'CLEAR_USER_DATA' });
+            } catch {
+                // Ignore service worker post error
+            }
+        }
         router.post('/logout');
     };
 
