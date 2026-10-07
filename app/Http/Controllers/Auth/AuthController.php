@@ -99,7 +99,13 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('home')->with('success', 'Anda telah berhasil keluar.');
+        return redirect()->route('home')
+            ->with('success', 'Anda telah berhasil keluar.')
+            ->withHeaders([
+                'Clear-Site-Data' => '"cache"',
+                'Cache-Control' => 'no-cache, no-store, max-age=0, must-revalidate',
+                'Pragma' => 'no-cache',
+            ]);
     }
 
     public function showChangePassword(): Response
