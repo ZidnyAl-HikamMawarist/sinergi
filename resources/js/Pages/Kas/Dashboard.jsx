@@ -11,7 +11,9 @@ import {
     UploadCloud,
     CheckCircle2,
     Calendar,
-    AlertCircle
+    AlertCircle,
+    BookOpen,
+    FileSpreadsheet,
 } from 'lucide-react';
 import AppLayout from '@/Layouts/AppLayout';
 import Card from '@/Components/Card';
@@ -171,112 +173,243 @@ export default function KasDashboard({
                 />
             </div>
 
-            {/* Transaction Ledger Table */}
-            <Card
-                title="Buku Besar Transaksi"
-                subtitle="Daftar mutasi keuangan terbaru berurutan tanggal"
-                accentColor="primary"
-            >
-                {transactions.data.length === 0 ? (
-                    <div className="text-center py-12 text-slate-400 text-sm">
-                        Belum ada mutasi kas pada periode ini.
-                    </div>
-                ) : (
+            {/* Sub-view Navigation Tabs */}
+            <div className="flex items-center gap-2 mb-6 border-b border-slate-200 pb-3">
+                <Button
+                    variant={activeTab === 'mutasi' ? 'primary' : 'secondary'}
+                    size="sm"
+                    onClick={() => router.get('/kas/dashboard')}
+                >
+                    <BookOpen className="w-4 h-4 mr-1.5" />
+                    Mutasi Transaksi
+                </Button>
+                <Button
+                    variant={activeTab === 'laporan' ? 'primary' : 'secondary'}
+                    size="sm"
+                    onClick={() => router.get('/kas/laporan')}
+                >
+                    <FileSpreadsheet className="w-4 h-4 mr-1.5" />
+                    Laporan Ringkasan
+                </Button>
+                <Button
+                    variant={activeTab === 'kategori' ? 'primary' : 'secondary'}
+                    size="sm"
+                    onClick={() => router.get('/kas/kategori')}
+                >
+                    <CreditCard className="w-4 h-4 mr-1.5" />
+                    Kategori Kas ({categories.length})
+                </Button>
+            </div>
+
+            {/* TAB 1: KATEGORI KAS */}
+            {activeTab === 'kategori' && (
+                <Card
+                    title="Kategori Akun Kas"
+                    subtitle="Daftar pos anggaran resmi pemasukan dan pengeluaran kas OSIS"
+                    accentColor="primary"
+                >
                     <div className="overflow-x-auto -mx-5">
                         <table className="w-full text-left text-xs text-slate-700">
                             <thead className="bg-slate-50 text-slate-500 font-bold border-y border-slate-200 uppercase tracking-wider text-[11px]">
                                 <tr>
-                                    <th className="px-5 py-3">Tanggal</th>
-                                    <th className="px-5 py-3">Kategori & Keterangan</th>
-                                    <th className="px-5 py-3">Arus</th>
-                                    <th className="px-5 py-3">Nominal</th>
-                                    <th className="px-5 py-3">Bukti</th>
-                                    <th className="px-5 py-3">Status</th>
-                                    <th className="px-5 py-3 text-right">Aksi</th>
+                                    <th className="px-5 py-3">Nama Kategori</th>
+                                    <th className="px-5 py-3">Arus Transaksi</th>
+                                    <th className="px-5 py-3">Sifat Akun</th>
+                                    <th className="px-5 py-3 text-right">Status</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
-                                {transactions.data.map((tx) => {
-                                    const isVoid = tx.status === 'void';
-                                    return (
-                                        <tr
-                                            key={tx.id}
-                                            className={`transition-colors hover:bg-slate-50/80 ${
-                                                isVoid ? 'bg-slate-50/60 opacity-60' : ''
-                                            }`}
-                                        >
-                                            <td className="px-5 py-3.5 font-medium whitespace-nowrap">
-                                                {tx.transaction_date}
-                                            </td>
-                                            <td className="px-5 py-3.5">
-                                                <div className={`font-bold text-slate-900 ${isVoid ? 'line-through' : ''}`}>
-                                                    {tx.category?.name}
-                                                </div>
-                                                <div className="text-slate-500 text-[11px] mt-0.5 max-w-xs truncate">
-                                                    {tx.description}
-                                                </div>
-                                                {isVoid && tx.void_reason && (
-                                                    <div className="text-rose-600 text-[10px] mt-0.5 font-medium">
-                                                        Alasan void: {tx.void_reason} (oleh {tx.voider?.name})
-                                                    </div>
-                                                )}
-                                            </td>
-                                            <td className="px-5 py-3.5">
-                                                {tx.type === 'masuk' ? (
-                                                    <span className="inline-flex items-center text-emerald-700 font-bold">
-                                                        <ArrowDownCircle className="w-4 h-4 mr-1 text-emerald-500" />
-                                                        Masuk
-                                                    </span>
-                                                ) : (
-                                                    <span className="inline-flex items-center text-rose-700 font-bold">
-                                                        <ArrowUpCircle className="w-4 h-4 mr-1 text-rose-500" />
-                                                        Keluar
-                                                    </span>
-                                                )}
-                                            </td>
-                                            <td className={`px-5 py-3.5 font-extrabold whitespace-nowrap ${isVoid ? 'line-through text-slate-400' : tx.type === 'masuk' ? 'text-emerald-700' : 'text-slate-900'}`}>
-                                                {tx.type === 'masuk' ? '+' : '-'}{formatRupiah(tx.amount)}
-                                            </td>
-                                            <td className="px-5 py-3.5 whitespace-nowrap">
-                                                {tx.proof_path ? (
-                                                    <a
-                                                        href={`/kas/transactions/${tx.uuid}/proof`}
-                                                        target="_blank"
-                                                        rel="noreferrer"
-                                                        className="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold"
-                                                    >
-                                                        <Eye className="w-3.5 h-3.5 mr-1" />
-                                                        Lihat Bukti
-                                                    </a>
-                                                ) : (
-                                                    <span className="text-slate-400">-</span>
-                                                )}
-                                            </td>
-                                            <td className="px-5 py-3.5">
-                                                <Badge status={tx.status}>{tx.status}</Badge>
-                                            </td>
-                                            <td className="px-5 py-3.5 text-right whitespace-nowrap">
-                                                {!isVoid ? (
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleOpenVoid(tx)}
-                                                        className="inline-flex items-center text-rose-600 hover:text-rose-800 font-semibold hover:bg-rose-50 px-2 py-1 rounded-lg transition-colors"
-                                                    >
-                                                        <Ban className="w-3.5 h-3.5 mr-1" />
-                                                        Void
-                                                    </button>
-                                                ) : (
-                                                    <span className="text-slate-400 text-[11px] italic">Dibatalkan</span>
-                                                )}
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
+                                {categories.map((cat) => (
+                                    <tr key={cat.id} className="hover:bg-slate-50/80 transition-colors">
+                                        <td className="px-5 py-3.5 font-bold text-slate-900">
+                                            {cat.name}
+                                        </td>
+                                        <td className="px-5 py-3.5">
+                                            {cat.type === 'masuk' ? (
+                                                <span className="inline-flex items-center text-emerald-700 font-bold text-xs">
+                                                    <ArrowDownCircle className="w-3.5 h-3.5 mr-1 text-emerald-500" />
+                                                    Pemasukan (Masuk)
+                                                </span>
+                                            ) : (
+                                                <span className="inline-flex items-center text-rose-700 font-bold text-xs">
+                                                    <ArrowUpCircle className="w-3.5 h-3.5 mr-1 text-rose-500" />
+                                                    Pengeluaran (Keluar)
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td className="px-5 py-3.5 text-slate-500">
+                                            {cat.is_system ? 'Kategori Bawaan Sistem' : 'Kategori Kustom Organisasi'}
+                                        </td>
+                                        <td className="px-5 py-3.5 text-right">
+                                            <Badge status="aktif">Aktif</Badge>
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     </div>
-                )}
-            </Card>
+                </Card>
+            )}
+
+            {/* TAB 2: LAPORAN RINGKASAN */}
+            {activeTab === 'laporan' && (
+                <Card
+                    title="Laporan Ringkasan Arus Kas"
+                    subtitle="Akumulasi realisasi keuangan organisasi per kategori transaksi"
+                    accentColor="accent"
+                >
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                        <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4">
+                            <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider block">Total Realisasi Masuk</span>
+                            <span className="text-2xl font-extrabold text-emerald-700 mt-1 block">+{formatRupiah(stats.totalIn)}</span>
+                        </div>
+                        <div className="bg-rose-50 border border-rose-200 rounded-2xl p-4">
+                            <span className="text-xs font-bold text-rose-800 uppercase tracking-wider block">Total Realisasi Keluar</span>
+                            <span className="text-2xl font-extrabold text-rose-700 mt-1 block">-{formatRupiah(stats.totalOut)}</span>
+                        </div>
+                        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4">
+                            <span className="text-xs font-bold text-blue-800 uppercase tracking-wider block">Surplus / Saldo Bersih</span>
+                            <span className="text-2xl font-extrabold text-blue-700 mt-1 block">{formatRupiah(stats.balance)}</span>
+                        </div>
+                    </div>
+
+                    <div className="overflow-x-auto -mx-5">
+                        <table className="w-full text-left text-xs text-slate-700">
+                            <thead className="bg-slate-50 text-slate-500 font-bold border-y border-slate-200 uppercase tracking-wider text-[11px]">
+                                <tr>
+                                    <th className="px-5 py-3">Pos Kategori</th>
+                                    <th className="px-5 py-3">Tipe</th>
+                                    <th className="px-5 py-3 text-right">Status Valid</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-100">
+                                {categories.map((c) => (
+                                    <tr key={c.id} className="hover:bg-slate-50/80 transition-colors">
+                                        <td className="px-5 py-3.5 font-bold text-slate-900">{c.name}</td>
+                                        <td className="px-5 py-3.5">
+                                            <span className={`font-semibold ${c.type === 'masuk' ? 'text-emerald-700' : 'text-rose-700'}`}>
+                                                {c.type === 'masuk' ? 'Pemasukan' : 'Pengeluaran'}
+                                            </span>
+                                        </td>
+                                        <td className="px-5 py-3.5 text-right font-medium text-slate-600">
+                                            Tersinkronisasi
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </Card>
+            )}
+
+            {/* TAB 3: BUKU BESAR TRANSAKSI (MUTASI) */}
+            {activeTab === 'mutasi' && (
+                <Card
+                    title="Buku Besar Transaksi"
+                    subtitle="Daftar mutasi keuangan terbaru berurutan tanggal"
+                    accentColor="primary"
+                >
+                    {transactions.data.length === 0 ? (
+                        <div className="text-center py-12 text-slate-400 text-sm">
+                            Belum ada mutasi kas pada periode ini.
+                        </div>
+                    ) : (
+                        <div className="overflow-x-auto -mx-5">
+                            <table className="w-full text-left text-xs text-slate-700">
+                                <thead className="bg-slate-50 text-slate-500 font-bold border-y border-slate-200 uppercase tracking-wider text-[11px]">
+                                    <tr>
+                                        <th className="px-5 py-3">Tanggal</th>
+                                        <th className="px-5 py-3">Kategori & Keterangan</th>
+                                        <th className="px-5 py-3">Arus</th>
+                                        <th className="px-5 py-3">Nominal</th>
+                                        <th className="px-5 py-3">Bukti</th>
+                                        <th className="px-5 py-3">Status</th>
+                                        <th className="px-5 py-3 text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100">
+                                    {transactions.data.map((tx) => {
+                                        const isVoid = tx.status === 'void';
+                                        return (
+                                            <tr
+                                                key={tx.id}
+                                                className={`transition-colors hover:bg-slate-50/80 ${
+                                                    isVoid ? 'bg-slate-50/60 opacity-60' : ''
+                                                }`}
+                                            >
+                                                <td className="px-5 py-3.5 font-medium whitespace-nowrap">
+                                                    {tx.transaction_date}
+                                                </td>
+                                                <td className="px-5 py-3.5">
+                                                    <div className={`font-bold text-slate-900 ${isVoid ? 'line-through' : ''}`}>
+                                                        {tx.category?.name}
+                                                    </div>
+                                                    <div className="text-slate-500 text-[11px] mt-0.5 max-w-xs truncate">
+                                                        {tx.description}
+                                                    </div>
+                                                    {isVoid && tx.void_reason && (
+                                                        <div className="text-rose-600 text-[10px] mt-0.5 font-medium">
+                                                            Alasan void: {tx.void_reason} (oleh {tx.voider?.name})
+                                                        </div>
+                                                    )}
+                                                </td>
+                                                <td className="px-5 py-3.5">
+                                                    {tx.type === 'masuk' ? (
+                                                        <span className="inline-flex items-center text-emerald-700 font-bold">
+                                                            <ArrowDownCircle className="w-4 h-4 mr-1 text-emerald-500" />
+                                                            Masuk
+                                                        </span>
+                                                    ) : (
+                                                        <span className="inline-flex items-center text-rose-700 font-bold">
+                                                            <ArrowUpCircle className="w-4 h-4 mr-1 text-rose-500" />
+                                                            Keluar
+                                                        </span>
+                                                    )}
+                                                </td>
+                                                <td className={`px-5 py-3.5 font-extrabold whitespace-nowrap ${isVoid ? 'line-through text-slate-400' : tx.type === 'masuk' ? 'text-emerald-700' : 'text-slate-900'}`}>
+                                                    {tx.type === 'masuk' ? '+' : '-'}{formatRupiah(tx.amount)}
+                                                </td>
+                                                <td className="px-5 py-3.5 whitespace-nowrap">
+                                                    {tx.proof_path ? (
+                                                        <a
+                                                            href={`/kas/transactions/${tx.uuid}/proof`}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                            className="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold"
+                                                        >
+                                                            <Eye className="w-3.5 h-3.5 mr-1" />
+                                                            Lihat Bukti
+                                                        </a>
+                                                    ) : (
+                                                        <span className="text-slate-400">-</span>
+                                                    )}
+                                                </td>
+                                                <td className="px-5 py-3.5">
+                                                    <Badge status={tx.status}>{tx.status}</Badge>
+                                                </td>
+                                                <td className="px-5 py-3.5 text-right whitespace-nowrap">
+                                                    {!isVoid ? (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleOpenVoid(tx)}
+                                                            className="inline-flex items-center text-rose-600 hover:text-rose-800 font-semibold hover:bg-rose-50 px-2 py-1 rounded-lg transition-colors"
+                                                        >
+                                                            <Ban className="w-3.5 h-3.5 mr-1" />
+                                                            Void
+                                                        </button>
+                                                    ) : (
+                                                        <span className="text-slate-400 text-[11px] italic">Dibatalkan</span>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </Card>
+            )}
 
             {/* Modal Create Transaction */}
             <Modal
