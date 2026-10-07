@@ -54,7 +54,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/rekap', [\App\Http\Controllers\Eskul\AttendanceRecapController::class, 'index'])->name('rekap');
         Route::get('/rekap/export', [\App\Http\Controllers\Eskul\AttendanceRecapController::class, 'exportCsv'])->name('rekap.export');
         Route::get('/sessions', [EskulDashboardController::class, 'index'])->name('sessions.index');
-        Route::get('/members', [\App\Http\Controllers\Eskul\AttendanceRecapController::class, 'index'])->name('members.index');
+        Route::get('/members', [\App\Http\Controllers\Eskul\EskulMemberController::class, 'index'])->name('members.index');
+        Route::post('/members', [\App\Http\Controllers\Eskul\EskulMemberController::class, 'store'])->name('members.store');
+        Route::delete('/members/{member}', [\App\Http\Controllers\Eskul\EskulMemberController::class, 'destroy'])->name('members.destroy');
     });
 
     // 3. Cash Management (Buku Kas) Workspace
