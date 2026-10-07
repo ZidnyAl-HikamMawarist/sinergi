@@ -26,28 +26,21 @@ class KasDashboardController extends Controller
         ];
 
         if ($yearId) {
-            $stats['balance'] = (int) CashTransaction::where('academic_year_id', $yearId)
-                ->where('status', 'valid')
-                ->selectRaw("COALESCE(SUM(CASE WHEN type = 'masuk' THEN amount ELSE -amount END), 0) as balance")
-                ->value('balance');
+            $aggregated = CashTransaction::where('academic_year_id', $yearId)
+                ->selectRaw("
+                    COALESCE(SUM(CASE WHEN status = 'valid' AND type = 'masuk' THEN amount ELSE 0 END), 0) as total_in,
+                    COALESCE(SUM(CASE WHEN status = 'valid' AND type = 'keluar' THEN amount ELSE 0 END), 0) as total_out,
+                    COALESCE(SUM(CASE WHEN status = 'valid' AND type = 'masuk' THEN amount WHEN status = 'valid' AND type = 'keluar' THEN -amount ELSE 0 END), 0) as balance,
+                    COALESCE(SUM(CASE WHEN status = 'valid' THEN 1 ELSE 0 END), 0) as valid_count,
+                    COALESCE(SUM(CASE WHEN status = 'void' THEN 1 ELSE 0 END), 0) as void_count
+                ")
+                ->first();
 
-            $stats['totalIn'] = (int) CashTransaction::where('academic_year_id', $yearId)
-                ->where('status', 'valid')
-                ->where('type', 'masuk')
-                ->sum('amount');
-
-            $stats['totalOut'] = (int) CashTransaction::where('academic_year_id', $yearId)
-                ->where('status', 'valid')
-                ->where('type', 'keluar')
-                ->sum('amount');
-
-            $stats['validCount'] = CashTransaction::where('academic_year_id', $yearId)
-                ->where('status', 'valid')
-                ->count();
-
-            $stats['voidCount'] = CashTransaction::where('academic_year_id', $yearId)
-                ->where('status', 'void')
-                ->count();
+            $stats['totalIn'] = (int) ($aggregated->total_in ?? 0);
+            $stats['totalOut'] = (int) ($aggregated->total_out ?? 0);
+            $stats['balance'] = (int) ($aggregated->balance ?? 0);
+            $stats['validCount'] = (int) ($aggregated->valid_count ?? 0);
+            $stats['voidCount'] = (int) ($aggregated->void_count ?? 0);
         }
 
         $transactions = CashTransaction::with(['category', 'creator', 'voider'])

@@ -52,7 +52,9 @@ class AttendanceRecapController extends Controller
                 ->latest('session_date')
                 ->get();
 
-            $members = ExtracurricularMember::with(['user.enrollments.schoolClass'])
+            $members = ExtracurricularMember::with([
+                'user.enrollments' => fn ($q) => $q->when($yearId, fn ($sq) => $sq->where('academic_year_id', $yearId))->with('schoolClass'),
+            ])
                 ->where('extracurricular_id', $selectedEskul->id)
                 ->where('academic_year_id', $yearId)
                 ->whereNull('left_at')
@@ -126,7 +128,9 @@ class AttendanceRecapController extends Controller
             ->orderBy('session_date')
             ->get();
 
-        $members = ExtracurricularMember::with(['user.enrollments.schoolClass'])
+        $members = ExtracurricularMember::with([
+            'user.enrollments' => fn ($q) => $q->when($yearId, fn ($sq) => $sq->where('academic_year_id', $yearId))->with('schoolClass'),
+        ])
             ->where('extracurricular_id', $eskul->id)
             ->where('academic_year_id', $yearId)
             ->whereNull('left_at')
