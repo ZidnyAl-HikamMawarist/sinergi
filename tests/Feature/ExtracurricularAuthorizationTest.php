@@ -215,4 +215,3 @@ class ExtracurricularAuthorizationTest extends TestCase
         $this->assertNotNull($member->left_at);
     }
 }
-
