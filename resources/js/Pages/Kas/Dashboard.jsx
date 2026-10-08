@@ -127,26 +127,26 @@ export default function KasDashboard({
             }
         >
             {/* Saldo Hero Banner - Institutional Solid */}
-            <div className="bg-[#123B5D] rounded-lg p-5 sm:p-6 text-white shadow-xs mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border border-[#0F2F4A]">
+            <div className="bg-[#123B5D] rounded-xl p-5 sm:p-6 text-white shadow-xs mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border border-[#0F2F4A]">
                 <div>
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-300">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#4EA5D9]">
                         Saldo Kas Aktif (Dihitung Server)
                     </span>
                     <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-0.5">
                         {formatRupiah(stats.balance)}
                     </h2>
-                    <p className="text-xs text-slate-300/80 mt-1">
+                    <p className="text-xs text-[#E8F4FB]/80 mt-1">
                         Perhitungan server-side murni dari seluruh transaksi valid pada tahun ajaran ini.
                     </p>
                 </div>
 
                 <div className="flex sm:flex-col gap-2.5 shrink-0">
-                    <div className="bg-[#0F2F4A] px-3.5 py-2 rounded-md border border-white/15">
-                        <span className="text-[11px] text-[#48BB78] font-bold block">Total Pemasukan</span>
+                    <div className="bg-[#0F2F4A] px-3.5 py-2 rounded-lg border border-white/15">
+                        <span className="text-[11px] text-[#2A9D6F] font-bold block">Total Pemasukan</span>
                         <span className="text-xs font-bold text-white">+{formatRupiah(stats.totalIn)}</span>
                     </div>
-                    <div className="bg-[#0F2F4A] px-3.5 py-2 rounded-md border border-white/15">
-                        <span className="text-[11px] text-[#FEB2B2] font-bold block">Total Pengeluaran</span>
+                    <div className="bg-[#0F2F4A] px-3.5 py-2 rounded-lg border border-white/15">
+                        <span className="text-[11px] text-[#E76F51] font-bold block">Total Pengeluaran</span>
                         <span className="text-xs font-bold text-white">-{formatRupiah(stats.totalOut)}</span>
                     </div>
                 </div>
@@ -158,30 +158,30 @@ export default function KasDashboard({
                     title="Transaksi Valid"
                     value={stats.validCount || 0}
                     icon={CheckCircle2}
-                    color="success"
+                    color="green"
                 />
                 <StatCard
                     title="Transaksi Void"
                     value={stats.voidCount || 0}
                     icon={Ban}
-                    color="danger"
+                    color="coral"
                 />
                 <StatCard
                     title="Kategori Aktif"
                     value={categories.length || 0}
                     icon={CreditCard}
-                    color="primary"
+                    color="blue"
                 />
                 <StatCard
                     title="Total Arus Kas"
                     value={formatRupiah((stats.totalIn || 0) + (stats.totalOut || 0))}
                     icon={FileText}
-                    color="neutral"
+                    color="yellow"
                 />
             </div>
 
             {/* Sub-view Navigation Tabs */}
-            <div className="flex items-center gap-2 mb-5 border-b border-[#D7E0E8] pb-2.5">
+            <div className="flex items-center gap-2 mb-5 border-b border-[#D9E2EA] pb-2.5">
                 <Button
                     variant={activeTab === 'mutasi' ? 'primary' : 'secondary'}
                     size="sm"
@@ -213,12 +213,12 @@ export default function KasDashboard({
                 <Card
                     title="Kategori Akun Kas"
                     subtitle="Daftar pos anggaran resmi pemasukan dan pengeluaran kas OSIS"
-                    accentColor="primary"
-                    className="border-[#D7E0E8]"
+                    accentColor="blue"
+                    className="border-[#D9E2EA]"
                 >
                     <div className="overflow-x-auto -mx-5">
-                        <table className="w-full text-left text-xs text-[#465362]">
-                            <thead className="bg-[#F3F8FC] text-[#718096] font-bold border-y border-[#D7E0E8] uppercase tracking-wider text-[11px]">
+                        <table className="w-full text-left text-xs text-[#536170]">
+                            <thead className="bg-[#F5F7FA] text-[#536170] font-bold border-y border-[#D9E2EA] uppercase tracking-wider text-[11px]">
                                 <tr>
                                     <th className="px-5 py-3">Nama Kategori</th>
                                     <th className="px-5 py-3">Arus Transaksi</th>
@@ -226,26 +226,26 @@ export default function KasDashboard({
                                     <th className="px-5 py-3 text-right">Status</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-[#D7E0E8]">
+                            <tbody className="divide-y divide-[#D9E2EA]">
                                 {categories.map((cat) => (
-                                    <tr key={cat.id} className="hover:bg-[#F3F8FC]/60 transition-colors">
+                                    <tr key={cat.id} className="hover:bg-[#F5F7FA] transition-colors">
                                         <td className="px-5 py-3.5 font-bold text-[#17202A]">
                                             {cat.name}
                                         </td>
                                         <td className="px-5 py-3.5">
                                             {cat.type === 'masuk' ? (
-                                                <span className="inline-flex items-center text-[#25805A] font-bold text-xs">
-                                                    <ArrowDownCircle className="w-3.5 h-3.5 mr-1 text-[#25805A]" />
+                                                <span className="inline-flex items-center text-[#2A9D6F] font-bold text-xs">
+                                                    <ArrowDownCircle className="w-3.5 h-3.5 mr-1 text-[#2A9D6F]" />
                                                     Pemasukan (Masuk)
                                                 </span>
                                             ) : (
-                                                <span className="inline-flex items-center text-[#C24141] font-bold text-xs">
-                                                    <ArrowUpCircle className="w-3.5 h-3.5 mr-1 text-[#C24141]" />
+                                                <span className="inline-flex items-center text-[#E76F51] font-bold text-xs">
+                                                    <ArrowUpCircle className="w-3.5 h-3.5 mr-1 text-[#E76F51]" />
                                                     Pengeluaran (Keluar)
                                                 </span>
                                             )}
                                         </td>
-                                        <td className="px-5 py-3.5 text-[#718096]">
+                                        <td className="px-5 py-3.5 text-[#536170]">
                                             {cat.is_system ? 'Kategori Bawaan Sistem' : 'Kategori Kustom Organisasi'}
                                         </td>
                                         <td className="px-5 py-3.5 text-right">
@@ -264,43 +264,43 @@ export default function KasDashboard({
                 <Card
                     title="Laporan Ringkasan Arus Kas"
                     subtitle="Akumulasi realisasi keuangan organisasi per kategori transaksi"
-                    accentColor="primary"
-                    className="border-[#D7E0E8]"
+                    accentColor="blue"
+                    className="border-[#D9E2EA]"
                 >
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                        <div className="bg-[#EBF5F0] border border-[#25805A]/30 rounded-lg p-4">
-                            <span className="text-xs font-bold text-[#25805A] uppercase tracking-wider block">Total Realisasi Masuk</span>
-                            <span className="text-2xl font-extrabold text-[#25805A] mt-1 block">+{formatRupiah(stats.totalIn)}</span>
+                        <div className="bg-[#E4F4ED] border border-[#2A9D6F]/30 rounded-xl p-4">
+                            <span className="text-xs font-bold text-[#2A9D6F] uppercase tracking-wider block">Total Realisasi Masuk</span>
+                            <span className="text-2xl font-extrabold text-[#2A9D6F] mt-1 block">+{formatRupiah(stats.totalIn)}</span>
                         </div>
-                        <div className="bg-[#FDF2F2] border border-[#C24141]/30 rounded-lg p-4">
-                            <span className="text-xs font-bold text-[#C24141] uppercase tracking-wider block">Total Realisasi Keluar</span>
-                            <span className="text-2xl font-extrabold text-[#C24141] mt-1 block">-{formatRupiah(stats.totalOut)}</span>
+                        <div className="bg-[#FCE8E3] border border-[#E76F51]/30 rounded-xl p-4">
+                            <span className="text-xs font-bold text-[#E76F51] uppercase tracking-wider block">Total Realisasi Keluar</span>
+                            <span className="text-2xl font-extrabold text-[#E76F51] mt-1 block">-{formatRupiah(stats.totalOut)}</span>
                         </div>
-                        <div className="bg-[#E8F2FA] border border-[#1769AA]/30 rounded-lg p-4">
+                        <div className="bg-[#E8F4FB] border border-[#1769AA]/30 rounded-xl p-4">
                             <span className="text-xs font-bold text-[#123B5D] uppercase tracking-wider block">Surplus / Saldo Bersih</span>
                             <span className="text-2xl font-extrabold text-[#123B5D] mt-1 block">{formatRupiah(stats.balance)}</span>
                         </div>
                     </div>
 
                     <div className="overflow-x-auto -mx-5">
-                        <table className="w-full text-left text-xs text-[#465362]">
-                            <thead className="bg-[#F3F8FC] text-[#718096] font-bold border-y border-[#D7E0E8] uppercase tracking-wider text-[11px]">
+                        <table className="w-full text-left text-xs text-[#536170]">
+                            <thead className="bg-[#F5F7FA] text-[#536170] font-bold border-y border-[#D9E2EA] uppercase tracking-wider text-[11px]">
                                 <tr>
                                     <th className="px-5 py-3">Pos Kategori</th>
                                     <th className="px-5 py-3">Tipe</th>
                                     <th className="px-5 py-3 text-right">Status Valid</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-[#D7E0E8]">
+                            <tbody className="divide-y divide-[#D9E2EA]">
                                 {categories.map((c) => (
-                                    <tr key={c.id} className="hover:bg-[#F3F8FC]/60 transition-colors">
+                                    <tr key={c.id} className="hover:bg-[#F5F7FA] transition-colors">
                                         <td className="px-5 py-3.5 font-bold text-[#17202A]">{c.name}</td>
                                         <td className="px-5 py-3.5">
-                                            <span className={`font-bold ${c.type === 'masuk' ? 'text-[#25805A]' : 'text-[#C24141]'}`}>
+                                            <span className={`font-bold ${c.type === 'masuk' ? 'text-[#2A9D6F]' : 'text-[#E76F51]'}`}>
                                                 {c.type === 'masuk' ? 'Pemasukan' : 'Pengeluaran'}
                                             </span>
                                         </td>
-                                        <td className="px-5 py-3.5 text-right font-medium text-[#718096]">
+                                        <td className="px-5 py-3.5 text-right font-medium text-[#536170]">
                                             Tersinkronisasi
                                         </td>
                                     </tr>
@@ -316,17 +316,17 @@ export default function KasDashboard({
                 <Card
                     title="Buku Besar Transaksi"
                     subtitle="Daftar mutasi keuangan terbaru berurutan tanggal"
-                    accentColor="primary"
-                    className="border-[#D7E0E8]"
+                    accentColor="blue"
+                    className="border-[#D9E2EA]"
                 >
                     {transactions.data.length === 0 ? (
-                        <div className="text-center py-12 text-[#718096] text-sm">
+                        <div className="text-center py-12 text-[#536170] text-sm">
                             Belum ada mutasi kas pada periode ini.
                         </div>
                     ) : (
                         <div className="overflow-x-auto -mx-5">
-                            <table className="w-full text-left text-xs text-[#465362]">
-                                <thead className="bg-[#F3F8FC] text-[#718096] font-bold border-y border-[#D7E0E8] uppercase tracking-wider text-[11px]">
+                            <table className="w-full text-left text-xs text-[#536170]">
+                                <thead className="bg-[#F5F7FA] text-[#536170] font-bold border-y border-[#D9E2EA] uppercase tracking-wider text-[11px]">
                                     <tr>
                                         <th className="px-5 py-3">Tanggal</th>
                                         <th className="px-5 py-3">Kategori & Keterangan</th>
@@ -337,46 +337,46 @@ export default function KasDashboard({
                                         <th className="px-5 py-3 text-right">Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-[#D7E0E8]">
+                                <tbody className="divide-y divide-[#D9E2EA]">
                                     {transactions.data.map((tx) => {
                                         const isVoid = tx.status === 'void';
                                         return (
                                             <tr
                                                 key={tx.id}
-                                                className={`transition-colors hover:bg-[#F3F8FC]/60 ${
-                                                    isVoid ? 'bg-[#F6F8FB] opacity-60' : ''
+                                                className={`transition-colors hover:bg-[#F5F7FA] ${
+                                                    isVoid ? 'bg-[#F5F7FA] opacity-60' : ''
                                                 }`}
                                             >
-                                                <td className="px-5 py-3.5 font-medium text-[#465362] whitespace-nowrap">
+                                                <td className="px-5 py-3.5 font-medium text-[#536170] whitespace-nowrap">
                                                     {tx.transaction_date}
                                                 </td>
                                                 <td className="px-5 py-3.5">
                                                     <div className={`font-bold text-[#17202A] ${isVoid ? 'line-through' : ''}`}>
                                                         {tx.category?.name}
                                                     </div>
-                                                    <div className="text-[#718096] text-[11px] mt-0.5 max-w-xs truncate">
+                                                    <div className="text-[#536170] text-[11px] mt-0.5 max-w-xs truncate">
                                                         {tx.description}
                                                     </div>
                                                     {isVoid && tx.void_reason && (
-                                                        <div className="text-[#C24141] text-[10px] mt-0.5 font-medium">
+                                                        <div className="text-[#E76F51] text-[10px] mt-0.5 font-medium">
                                                             Alasan void: {tx.void_reason} (oleh {tx.voider?.name})
                                                         </div>
                                                     )}
                                                 </td>
                                                 <td className="px-5 py-3.5">
                                                     {tx.type === 'masuk' ? (
-                                                        <span className="inline-flex items-center text-[#25805A] font-bold">
-                                                            <ArrowDownCircle className="w-4 h-4 mr-1 text-[#25805A]" />
+                                                        <span className="inline-flex items-center text-[#2A9D6F] font-bold">
+                                                            <ArrowDownCircle className="w-4 h-4 mr-1 text-[#2A9D6F]" />
                                                             Masuk
                                                         </span>
                                                     ) : (
-                                                        <span className="inline-flex items-center text-[#C24141] font-bold">
-                                                            <ArrowUpCircle className="w-4 h-4 mr-1 text-[#C24141]" />
+                                                        <span className="inline-flex items-center text-[#E76F51] font-bold">
+                                                            <ArrowUpCircle className="w-4 h-4 mr-1 text-[#E76F51]" />
                                                             Keluar
                                                         </span>
                                                     )}
                                                 </td>
-                                                <td className={`px-5 py-3.5 font-bold whitespace-nowrap ${isVoid ? 'line-through text-[#718096]' : tx.type === 'masuk' ? 'text-[#25805A]' : 'text-[#17202A]'}`}>
+                                                <td className={`px-5 py-3.5 font-bold whitespace-nowrap ${isVoid ? 'line-through text-[#536170]' : tx.type === 'masuk' ? 'text-[#2A9D6F]' : 'text-[#17202A]'}`}>
                                                     {tx.type === 'masuk' ? '+' : '-'}{formatRupiah(tx.amount)}
                                                 </td>
                                                 <td className="px-5 py-3.5 whitespace-nowrap">
@@ -391,7 +391,7 @@ export default function KasDashboard({
                                                             Lihat Bukti
                                                         </a>
                                                     ) : (
-                                                        <span className="text-[#718096]">-</span>
+                                                        <span className="text-[#536170]">-</span>
                                                     )}
                                                 </td>
                                                 <td className="px-5 py-3.5">
@@ -402,13 +402,13 @@ export default function KasDashboard({
                                                         <button
                                                             type="button"
                                                             onClick={() => handleOpenVoid(tx)}
-                                                            className="inline-flex items-center text-[#C24141] hover:text-[#A83232] font-bold hover:bg-[#FDF2F2] px-2 py-1 rounded transition-colors"
+                                                            className="inline-flex items-center text-[#E76F51] hover:text-[#d35b3e] font-bold hover:bg-[#FCE8E3] px-2 py-1 rounded-md transition-colors"
                                                         >
                                                             <Ban className="w-3.5 h-3.5 mr-1" />
                                                             Void
                                                         </button>
                                                     ) : (
-                                                        <span className="text-[#718096] text-[11px] italic">Dibatalkan</span>
+                                                        <span className="text-[#536170] text-[11px] italic">Dibatalkan</span>
                                                     )}
                                                 </td>
                                             </tr>
@@ -431,17 +431,17 @@ export default function KasDashboard({
                 <form onSubmit={handleCreateSubmit} className="space-y-4">
                     {/* Tipe Transaksi Tab */}
                     <div>
-                        <label className="block text-xs font-bold uppercase tracking-wider text-[#465362] mb-1.5">
+                        <label className="block text-xs font-bold uppercase tracking-wider text-[#536170] mb-1.5">
                             Jenis Transaksi
                         </label>
                         <div className="grid grid-cols-2 gap-3">
                             <button
                                 type="button"
                                 onClick={() => setCreateData('type', 'masuk')}
-                                className={`py-2 rounded-md font-bold text-xs flex items-center justify-center transition-all ${
+                                className={`py-2 rounded-lg font-bold text-xs flex items-center justify-center transition-all ${
                                     createData.type === 'masuk'
-                                        ? 'bg-[#25805A] text-white shadow-xs'
-                                        : 'bg-white text-[#465362] border border-[#D7E0E8] hover:bg-[#F3F8FC]'
+                                        ? 'bg-[#2A9D6F] text-white shadow-xs'
+                                        : 'bg-white text-[#536170] border border-[#D9E2EA] hover:bg-[#F5F7FA]'
                                 }`}
                             >
                                 <ArrowDownCircle className="w-4 h-4 mr-1.5" />
@@ -450,10 +450,10 @@ export default function KasDashboard({
                             <button
                                 type="button"
                                 onClick={() => setCreateData('type', 'keluar')}
-                                className={`py-2 rounded-md font-bold text-xs flex items-center justify-center transition-all ${
+                                className={`py-2 rounded-lg font-bold text-xs flex items-center justify-center transition-all ${
                                     createData.type === 'keluar'
-                                        ? 'bg-[#C24141] text-white shadow-xs'
-                                        : 'bg-white text-[#465362] border border-[#D7E0E8] hover:bg-[#F3F8FC]'
+                                        ? 'bg-[#E76F51] text-white shadow-xs'
+                                        : 'bg-white text-[#536170] border border-[#D9E2EA] hover:bg-[#F5F7FA]'
                                 }`}
                             >
                                 <ArrowUpCircle className="w-4 h-4 mr-1.5" />
@@ -464,14 +464,14 @@ export default function KasDashboard({
 
                     {/* Kategori Dropdown */}
                     <div>
-                        <label className="block text-xs font-bold uppercase tracking-wider text-[#465362] mb-1.5">
-                            Kategori Kas <span className="text-[#C24141]">*</span>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-[#536170] mb-1.5">
+                            Kategori Kas <span className="text-[#E76F51]">*</span>
                         </label>
                         <select
                             value={createData.cash_category_id}
                             onChange={(e) => setCreateData('cash_category_id', e.target.value)}
                             required
-                            className="block w-full rounded-md border border-[#D7E0E8] bg-white px-3 py-2 text-sm font-semibold text-[#17202A] focus:outline-none focus:border-[#1769AA] focus:ring-1 focus:ring-[#1769AA]"
+                            className="block w-full rounded-lg border border-[#D9E2EA] bg-white px-3 py-2 text-sm font-semibold text-[#17202A] focus:outline-none focus:border-[#1769AA] focus:ring-1 focus:ring-[#1769AA]"
                         >
                             <option value="">-- Pilih Kategori --</option>
                             {filteredCategories.map((c) => (
@@ -481,7 +481,7 @@ export default function KasDashboard({
                             ))}
                         </select>
                         {createErrors.cash_category_id && (
-                            <p className="mt-1 text-xs text-[#C24141] font-medium">
+                            <p className="mt-1 text-xs text-[#E76F51] font-semibold">
                                 {createErrors.cash_category_id}
                             </p>
                         )}
@@ -525,26 +525,26 @@ export default function KasDashboard({
 
                     {/* Upload Bukti Wajib (AC-E1) */}
                     <div>
-                        <label className="block text-xs font-bold uppercase tracking-wider text-[#465362] mb-1.5">
-                            Unggah Bukti Transaksi <span className="text-[#C24141]">* (Wajib)</span>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-[#536170] mb-1.5">
+                            Unggah Bukti Transaksi <span className="text-[#E76F51]">* (Wajib)</span>
                         </label>
                         <input
                             type="file"
                             accept="image/jpeg,image/png,application/pdf"
                             required
                             onChange={(e) => setCreateData('proof', e.target.files[0])}
-                            className="block w-full text-xs text-[#465362] file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-[#E8F2FA] file:text-[#123B5D] hover:file:bg-[#D7E0E8]"
+                            className="block w-full text-xs text-[#536170] file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#E8F4FB] file:text-[#1769AA] hover:file:bg-[#D9E2EA]"
                         />
-                        <p className="mt-1 text-[11px] text-[#718096]">
+                        <p className="mt-1 text-[11px] text-[#536170]">
                             Format JPG, PNG, atau PDF. Maksimal 5 MB. Bukti akan disimpan aman di private storage.
                         </p>
                         {createErrors.proof && (
-                            <p className="mt-1 text-xs text-[#C24141] font-medium">{createErrors.proof}</p>
+                            <p className="mt-1 text-xs text-[#E76F51] font-semibold">{createErrors.proof}</p>
                         )}
                     </div>
 
-                    <div className="pt-4 border-t border-[#D7E0E8] flex items-center justify-end gap-2">
-                        <Button variant="outline" onClick={() => setCreateModal(false)}>
+                    <div className="pt-4 border-t border-[#D9E2EA] flex items-center justify-end gap-2">
+                        <Button variant="secondary" onClick={() => setCreateModal(false)}>
                             Batal
                         </Button>
                         <Button
@@ -567,16 +567,16 @@ export default function KasDashboard({
                 maxWidth="md"
             >
                 <form onSubmit={handleVoidSubmit} className="space-y-4">
-                    <div className="p-3.5 rounded-lg bg-[#FDF2F2] border border-[#C24141]/30 text-[#C24141] text-xs">
+                    <div className="p-3.5 rounded-xl bg-[#FCE8E3] border border-[#E76F51]/30 text-[#E76F51] text-xs">
                         <div className="flex items-center space-x-2 font-bold mb-1">
-                            <AlertCircle className="w-4 h-4 text-[#C24141] shrink-0" />
+                            <AlertCircle className="w-4 h-4 text-[#E76F51] shrink-0" />
                             <span>Perhatian: Transaksi Kas Bersifat Immutable</span>
                         </div>
                         Transaksi tidak dapat dihapus. Status akan berubah menjadi <strong>VOID</strong>, saldo akan otomatis dikoreksi, dan tindakan ini dicatat di audit log.
                     </div>
 
                     {selectedTx && (
-                        <div className="p-3 rounded-lg bg-[#F3F8FC] border border-[#D7E0E8] text-xs text-[#465362] space-y-1">
+                        <div className="p-3 rounded-lg bg-[#F5F7FA] border border-[#D9E2EA] text-xs text-[#536170] space-y-1">
                             <div><strong>Kategori:</strong> {selectedTx.category?.name}</div>
                             <div><strong>Nominal:</strong> {formatRupiah(selectedTx.amount)}</div>
                             <div><strong>Keterangan:</strong> {selectedTx.description}</div>
@@ -594,8 +594,8 @@ export default function KasDashboard({
                         autoFocus
                     />
 
-                    <div className="pt-4 border-t border-[#D7E0E8] flex items-center justify-end gap-2">
-                        <Button variant="outline" onClick={() => setVoidModal(false)}>
+                    <div className="pt-4 border-t border-[#D9E2EA] flex items-center justify-end gap-2">
+                        <Button variant="secondary" onClick={() => setVoidModal(false)}>
                             Batal
                         </Button>
                         <Button

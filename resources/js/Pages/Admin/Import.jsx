@@ -52,9 +52,9 @@ export default function Import({ batches = [] }) {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 {/* Upload Form */}
                 <div className="lg:col-span-5">
-                    <Card title="Unggah Berkas CSV Siswa" accentColor="primary">
+                    <Card title="Unggah Berkas CSV Siswa" accentColor="blue">
                         <form onSubmit={handleFileSubmit} className="space-y-4">
-                            <div className="border-2 border-dashed border-[#D7E0E8] hover:border-[#1769AA] rounded-lg p-6 text-center transition-colors bg-[#F3F8FC]">
+                            <div className="border-2 border-dashed border-[#D9E2EA] hover:border-[#1769AA] rounded-xl p-6 text-center transition-colors bg-[#F5F7FA]">
                                 <UploadCloud className="w-10 h-10 text-[#1769AA] mx-auto mb-3" />
                                 <label className="block text-xs font-bold text-[#17202A] cursor-pointer">
                                     <span>Pilih berkas CSV dari komputer</span>
@@ -66,19 +66,19 @@ export default function Import({ batches = [] }) {
                                         className="sr-only"
                                     />
                                 </label>
-                                <p className="text-[11px] text-[#718096] mt-1">
+                                <p className="text-[11px] text-[#536170] mt-1">
                                     {data.file ? data.file.name : 'Format .csv (maksimal 10 MB)'}
                                 </p>
                             </div>
 
                             {errors.file && (
-                                <p className="text-xs text-[#C24141] font-medium">{errors.file}</p>
+                                <p className="text-xs text-[#E76F51] font-semibold">{errors.file}</p>
                             )}
 
-                            <div className="bg-[#F3F8FC] border border-[#D7E0E8] p-3.5 rounded-lg text-[11px] text-[#465362] space-y-1">
+                            <div className="bg-[#F5F7FA] border border-[#D9E2EA] p-3.5 rounded-lg text-[11px] text-[#536170] space-y-1">
                                 <div className="font-bold text-[#17202A] mb-1">Ketentuan Berkas:</div>
-                                <div>&bull; Kolom wajib: <code className="text-[#1769AA]">nisn</code>, <code className="text-[#1769AA]">nama</code></div>
-                                <div>&bull; Kolom opsional: <code className="text-[#1769AA]">kelas</code>, <code className="text-[#1769AA]">email</code></div>
+                                <div>&bull; Kolom wajib: <code className="text-[#1769AA] font-bold">nisn</code>, <code className="text-[#1769AA] font-bold">nama</code></div>
+                                <div>&bull; Kolom opsional: <code className="text-[#1769AA] font-bold">kelas</code>, <code className="text-[#1769AA] font-bold">email</code></div>
                                 <div>&bull; Jika NISN sudah ada, sistem akan memperbarui data tanpa membuat duplikat.</div>
                             </div>
 
@@ -102,14 +102,14 @@ export default function Import({ batches = [] }) {
                     <Card
                         title="Riwayat Batch Import"
                         subtitle="Daftar batch berkas yang pernah diproses"
-                        accentColor="primary"
+                        accentColor="blue"
                     >
                         {batches.length === 0 ? (
-                            <div className="text-center py-10 text-[#718096] text-xs">
+                            <div className="text-center py-10 text-[#536170] text-xs">
                                 Belum ada riwayat import data siswa.
                             </div>
                         ) : (
-                            <div className="divide-y divide-[#D7E0E8]">
+                            <div className="divide-y divide-[#D9E2EA]">
                                 {batches.map((batch) => (
                                     <div key={batch.id} className="py-3.5 flex items-center justify-between">
                                         <div>
@@ -118,15 +118,15 @@ export default function Import({ batches = [] }) {
                                                 className="text-sm font-bold text-[#17202A] hover:text-[#1769AA] flex items-center gap-1.5"
                                             >
                                                 {batch.filename}
-                                                <ArrowRight className="w-3.5 h-3.5 text-[#718096]" />
+                                                <ArrowRight className="w-3.5 h-3.5 text-[#536170]" />
                                             </Link>
-                                            <div className="text-xs text-[#718096] mt-0.5">
+                                            <div className="text-xs text-[#536170] mt-0.5">
                                                 {batch.total_rows} total baris &bull;{' '}
-                                                <span className="text-[#25805A] font-semibold">+{batch.new_rows} baru</span> &bull;{' '}
+                                                <span className="text-[#2A9D6F] font-semibold">+{batch.new_rows} baru</span> &bull;{' '}
                                                 <span className="text-[#1769AA] font-semibold">~{batch.updated_rows} update</span> &bull;{' '}
-                                                <span className="text-[#C24141] font-semibold">!{batch.error_rows} error</span>
+                                                <span className="text-[#E76F51] font-semibold">!{batch.error_rows} error</span>
                                             </div>
-                                            <div className="text-[10px] text-[#718096] mt-0.5">
+                                            <div className="text-[10px] text-[#536170] mt-0.5">
                                                 Diupload oleh {batch.uploader?.name} &bull; {new Date(batch.created_at).toLocaleDateString('id-ID')}
                                             </div>
                                         </div>

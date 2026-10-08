@@ -46,7 +46,7 @@ export default function Recap({
                         className="flex items-center gap-2"
                         disabled={memberRecaps.length === 0}
                     >
-                        <Download className="w-4 h-4 text-emerald-600" />
+                        <Download className="w-4 h-4 text-[#2A9D6F]" />
                         Export Rekap (CSV)
                     </Button>
                 )
@@ -55,14 +55,14 @@ export default function Recap({
             <Head title="Rekap Kehadiran — SINERGI" />
 
             {/* Selector Filter Bar */}
-            <Card className="mb-6 border-[#D7E0E8] bg-white">
+            <Card className="mb-6 border-[#D9E2EA] bg-white">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex items-center space-x-3">
-                        <div className="w-10 h-10 rounded-md bg-[#123B5D] text-white flex items-center justify-center shrink-0">
+                        <div className="w-10 h-10 rounded-lg bg-[#123B5D] text-white flex items-center justify-center shrink-0">
                             <Building2 className="w-5 h-5" />
                         </div>
                         <div>
-                            <label htmlFor="eskul-select" className="text-xs font-bold text-[#718096] uppercase tracking-wider block">
+                            <label htmlFor="eskul-select" className="text-xs font-bold text-[#536170] uppercase tracking-wider block">
                                 Pilih Ekstrakurikuler
                             </label>
                             <span className="text-sm font-bold text-[#17202A]">
@@ -76,7 +76,7 @@ export default function Recap({
                             id="eskul-select"
                             value={selectedEskulId || ''}
                             onChange={handleEskulChange}
-                            className="w-full text-sm font-medium border border-[#D7E0E8] rounded-md px-3 py-2 bg-white text-[#17202A] focus:outline-none focus:border-[#1769AA] focus:ring-1 focus:ring-[#1769AA] shadow-xs"
+                            className="w-full text-sm font-medium border border-[#D9E2EA] rounded-lg px-3 py-2 bg-white text-[#17202A] focus:outline-none focus:border-[#1769AA] focus:ring-1 focus:ring-[#1769AA]"
                         >
                             {eskuls.map((eskul) => (
                                 <option key={eskul.id} value={eskul.id}>
@@ -92,55 +92,55 @@ export default function Recap({
                 <div className="space-y-6">
                     {/* Summary Stat Cards */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <Card className="flex items-center space-x-4 border-l-4 border-l-[#1769AA] border-[#D7E0E8]">
-                            <div className="w-10 h-10 rounded-md bg-[#E8F2FA] text-[#123B5D] flex items-center justify-center shrink-0">
+                        <Card className="flex items-center space-x-4 border-l-4 border-l-[#1769AA] border-[#D9E2EA]">
+                            <div className="w-10 h-10 rounded-lg bg-[#E8F4FB] text-[#1769AA] flex items-center justify-center shrink-0">
                                 <Calendar className="w-5 h-5" />
                             </div>
                             <div>
-                                <p className="text-[11px] font-bold text-[#718096] uppercase tracking-wider">Total Sesi Kegiatan</p>
+                                <p className="text-[11px] font-bold text-[#536170] uppercase tracking-wider">Total Sesi Kegiatan</p>
                                 <p className="text-2xl font-extrabold text-[#17202A]">{stats.total_sessions}</p>
-                                <p className="text-[11px] text-[#718096] font-medium">Sesi terlaksana th. ini</p>
+                                <p className="text-[11px] text-[#536170] font-medium">Sesi terlaksana th. ini</p>
                             </div>
                         </Card>
 
-                        <Card className="flex items-center space-x-4 border-l-4 border-l-[#123B5D] border-[#D7E0E8]">
-                            <div className="w-10 h-10 rounded-md bg-[#E8F2FA] text-[#123B5D] flex items-center justify-center shrink-0">
+                        <Card className="flex items-center space-x-4 border-l-4 border-l-[#123B5D] border-[#D9E2EA]">
+                            <div className="w-10 h-10 rounded-lg bg-[#E8F4FB] text-[#123B5D] flex items-center justify-center shrink-0">
                                 <Users className="w-5 h-5" />
                             </div>
                             <div>
-                                <p className="text-[11px] font-bold text-[#718096] uppercase tracking-wider">Anggota Terdaftar</p>
+                                <p className="text-[11px] font-bold text-[#536170] uppercase tracking-wider">Anggota Terdaftar</p>
                                 <p className="text-2xl font-extrabold text-[#17202A]">{stats.total_members}</p>
-                                <p className="text-[11px] text-[#718096] font-medium">Siswa anggota aktif</p>
+                                <p className="text-[11px] text-[#536170] font-medium">Siswa anggota aktif</p>
                             </div>
                         </Card>
 
-                        <Card className="flex items-center space-x-4 border-l-4 border-l-[#25805A] border-[#D7E0E8]">
-                            <div className="w-10 h-10 rounded-md bg-[#EBF5F0] text-[#25805A] flex items-center justify-center shrink-0">
+                        <Card className="flex items-center space-x-4 border-l-4 border-l-[#2A9D6F] border-[#D9E2EA]">
+                            <div className="w-10 h-10 rounded-lg bg-[#E4F4ED] text-[#2A9D6F] flex items-center justify-center shrink-0">
                                 <TrendingUp className="w-5 h-5" />
                             </div>
                             <div>
-                                <p className="text-[11px] font-bold text-[#718096] uppercase tracking-wider">Rata-Rata Kehadiran</p>
-                                <p className="text-2xl font-extrabold text-[#25805A]">{stats.avg_attendance_rate}%</p>
-                                <p className="text-[11px] text-[#718096] font-medium">Tingkat kehadiran siswa</p>
+                                <p className="text-[11px] font-bold text-[#536170] uppercase tracking-wider">Rata-Rata Kehadiran</p>
+                                <p className="text-2xl font-extrabold text-[#2A9D6F]">{stats.avg_attendance_rate}%</p>
+                                <p className="text-[11px] text-[#536170] font-medium">Tingkat kehadiran siswa</p>
                             </div>
                         </Card>
                     </div>
 
                     {/* Member Attendance Table */}
-                    <Card padding={false} className="overflow-hidden border-[#D7E0E8]">
-                        <div className="p-4 sm:p-5 border-b border-[#D7E0E8] flex items-center justify-between">
+                    <Card padding={false} className="overflow-hidden border-[#D9E2EA]">
+                        <div className="p-4 sm:p-5 border-b border-[#D9E2EA] flex items-center justify-between">
                             <div>
                                 <h3 className="text-base font-bold text-[#17202A]">Tabel Rekap Kehadiran Anggota</h3>
-                                <p className="text-xs text-[#718096]">Dihitung dari seluruh sesi kegiatan yang telah dibuka</p>
+                                <p className="text-xs text-[#536170]">Dihitung dari seluruh sesi kegiatan yang telah dibuka</p>
                             </div>
                             <Badge variant="primary">{memberRecaps.length} Anggota</Badge>
                         </div>
 
                         {memberRecaps.length === 0 ? (
                             <div className="p-12 text-center">
-                                <Users className="w-12 h-12 mx-auto text-[#718096] mb-3" />
+                                <Users className="w-12 h-12 mx-auto text-[#536170] mb-3 opacity-60" />
                                 <h4 className="text-sm font-bold text-[#17202A]">Belum Ada Anggota Terdaftar</h4>
-                                <p className="text-xs text-[#718096] max-w-sm mx-auto mt-1">
+                                <p className="text-xs text-[#536170] max-w-sm mx-auto mt-1">
                                     Tambahkan anggota aktif ke ekstrakurikuler ini untuk melihat rekap kehadiran.
                                 </p>
                             </div>
@@ -148,7 +148,7 @@ export default function Recap({
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left border-collapse text-xs sm:text-sm">
                                     <thead>
-                                        <tr className="bg-[#F3F8FC] border-b border-[#D7E0E8] text-[#718096] font-bold uppercase tracking-wider text-[11px]">
+                                        <tr className="bg-[#F5F7FA] border-b border-[#D9E2EA] text-[#536170] font-bold uppercase tracking-wider text-[11px]">
                                             <th className="py-3 px-4">Nama Siswa</th>
                                             <th className="py-3 px-4">NISN</th>
                                             <th className="py-3 px-4">Kelas</th>
@@ -159,48 +159,48 @@ export default function Recap({
                                             <th className="py-3 px-4 text-right">Persentase</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-[#D7E0E8]">
+                                    <tbody className="divide-y divide-[#D9E2EA]">
                                         {memberRecaps.map((m) => (
-                                             <tr key={m.user_id} className="hover:bg-[#F3F8FC]/60 transition-colors">
+                                             <tr key={m.user_id} className="hover:bg-[#F5F7FA] transition-colors">
                                                 <td className="py-3.5 px-4 font-bold text-[#17202A]">
                                                     {m.name}
                                                 </td>
-                                                <td className="py-3.5 px-4 font-mono text-[#718096] text-xs">
+                                                <td className="py-3.5 px-4 font-mono text-[#536170] text-xs">
                                                     {m.nisn}
                                                 </td>
-                                                <td className="py-3.5 px-4 text-[#465362]">
+                                                <td className="py-3.5 px-4 text-[#536170]">
                                                     {m.class_name}
                                                 </td>
                                                 <td className="py-3.5 px-4 text-center">
-                                                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-bold bg-[#EBF5F0] text-[#25805A] border border-[#25805A]/30">
+                                                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-xs font-bold bg-[#E4F4ED] text-[#2A9D6F] border border-[#2A9D6F]/30">
                                                         {m.hadir}
                                                     </span>
                                                 </td>
                                                 <td className="py-3.5 px-4 text-center">
-                                                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-bold bg-[#FEF8EC] text-[#B7791F] border border-[#B7791F]/30">
+                                                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-xs font-bold bg-[#FFF4D6] text-[#B7791F] border border-[#F4B942]/40">
                                                         {m.izin}
                                                     </span>
                                                 </td>
                                                 <td className="py-3.5 px-4 text-center">
-                                                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-bold bg-[#E8F2FA] text-[#123B5D] border border-[#1769AA]/30">
+                                                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-xs font-bold bg-[#E8F4FB] text-[#1769AA] border border-[#1769AA]/30">
                                                         {m.sakit}
                                                     </span>
                                                 </td>
                                                 <td className="py-3.5 px-4 text-center">
-                                                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-bold bg-[#FDF2F2] text-[#C24141] border border-[#C24141]/30">
+                                                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-xs font-bold bg-[#FCE8E3] text-[#E76F51] border border-[#E76F51]/30">
                                                         {m.alpa}
                                                     </span>
                                                 </td>
                                                 <td className="py-3.5 px-4 text-right">
                                                     <div className="flex items-center justify-end space-x-2">
-                                                        <div className="w-16 bg-[#D7E0E8] rounded-full h-1.5 overflow-hidden">
+                                                        <div className="w-16 bg-[#D9E2EA] rounded-full h-1.5 overflow-hidden">
                                                             <div
                                                                 className={`h-1.5 rounded-full ${
                                                                     m.attendance_rate >= 75
-                                                                        ? 'bg-[#25805A]'
+                                                                        ? 'bg-[#2A9D6F]'
                                                                         : m.attendance_rate >= 50
-                                                                        ? 'bg-[#B7791F]'
-                                                                        : 'bg-[#C24141]'
+                                                                        ? 'bg-[#F4B942]'
+                                                                        : 'bg-[#E76F51]'
                                                                 }`}
                                                                 style={{ width: `${Math.min(100, m.attendance_rate)}%` }}
                                                             ></div>
@@ -219,10 +219,10 @@ export default function Recap({
                     </Card>
                 </div>
             ) : (
-                <Card className="text-center py-12 border-[#D7E0E8]">
-                    <AlertCircle className="w-12 h-12 text-[#718096] mx-auto mb-3" />
+                <Card className="text-center py-12 border-[#D9E2EA]">
+                    <AlertCircle className="w-12 h-12 text-[#536170] mx-auto mb-3 opacity-60" />
                     <h3 className="text-base font-bold text-[#17202A]">Tidak Ada Ekstrakurikuler</h3>
-                    <p className="text-xs text-[#718096] mt-1">Anda belum ditugaskan ke ekstrakurikuler aktif manapun.</p>
+                    <p className="text-xs text-[#536170] mt-1">Anda belum ditugaskan ke ekstrakurikuler aktif manapun.</p>
                 </Card>
             )}
         </AppLayout>

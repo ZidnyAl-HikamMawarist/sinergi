@@ -80,8 +80,8 @@ export default function PortalDashboard({
         >
             {/* Offline Alert (AC-D7) */}
             {!isOnline && (
-                <div className="mb-5 p-3.5 rounded-lg bg-[#FEF8EC] border border-[#B7791F]/30 text-[#B7791F] flex items-center space-x-2.5 shadow-xs">
-                    <WifiOff className="w-4 h-4 text-[#B7791F] shrink-0" />
+                <div className="mb-5 p-3.5 rounded-xl bg-[#FFF4D6] border border-[#F4B942] text-[#9A6B00] flex items-center space-x-2.5 shadow-xs">
+                    <WifiOff className="w-4 h-4 text-[#F4B942] shrink-0" />
                     <div className="text-xs font-bold">
                         Koneksi terputus. Akses internet diperlukan untuk memperbarui token QR dinamis.
                     </div>
@@ -91,10 +91,10 @@ export default function PortalDashboard({
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
                 {/* Digital Student ID Card */}
                 <div className="lg:col-span-5 flex flex-col items-center">
-                    <div className="w-full bg-white rounded-lg p-6 shadow-xs border border-[#D7E0E8] text-center">
+                    <div className="w-full bg-white rounded-xl p-6 shadow-xs border border-[#D9E2EA] text-center">
                         {/* Student Details */}
                         <div>
-                            <div className="w-12 h-12 rounded-md bg-[#123B5D] text-white font-extrabold text-lg flex items-center justify-center mx-auto mb-2.5">
+                            <div className="w-12 h-12 rounded-lg bg-[#123B5D] text-white font-extrabold text-lg flex items-center justify-center mx-auto mb-2.5">
                                 {student.name?.charAt(0) || 'S'}
                             </div>
                             <h2 className="text-base font-extrabold text-[#17202A] tracking-tight">
@@ -106,36 +106,36 @@ export default function PortalDashboard({
                         </div>
 
                         {/* QR Code Container */}
-                        <div className="my-5 p-3 rounded-lg bg-[#F3F8FC] border border-[#D7E0E8] inline-block relative">
+                        <div className="my-5 p-3 rounded-xl bg-[#F5F7FA] border border-[#D9E2EA] inline-block relative">
                             {isOnline && token ? (
                                 <QRCodeSVG
                                     value={token}
                                     size={200}
                                     level="M"
                                     includeMargin={true}
-                                    className="mx-auto bg-white p-1 rounded-sm border border-[#D7E0E8]/50"
+                                    className="mx-auto bg-white p-1 rounded-md border border-[#D9E2EA]"
                                 />
                             ) : (
-                                <div className="w-[200px] h-[200px] flex flex-col items-center justify-center text-[#718096] text-xs">
-                                    <WifiOff className="w-8 h-8 mb-2 text-[#718096]" />
+                                <div className="w-[200px] h-[200px] flex flex-col items-center justify-center text-[#536170] text-xs">
+                                    <WifiOff className="w-8 h-8 mb-2 text-[#536170]" />
                                     <span>QR Membutuhkan Internet</span>
                                 </div>
                             )}
 
                             {/* Refresh Indicator Overlay */}
                             {isRefreshing && (
-                                <div className="absolute inset-0 bg-white/80 flex items-center justify-center rounded-lg">
+                                <div className="absolute inset-0 bg-white/80 flex items-center justify-center rounded-xl">
                                     <RefreshCw className="w-7 h-7 text-[#1769AA] animate-spin" />
                                 </div>
                             )}
                         </div>
 
                         {/* Countdown Timer (AC-D1) */}
-                        <div className="flex items-center justify-center space-x-2 text-xs font-medium text-[#465362]">
+                        <div className="flex items-center justify-center space-x-2 text-xs font-medium text-[#536170]">
                             <Clock className="w-4 h-4 text-[#1769AA]" />
                             <span>
                                 QR berganti dalam:{' '}
-                                <strong className={`font-mono font-bold ${timeLeft <= 10 ? 'text-[#C24141]' : 'text-[#1769AA]'}`}>
+                                <strong className={`font-mono font-bold ${timeLeft <= 10 ? 'text-[#E76F51]' : 'text-[#1769AA]'}`}>
                                     {timeLeft}s
                                 </strong>
                             </span>
@@ -143,14 +143,14 @@ export default function PortalDashboard({
                                 type="button"
                                 onClick={fetchFreshQr}
                                 disabled={isRefreshing || !isOnline}
-                                className="p-1 rounded-md hover:bg-[#E8F2FA] text-[#1769AA] transition-colors ml-0.5"
+                                className="p-1 rounded-md hover:bg-[#E8F4FB] text-[#1769AA] transition-colors ml-0.5"
                                 title="Perbarui QR sekarang"
                             >
                                 <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
                             </button>
                         </div>
 
-                        <p className="mt-4 text-[11px] text-[#718096] leading-relaxed border-t border-[#D7E0E8] pt-3">
+                        <p className="mt-4 text-[11px] text-[#536170] leading-relaxed border-t border-[#D9E2EA] pt-3">
                             Anti-titip absen: Kode QR diperbarui berkala dengan tanda tangan kriptografis HMAC. Tangkapan layar (*screenshot*) tidak berlaku.
                         </p>
                     </div>
@@ -162,11 +162,11 @@ export default function PortalDashboard({
                     <Card
                         title="Ekstrakurikuler Saya"
                         subtitle="Keanggotaan aktif Anda pada tahun ajaran ini"
-                        accentColor="primary"
-                        className="border-[#D7E0E8]"
+                        accentColor="blue"
+                        className="border-[#D9E2EA]"
                     >
                         {memberships.length === 0 ? (
-                            <div className="text-center py-6 text-[#718096] text-xs">
+                            <div className="text-center py-6 text-[#536170] text-xs">
                                 Anda belum terdaftar di ekstrakurikuler manapun.
                             </div>
                         ) : (
@@ -174,22 +174,22 @@ export default function PortalDashboard({
                                 {memberships.map((m) => (
                                     <div
                                         key={m.id}
-                                        className="p-3 rounded-md bg-white hover:bg-[#F3F8FC] border border-[#D7E0E8] flex items-center justify-between transition-colors"
+                                        className="p-3 rounded-lg bg-white hover:bg-[#F5F7FA] border border-[#D9E2EA] flex items-center justify-between transition-colors"
                                     >
                                         <div className="flex items-center space-x-2.5">
-                                            <div className="w-8 h-8 rounded-md bg-[#E8F2FA] text-[#123B5D] flex items-center justify-center font-bold text-xs shrink-0">
+                                            <div className="w-8 h-8 rounded-md bg-[#E8F4FB] text-[#1769AA] flex items-center justify-center font-bold text-xs shrink-0">
                                                 <Building2 className="w-4 h-4" />
                                             </div>
                                             <div>
                                                 <h3 className="text-xs font-bold text-[#17202A]">
                                                     {m.extracurricular?.name}
                                                 </h3>
-                                                <span className="text-[10px] text-[#718096] font-semibold uppercase">
+                                                <span className="text-[10px] text-[#536170] font-semibold uppercase">
                                                     Jabatan: {m.position}
                                                 </span>
                                             </div>
                                         </div>
-                                        <CheckCircle2 className="w-4 h-4 text-[#25805A]" />
+                                        <CheckCircle2 className="w-4 h-4 text-[#2A9D6F]" />
                                     </div>
                                 ))}
                             </div>
@@ -200,33 +200,34 @@ export default function PortalDashboard({
                     <Card
                         title="Riwayat Presensi Terbaru"
                         subtitle="Catatan kehadiran Anda pada sesi kegiatan eskul"
-                        className="border-[#D7E0E8]"
+                        accentColor="green"
+                        className="border-[#D9E2EA]"
                     >
                         {recentAttendances.length === 0 ? (
-                            <div className="text-center py-6 text-[#718096] text-xs">
+                            <div className="text-center py-6 text-[#536170] text-xs">
                                 Belum ada catatan riwayat kehadiran.
                             </div>
                         ) : (
-                            <div className="divide-y divide-[#D7E0E8] -mx-5 -my-2">
+                            <div className="divide-y divide-[#D9E2EA] -mx-5 -my-2">
                                 {recentAttendances.map((att) => (
-                                    <div key={att.id} className="px-5 py-2.5 flex items-center justify-between hover:bg-[#F3F8FC]/50 transition-colors">
+                                    <div key={att.id} className="px-5 py-2.5 flex items-center justify-between hover:bg-[#F5F7FA] transition-colors">
                                         <div>
                                             <div className="text-xs font-bold text-[#17202A]">
                                                 {att.activity_session?.title || 'Sesi Kegiatan'}
                                             </div>
-                                            <div className="text-[11px] text-[#718096] mt-0.5">
+                                            <div className="text-[11px] text-[#536170] mt-0.5">
                                                 {att.activity_session?.extracurricular?.name} &bull;{' '}
                                                 {att.recorded_at ? new Date(att.recorded_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-'}
                                             </div>
                                             {att.note && (
-                                                <div className="text-[10px] text-[#718096] italic mt-0.5">
+                                                <div className="text-[10px] text-[#536170] italic mt-0.5">
                                                     Catatan: {att.note}
                                                 </div>
                                             )}
                                         </div>
                                         <div className="flex items-center space-x-2">
                                             <Badge status={att.status}>{att.status}</Badge>
-                                            <span className="text-[10px] font-mono font-semibold text-[#718096] uppercase">
+                                            <span className="text-[10px] font-mono font-semibold text-[#536170] uppercase">
                                                 {att.method}
                                             </span>
                                         </div>

@@ -41,18 +41,18 @@ export default function Modal({
             <div
                 className={`relative w-full ${
                     maxWidthClasses[maxWidth] || maxWidthClasses.md
-                } bg-white rounded-lg shadow-lg border border-[#D7E0E8] overflow-hidden transform transition-all z-10`}
+                } bg-white rounded-xl shadow-lg border border-[#D9E2EA] overflow-hidden transform transition-all z-10`}
                 role="dialog"
                 aria-modal="true"
             >
                 {title && (
-                    <div className="px-5 py-3.5 border-b border-[#D7E0E8] bg-[#F3F8FC] flex items-center justify-between gap-4">
+                    <div className="px-5 py-3.5 border-b border-[#D9E2EA] bg-[#F5F7FA] flex items-center justify-between gap-4">
                         <h3 className="text-sm font-bold text-[#17202A]">{title}</h3>
                         {onClose && (
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="p-1 rounded-md text-[#718096] hover:text-[#17202A] hover:bg-[#E8F2FA] transition-colors focus:outline-none focus:ring-1 focus:ring-[#1769AA]"
+                                className="p-1 rounded-lg text-[#536170] hover:text-[#17202A] hover:bg-[#E8F4FB] transition-colors focus:outline-none focus:ring-1 focus:ring-[#1769AA]"
                                 aria-label="Tutup"
                             >
                                 <X className="w-4 h-4" />

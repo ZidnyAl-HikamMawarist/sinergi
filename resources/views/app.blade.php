@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-[#F6F8FB]">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-[#F5F7FA]">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,7 +21,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.jsx'])
         @inertiaHead
     </head>
-    <body class="h-full font-sans antialiased text-[#17202A] bg-[#F6F8FB] selection:bg-[#1769AA] selection:text-white">
+    <body class="h-full font-sans antialiased text-[#17202A] bg-[#F5F7FA] selection:bg-[#1769AA] selection:text-white">
         @inertia
         <script>
             if ('serviceWorker' in navigator) {

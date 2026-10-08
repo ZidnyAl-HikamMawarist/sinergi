@@ -10,28 +10,54 @@ export default function StatCard({
 }) {
     const colorStyles = {
         primary: {
-            bg: 'bg-[#E8F2FA] text-[#123B5D]',
+            bg: 'bg-[#E8F4FB] text-[#1769AA]',
             border: 'border-l-4 border-l-[#1769AA]',
+            badge: 'text-[#1769AA]',
+        },
+        blue: {
+            bg: 'bg-[#E8F4FB] text-[#1769AA]',
+            border: 'border-l-4 border-l-[#1769AA]',
+            badge: 'text-[#1769AA]',
         },
         success: {
-            bg: 'bg-[#EBF5F0] text-[#25805A]',
-            border: 'border-l-4 border-l-[#25805A]',
+            bg: 'bg-[#E4F4ED] text-[#2A9D6F]',
+            border: 'border-l-4 border-l-[#2A9D6F]',
+            badge: 'text-[#2A9D6F]',
+        },
+        green: {
+            bg: 'bg-[#E4F4ED] text-[#2A9D6F]',
+            border: 'border-l-4 border-l-[#2A9D6F]',
+            badge: 'text-[#2A9D6F]',
         },
         warning: {
-            bg: 'bg-[#FEF8EC] text-[#B7791F]',
-            border: 'border-l-4 border-l-[#B7791F]',
+            bg: 'bg-[#FFF4D6] text-[#B27B10]',
+            border: 'border-l-4 border-l-[#F4B942]',
+            badge: 'text-[#B27B10]',
+        },
+        yellow: {
+            bg: 'bg-[#FFF4D6] text-[#B27B10]',
+            border: 'border-l-4 border-l-[#F4B942]',
+            badge: 'text-[#B27B10]',
         },
         accent: {
-            bg: 'bg-[#FEF8EC] text-[#D9901A]',
-            border: 'border-l-4 border-l-[#D9901A]',
+            bg: 'bg-[#FFF4D6] text-[#B27B10]',
+            border: 'border-l-4 border-l-[#F4B942]',
+            badge: 'text-[#B27B10]',
         },
         danger: {
-            bg: 'bg-[#FDF2F2] text-[#C24141]',
-            border: 'border-l-4 border-l-[#C24141]',
+            bg: 'bg-[#FCE8E3] text-[#E76F51]',
+            border: 'border-l-4 border-l-[#E76F51]',
+            badge: 'text-[#E76F51]',
+        },
+        coral: {
+            bg: 'bg-[#FCE8E3] text-[#E76F51]',
+            border: 'border-l-4 border-l-[#E76F51]',
+            badge: 'text-[#E76F51]',
         },
         neutral: {
-            bg: 'bg-[#F3F8FC] text-[#465362]',
-            border: 'border-l-4 border-l-[#718096]',
+            bg: 'bg-[#F5F7FA] text-[#536170]',
+            border: 'border-l-4 border-l-[#536170]',
+            badge: 'text-[#536170]',
         },
     };
 
@@ -39,18 +65,18 @@ export default function StatCard({
 
     return (
         <div
-            className={`bg-white rounded-lg p-5 border border-[#D7E0E8] shadow-xs ${scheme.border} ${className}`}
+            className={`bg-white rounded-xl p-5 border border-[#D9E2EA] shadow-xs ${scheme.border} ${className}`}
         >
             <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#718096] block truncate">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#536170] block truncate">
                         {title}
                     </span>
-                    <div className="text-2xl sm:text-3xl font-extrabold text-[#17202A] tracking-tight mt-2 truncate">
+                    <div className="text-2xl sm:text-3xl font-extrabold text-[#17202A] tracking-tight mt-1.5 truncate">
                         {value}
                     </div>
                     {subtitle && (
-                        <p className="mt-1.5 text-xs text-[#718096] truncate">
+                        <p className="mt-1 text-xs text-[#536170] truncate font-medium">
                             {subtitle}
                         </p>
                     )}

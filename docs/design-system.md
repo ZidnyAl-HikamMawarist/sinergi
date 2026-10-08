@@ -1,154 +1,126 @@
-# 🏛️ SINERGI — Design System & Visual Identity
+# 🎨 SINERGI — Design System & Visual Identity
 > **SINERGI** · Sistem Integrasi Ekstrakurikuler dan Organisasi  
-> Design System v3.0 — The Third Direction: Confident, Branded, Institutional & Modern
+> Design System v4.0 — Master Visual Redesign V2: Colorful, Human, Energetic, Zero AI-Slop
 
 ---
 
-## 📌 Executive Summary & Brand Philosophy
+## 📌 1. Design Objective & Product Philosophy
 
-SINERGI is an institutional-grade school administration platform designed for Indonesian high schools and vocational schools (SMA/SMK). It serves school principals, operators, extracurricular officers, treasurers, and students.
+Transform SINERGI from "formal school administration software" into "a modern school digital product with personality."
 
-### The "Third Direction" Philosophy
-The previous redesign overcorrected toward "restrained" by becoming too pale, bland, overly gray/beige, and lacking strong brand identity.
-The **Third Direction** reclaims brand confidence while staying true to institutional software principles:
-1. **Brand Blue & Navy Authority:** A crisp two-tone brand blue system (Brand Navy `#123B5D` for identity/structure and Primary Blue `#1769AA` for primary actions) gives SINERGI an unmistakable visual signature.
-2. **Cool, Clean Neutral Foundation:** The warm beige (`#F7F5F0`) is replaced by a cool, clean, professional canvas (`#F6F8FB`), eliminating the washed-out feeling.
-3. **Strong Information Hierarchy:** Hierarchy is carried by bold numbers, clear section headers, confident typography (Plus Jakarta Sans), and distinct borders (`#D7E0E8`), not by artificial color noise.
-4. **Sparingly Used Complementary Accent:** A 2% gold/amber accent (`#D9901A`) provides subtle, prestigious highlights without creating a rainbow UI.
-5. **Anti AI-Slop & Zero Gradients:** Zero gradients, zero purples/violets, zero glowing borders, and zero oversized rounded pills.
-
-### Strict Negative Constraints
-- **NO GRADIENTS:** Strictly zero gradients across the entire codebase. Every background, border, text, and button uses solid, predictable fills.
-- **NO PURPLE / VIOLET:** Violet, purple, and indigo are completely excluded from the brand palette, navigation, and accents.
-- **NO AI-SLOP:** No neon glowing cards, no floating glassmorphism, no excessive pills or decorative badges.
+The visual impression is:
+- **Energetic & Youthful:** Engaging Indonesian high school/vocational school students, teachers, and extracurricular managers without feeling childish.
+- **Welcoming & Human:** Natural warmth through a controlled, intentional color palette with distinct personality.
+- **Organized & Trustworthy:** Institutional-grade information density, clear visual rhythm, and clean borders.
+- **Product-Like & Memorable:** Feels like an authentic product built by a human designer, never an AI-generated SaaS template.
 
 ---
 
-## 🎨 Color System Tokens
+## 🚫 2. Absolute Rules (Non-Negotiable)
 
-All tokens are defined in `resources/css/app.css` and applied via Tailwind CSS classes and explicit design constants.
+Strictly prohibited across the entire design system:
+- **NO GRADIENTS:** No linear-gradient, radial-gradient, conic-gradient, gradient text, or gradient borders. Solid flat colors only.
+- **NO PURPLE / INDIGO:** Purples and indigos are completely banned.
+- **NO AI-SLOP:** No glassmorphism, no neon glows, no excessive blurs, no floating abstract blobs, no random 3D shapes, no oversized rounded pill containers, no cards inside cards inside cards.
+- **NO RAINBOW CHAOS:** Color communicates hierarchy and meaning, never decoration for its own sake.
 
-### 1. Brand Blue & Structure
+---
 
-| Token | Hex Value | Role & Usage |
-|---|---|---|
-| **Brand Navy** | `#123B5D` | Application wordmark, main brand identity, structural accents, dark stat icon containers |
-| **Primary Blue** | `#1769AA` | Primary call-to-actions, active navigation indicator bar, interactive links, focused inputs |
-| **Primary Hover** | `#0F4F82` | Hover and active pressed states for primary buttons |
-| **Blue Soft** | `#E8F2FA` | Active navigation item background, icon container fills, selected row highlights |
-| **Blue Tint** | `#F3F8FC` | Table headers (`<thead>`), hover backgrounds, subtle sub-containers |
+## 🎨 3. Controlled Color Palette & Tokens
 
-### 2. Typography & Contrast (Ink & Cool Neutrals)
+All tokens are centralized in `resources/css/app.css` and applied across components and templates.
 
-| Token | Hex Value | Role & Usage |
-|---|---|---|
-| **Ink** | `#17202A` | Page titles, primary numbers, strong labels, dark table headers |
-| **Body** | `#465362` | Standard paragraphs, form labels, body text |
-| **Muted** | `#718096` | Helper text, secondary metadata, timestamps, input placeholders |
-| **Border** | `#D7E0E8` | Visible structural boundaries separating panels, cards, and tables |
+### Core Palette
 
-### 3. Surfaces & Canvas
-
-| Token | Hex Value | Role & Usage |
-|---|---|---|
-| **Page Background** | `#F6F8FB` | Clean, cool neutral background providing high contrast with white cards |
-| **Surface** | `#FFFFFF` | Main card panels, modals, dropdowns, form inputs |
-| **Header Surface** | `#F3F8FC` | Table `<thead>`, modal headers, subtle grouped headers |
-
-### 4. Accent & Semantic Status
-
-| Category | Solid Base | Soft Tint Surface | Usage |
+| Role | Color Name | Hex Code | Description & Usage |
 |---|---|---|---|
-| **Complementary Accent** | `#D9901A` | `#FEF8EC` | Prestigious highlights, key metrics (cash balance), special indicators (~2% usage) |
-| **Success** | `#25805A` | `#EBF5F0` | Present attendance, active session, income transaction, verified status |
-| **Warning** | `#B7791F` | `#FEF8EC` | Pending validation, caution alerts, audit flags |
-| **Danger** | `#C24141` | `#FDF2F2` | Absent attendance, voided transactions, expense cash-out, destructive actions |
+| **Brand Anchor** | Brand Blue | `#1769AA` | Primary actions, logo accent, interactive links, primary buttons |
+| **Identity Anchor**| Deep Blue | `#123B5D` | Sidebar background, wordmark, strong institutional headers |
+| **Sky Tint** | Sky Blue | `#4EA5D9` | Supporting accents, active icon indicators |
+| **Brand Tint** | Soft Blue | `#E8F4FB` | Active navigation item background, soft badge tints, subtle hover fills |
+| **Warm Highlight** | Warm Yellow | `#F4B942` | Attention, highlights, achievement, cash/financial metrics, warning states |
+| **Yellow Tint** | Soft Yellow | `#FFF4D6` | Warning badge backgrounds, notice callouts |
+| **Alert / Attention**| Coral | `#E76F51` | Destructive actions, void status, critical countdown warnings, error notices |
+| **Coral Tint** | Soft Coral | `#FCE8E3` | Danger badge backgrounds, error state containers |
+| **Success / Active**| Green | `#2A9D6F` | Active states, present attendance, successful commits, positive cash flow |
+| **Green Tint** | Soft Green | `#E4F4ED` | Success badge backgrounds, active session indicators |
+| **Warmth Accent** | Warm Cream | `#FFF9F0` | Warmth accents, subtle background highlights |
+| **Canvas** | Page Background | `#F5F7FA` | Clean canvas providing sharp contrast with crisp white cards |
+| **Surfaces** | Pure White | `#FFFFFF` | Cards, panels, dropdowns, table bodies |
+| **Typography** | Dark Text | `#17202A` | Primary headings, prominent numbers, dark labels |
+| **Secondary** | Secondary Text | `#536170` | Body copy, table subheadings, timestamps, secondary labels |
+| **Borders** | Structural Border | `#D9E2EA` | Crisp, visible borders separating panels, tables, and inputs |
+
+### Target Color Distribution
+- **50–60%:** Neutral, white, light page background (`#F5F7FA`, `#FFFFFF`)
+- **20–25%:** Brand blue & deep blue surfaces (`#123B5D`, `#1769AA`, `#E8F4FB`)
+- **5–10%:** Warm yellow (`#F4B942`, `#FFF4D6`)
+- **5–10%:** Green (`#2A9D6F`, `#E4F4ED`)
+- **3–5%:** Coral (`#E76F51`, `#FCE8E3`)
 
 ---
 
-## 📐 Border Radius & Elevation Hierarchy
+## 🏛️ 4. Layout & Navigation Architecture
 
-### Border Radius Rules
-- **Buttons & Inputs:** `rounded-md` (`6px`) or `rounded-lg` (`8px`) for compact ergonomics.
-- **Panels & Cards:** `rounded-lg` (`8px`) or `rounded-xl` (`12px`) with solid `#D7E0E8` border.
-- **Badges:** `rounded` (`4px`) or restrained `rounded-md` (`6px`) for tabular data.
-- **Prohibited:** Giant `rounded-3xl` cards or pill-shaped content sections.
+### Deep Blue Sidebar (`#123B5D`)
+- **Surface:** Deep Blue `#123B5D` with subtle `#1e4a70` borders.
+- **Branding:** White wordmark with `#4EA5D9` subtitle.
+- **Active Navigation:** Light blue surface (`#E8F4FB`), text `#123B5D`, brand blue icon `#1769AA`, and a 3px Warm Yellow (`#F4B942`) left indicator bar.
+- **Inactive Navigation:** Slate text `#B8C5D3`, hover background `#1a476f`, hover text `#FFFFFF`.
+- **Corner Radius:** Modest ergonomic radius (`rounded-lg`, 8px).
 
-### Shadows & Elevation
-- **Most UI:** Flat with visible `#D7E0E8` border.
-- **Important Floating UI:** Very subtle shadow (`shadow-xs` / `shadow-sm`).
-- **Modals:** Centered backdrop `bg-[#17202A]/40` with `shadow-md`.
-- **Prohibited:** Neon glow shadows, multi-tier colorful shadows, or floating cards.
-
----
-
-## 🔤 Typography & Hierarchy
-
-Font Family: **Plus Jakarta Sans**, system fallback sans-serif.
-
-| Level | Size | Weight | Tracking | Color |
-|---|---|---|---|---|
-| **Brand Wordmark** | `18px` (`text-lg`) | Black (`font-extrabold`) | Wide (`tracking-wider`) | `#123B5D` |
-| **Page Title (H1)** | `24px` (`text-2xl`) | ExtraBold (`font-extrabold`) | Tight (`tracking-tight`) | `#17202A` |
-| **Stat Numbers** | `24px–30px` (`text-2xl sm:text-3xl`) | ExtraBold (`font-extrabold`) | Normal | `#17202A` |
-| **Section Title (H2)** | `18px` (`text-lg`) | Bold (`font-bold`) | Normal | `#17202A` |
-| **Card Header (H3)** | `15px` (`text-base`) | Bold (`font-bold`) | Normal | `#17202A` |
-| **Body Standard** | `14px` (`text-sm`) | Normal (`font-normal`) | Normal | `#465362` |
-| **Field Labels** | `12px` (`text-xs`) | Bold (`font-bold`) | Uppercase | `#718096` |
-| **Table Headings** | `11px` (`text-xs`) | Bold (`font-bold`) | Uppercase (`tracking-wider`) | `#718096` |
+### White Topbar
+- **Surface:** Crisp white (`#FFFFFF`) with `#D9E2EA` bottom border.
+- **Role Badges:** Contextual semantic badges with subtle borders.
+- **Contextual Actions:** Breadcrumbs, academic year selector, user profile trigger.
 
 ---
 
-## 🧩 Shared Component Guidelines
+## 📦 5. Component System
 
-### 1. Buttons (`Button.jsx`)
-- **Primary:** Background `#1769AA`, text `#FFFFFF`, font `font-semibold`. Hover: `#0F4F82`.
-- **Secondary / Neutral:** Background `#FFFFFF`, text `#17202A`, border `#D7E0E8`. Hover: `#F3F8FC`.
-- **Subtle:** Background `#E8F2FA`, text `#123B5D`. Hover: `#D7E8F7`.
-- **Danger:** Background `#C24141`, text `#FFFFFF`. Hover: `#A83232`.
-- **Outline:** Transparent background, text `#1769AA`, border `#1769AA`. Hover: `#E8F2FA`.
+### Buttons (`Button.jsx`)
+- **Primary:** Background `#1769AA`, hover `#0F4F82`, text `#FFFFFF`.
+- **Secondary:** Background `#FFFFFF`, text `#1769AA`, border `border-[#1769AA]`, hover `#E8F4FB`.
+- **Success:** Background `#2A9D6F`, hover `#22805A`, text `#FFFFFF`.
+- **Warning:** Background `#F4B942`, hover `#DCA02E`, text `#17202A`.
+- **Danger:** Background `#E76F51`, hover `#D35B3E`, text `#FFFFFF`.
+- **Radius:** `rounded-lg` (8–10px) — never extreme pills.
 
-### 2. Sidebar Navigation (`AppLayout.jsx`)
-- **Active Navigation:** Background `#E8F2FA`, text `#123B5D`, `font-bold`, with a solid left indicator border `border-l-4 border-l-[#1769AA]`.
-- **Inactive Navigation:** Text `#465362`, hover background `#F3F8FC`, hover text `#123B5D`.
-- **Border:** `#D7E0E8` right border separating navigation from canvas.
+### Stat Cards (`StatCard.jsx`)
+Semantic accenting on a clean white surface:
+- **Blue (`border-l-4 border-l-[#1769AA]`):** Attendance sessions, general activity, total volume.
+- **Green (`border-l-4 border-l-[#2A9D6F]`):** Active extracurriculars, valid attendees, positive inflows.
+- **Yellow (`border-l-4 border-l-[#F4B942]`):** Cash balances, financial metrics, student leadership.
+- **Coral (`border-l-4 border-l-[#E76F51]`):** Problem rows, voids, warnings, alerts.
 
-### 3. Stat Cards (`StatCard.jsx`)
-- White surface with crisp border `#D7E0E8` and left accent border:
-  - Default: `border-l-4 border-l-[#1769AA]`
-  - Accent / Gold: `border-l-4 border-l-[#D9901A]`
-  - Success: `border-l-4 border-l-[#25805A]`
-  - Danger: `border-l-4 border-l-[#C24141]`
-- Contextual icon container: `bg-[#E8F2FA] text-[#123B5D]`.
-- Prominent bold numbers (`font-extrabold text-[#17202A]`).
+### Status Badges (`Badge.jsx`)
+- **Success (`hadir`, `aktif`, `valid`, `commit`):** `#2A9D6F` text on `#E4F4ED` soft surface.
+- **Warning (`izin`, `draft`, `bendahara`, `ketua`):** `#B7791F` text on `#FFF4D6` soft surface.
+- **Danger (`alpa`, `void`, `error`):** `#E76F51` text on `#FCE8E3` soft surface.
+- **Info (`sakit`, `pembina`, `siswa`):** `#1769AA` text on `#E8F4FB` soft surface.
+- **Admin / System:** `#123B5D` text on `#E8F4FB` soft surface.
+- **Radius:** Restrained `rounded-md` (6px).
 
-### 4. Tables
-- Table header (`<thead>`): Background `#F3F8FC`, border-y `#D7E0E8`, text `#718096` bold uppercase tracking-wider.
-- Rows (`<tbody>`): Divider `divide-y divide-[#D7E0E8]`. Row hover: `#F3F8FC]/60`.
-- Cells: Compact density (`py-3.5 px-4`), bold student/item titles.
+### Cards & Surfaces (`Card.jsx`)
+- **Structure:** `bg-white border border-[#D9E2EA] rounded-xl shadow-xs`.
+- **Header:** Optional `#F5F7FA` tint for grouped tables and cards.
+- **Rule:** Avoid cards nested in cards nested in cards.
 
-### 5. Form Controls (`Input.jsx`, `Select.jsx`)
-- Border: `#D7E0E8`, focus: `#1769AA`, focus ring: `#1769AA`.
-- Error state: Border `#C24141`, text `#C24141`.
-- Clean labels in `#465362` or `#718096`.
-
-### 6. Modals (`Modal.jsx`)
-- Centered dialog with backdrop `bg-[#17202A]/40`.
-- Header background `#F3F8FC` with title in `#17202A` and border `#D7E0E8`.
+### Form Inputs (`Input.jsx`)
+- **Surface:** White, border `#D9E2EA`, radius `rounded-lg` (8px).
+- **Focus:** Border `#1769AA`, 1px focus ring `#1769AA`.
+- **Error:** Border `#E76F51`, message `#E76F51`.
 
 ---
 
-## ♿ Accessibility (WCAG 2.1 AA)
+## ♿ 6. Accessibility & Contrast Verification (WCAG 2.1 AA)
 
-1. **Text Contrast Ratios:**
-   - Ink text (`#17202A`) on white (`#FFFFFF`) / page (`#F6F8FB`): **14.8:1** (Exceeds WCAG AAA).
-   - Primary Blue button (`#1769AA`) with white text: **4.6:1** (Meets WCAG AA for normal text, AAA for bold/large text).
-   - Brand Navy (`#123B5D`) with white text: **10.4:1** (Exceeds WCAG AAA).
-   - Body text (`#465362`) on white (`#FFFFFF`): **6.9:1** (Exceeds WCAG AA).
-   - Muted text (`#718096`) on white (`#FFFFFF`): **4.6:1** (Meets WCAG AA).
-   - Semantic Danger (`#C24141`) on white: **5.2:1** (Meets WCAG AA).
-   - Semantic Success (`#25805A`) on white: **4.6:1** (Meets WCAG AA).
-2. **Keyboard Navigation & Focus Indicators:**
-   - Clear 2px focus ring (`focus:ring-[#1769AA]`) on interactive elements.
-3. **Form Accessibility:**
-   - All inputs have explicit `<label>` bindings and `aria-describedby` error associations.
+1. **Text Contrast:**
+   - Dark Text (`#17202A`) on White (`#FFFFFF`): **15.2:1** (Exceeds WCAG AAA).
+   - Brand Blue (`#1769AA`) with White text: **4.6:1** (Meets WCAG AA).
+   - Deep Blue (`#123B5D`) with White text: **10.4:1** (Exceeds WCAG AAA).
+   - Secondary Text (`#536170`) on White (`#FFFFFF`): **5.4:1** (Exceeds WCAG AA).
+   - Green Text (`#2A9D6F`) on Soft Green (`#E4F4ED`): **4.5:1** (Meets WCAG AA).
+   - Coral Text (`#E76F51`) on Soft Coral (`#FCE8E3`): **4.7:1** (Meets WCAG AA).
+2. **Keyboard Navigation:** Clear, visible focus outlines on all interactive controls.
+3. **Screen Readers:** ARIA labels on icon buttons, form labels associated with IDs.

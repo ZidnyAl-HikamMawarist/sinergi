@@ -10,17 +10,17 @@ export default function Button({
     children,
     ...props
 }) {
-    const baseStyles = 'inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer';
+    const baseStyles = 'inline-flex items-center justify-center font-semibold rounded-lg transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer';
 
     const variants = {
-        primary: 'bg-[#1769AA] hover:bg-[#0F4F82] active:bg-[#123B5D] text-white shadow-xs focus:ring-[#1769AA] border border-transparent font-semibold',
-        secondary: 'bg-white hover:bg-[#F3F8FC] text-[#17202A] border border-[#D7E0E8] shadow-xs focus:ring-[#1769AA]',
-        subtle: 'bg-[#E8F2FA] hover:bg-[#C7DFEE] text-[#123B5D] border border-[#C7DFEE] focus:ring-[#1769AA] font-semibold',
-        success: 'bg-[#25805A] hover:bg-[#1D6949] text-white shadow-xs focus:ring-[#25805A] border border-transparent font-semibold',
-        danger: 'bg-[#C24141] hover:bg-[#A53232] text-white shadow-xs focus:ring-[#C24141] border border-transparent font-semibold',
-        warning: 'bg-[#B7791F] hover:bg-[#975F14] text-white shadow-xs focus:ring-[#B7791F] border border-transparent font-semibold',
-        outline: 'border border-[#D7E0E8] bg-white hover:bg-[#F3F8FC] text-[#17202A] focus:ring-[#1769AA] shadow-xs',
-        ghost: 'text-[#465362] hover:text-[#17202A] hover:bg-[#F3F8FC] focus:ring-[#D7E0E8]',
+        primary: 'bg-[#1769AA] hover:bg-[#0F4F82] active:bg-[#123B5D] text-white shadow-xs focus:ring-[#1769AA] border border-transparent',
+        secondary: 'bg-white hover:bg-[#E8F4FB] text-[#1769AA] border border-[#1769AA] shadow-xs focus:ring-[#1769AA]',
+        subtle: 'bg-[#E8F4FB] hover:bg-[#C9E4F5] text-[#123B5D] border border-[#C9E4F5] focus:ring-[#1769AA]',
+        success: 'bg-[#2A9D6F] hover:bg-[#23825C] text-white shadow-xs focus:ring-[#2A9D6F] border border-transparent',
+        warning: 'bg-[#F4B942] hover:bg-[#DFA330] text-[#17202A] shadow-xs focus:ring-[#F4B942] border border-transparent font-bold',
+        danger: 'bg-[#E76F51] hover:bg-[#CF5B3F] text-white shadow-xs focus:ring-[#E76F51] border border-transparent',
+        outline: 'border border-[#D9E2EA] bg-white hover:bg-[#F5F7FA] text-[#17202A] focus:ring-[#1769AA] shadow-xs',
+        ghost: 'text-[#536170] hover:text-[#17202A] hover:bg-[#E8F4FB] focus:ring-[#D9E2EA]',
     };
 
     const sizes = {
