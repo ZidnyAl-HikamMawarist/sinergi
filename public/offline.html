@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SINERGI — Sedang Offline</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #F7F5F0;
+            color: #17212B;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .card {
+            background: #FFFFFF;
+            border: 1px solid #D9DEE3;
+            border-radius: 8px;
+            max-width: 420px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        h1 {
+            font-size: 1.25rem;
+            color: #1F4E79;
+            margin: 0 0 0.75rem;
+        }
+        p {
+            font-size: 0.875rem;
+            color: #46515C;
+            line-height: 1.5;
+            margin: 0 0 1.5rem;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #1F4E79;
+            color: #FFFFFF;
+            text-decoration: none;
+            padding: 0.625rem 1.25rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Koneksi Terputus</h1>
+        <p>Anda sedang tidak terhubung ke jaringan internet. Demi keamanan dan integritas data sekolah, fitur administrasi, presensi, dan buku kas memerlukan koneksi aktif.</p>
+        <a href="/" class="btn" onclick="window.location.reload(); return false;">Coba Muat Ulang</a>
+    </div>
+</body>
+</html>
