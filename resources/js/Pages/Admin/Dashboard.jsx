@@ -17,18 +17,13 @@ import Card from '@/Components/Card';
 import Badge from '@/Components/Badge';
 import Button from '@/Components/Button';
 
+import { formatIndonesianDate, formatIndonesianTime, formatRupiah } from '@/Utils/format';
+
 export default function AdminDashboard({
     stats = {},
     recentSessions = [],
     recentLogs = [],
 }) {
-    const formatRupiah = (val) => {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            maximumFractionDigits: 0,
-        }).format(val || 0);
-    };
 
     return (
         <AppLayout
@@ -38,8 +33,8 @@ export default function AdminDashboard({
             actions={
                 <div className="flex gap-2">
                     <Link href="/admin/import">
-                        <Button variant="outline" size="sm">
-                            <FileSpreadsheet className="w-4 h-4 mr-1.5 text-blue-600" />
+                        <Button variant="secondary" size="sm">
+                            <FileSpreadsheet className="w-4 h-4 mr-1.5" />
                             Import Siswa
                         </Button>
                     </Link>
@@ -52,77 +47,77 @@ export default function AdminDashboard({
                 </div>
             }
         >
-            {/* 4 Core Stat Cards */}
+            {/* 4 Core Stat Cards with Semantic Accents */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <StatCard
                     title="Total Siswa Aktif"
                     value={stats.totalStudents || 0}
                     subtitle="Terdaftar di sistem"
                     icon={Users}
-                    color="primary"
+                    color="blue"
                 />
                 <StatCard
                     title="Eskul Aktif"
                     value={stats.totalEskul || 0}
                     subtitle="Organisasi & kesiswaan"
                     icon={Building2}
-                    color="secondary"
+                    color="green"
                 />
                 <StatCard
                     title="Sesi Kegiatan"
                     value={stats.totalSessions || 0}
                     subtitle="Tercatat periode ini"
                     icon={Calendar}
-                    color="success"
+                    color="sky"
                 />
                 <StatCard
                     title="Saldo Kas OSIS"
                     value={formatRupiah(stats.cashBalance)}
                     subtitle="Akuntabel & terverifikasi"
                     icon={CreditCard}
-                    color="accent"
+                    color="yellow"
                 />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Recent Sessions */}
-                <div className="lg:col-span-2">
+                <div className="lg:col-span-2 min-w-0">
                     <Card
                         title="Sesi Kegiatan Terbaru"
                         subtitle="Pantau kegiatan eskul yang sedang atau baru selesai digelar"
-                        accentColor="primary"
+                        accentColor="blue"
                         action={
                             <Link
                                 href="/eskul/sessions"
-                                className="text-xs font-bold text-blue-600 hover:text-blue-800"
+                                className="text-xs font-bold text-[#1769AA] hover:text-[#0F4F82] flex items-center gap-1"
                             >
-                                Lihat Semua &rarr;
+                                Lihat Semua <ArrowUpRight className="w-3.5 h-3.5" />
                             </Link>
                         }
                     >
                         {recentSessions.length === 0 ? (
-                            <div className="text-center py-8 text-slate-400 text-sm">
+                            <div className="text-center py-8 text-[#536170] text-sm">
                                 Belum ada sesi kegiatan yang tercatat pada periode ini.
                             </div>
                         ) : (
-                            <div className="divide-y divide-slate-100">
+                            <div className="divide-y divide-[#D9E2EA]">
                                 {recentSessions.map((session) => (
-                                    <div key={session.id} className="py-3.5 flex items-center justify-between">
-                                        <div className="flex items-center space-x-3">
-                                            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs shrink-0">
-                                                <Calendar className="w-5 h-5" />
+                                    <div key={session.id} className="py-3.5 flex items-center justify-between gap-3">
+                                        <div className="flex items-center space-x-3 min-w-0">
+                                            <div className="w-10 h-10 rounded-lg bg-[#E8F4FB] text-[#1769AA] flex items-center justify-center font-bold text-xs shrink-0">
+                                                <Calendar className="w-5 h-5 text-[#1769AA]" />
                                             </div>
-                                            <div>
-                                                <h4 className="text-sm font-bold text-slate-800">
+                                            <div className="min-w-0">
+                                                <h4 className="text-sm font-bold text-[#17202A] truncate">
                                                     {session.title}
                                                 </h4>
-                                                <p className="text-xs text-slate-500 mt-0.5">
-                                                    {session.extracurricular?.name} &bull; {session.session_date}
+                                                <p className="text-xs text-[#536170] mt-0.5 truncate">
+                                                    {session.extracurricular?.name} &bull; {formatIndonesianDate(session.session_date)}
                                                 </p>
                                             </div>
                                         </div>
 
-                                        <div className="flex items-center space-x-2">
+                                        <div className="flex items-center space-x-2 shrink-0">
                                             <Badge status={session.status}>{session.status}</Badge>
                                         </div>
                                     </div>
@@ -133,37 +128,37 @@ export default function AdminDashboard({
                 </div>
 
                 {/* Audit Logs Quick View */}
-                <div>
+                <div className="min-w-0">
                     <Card
                         title="Audit Log Sistem"
                         subtitle="Catatan keamanan mutlak (append-only)"
-                        accentColor="secondary"
+                        accentColor="coral"
                         action={
                             <Link
                                 href="/admin/audit-logs"
-                                className="text-xs font-bold text-violet-600 hover:text-violet-800"
+                                className="text-xs font-bold text-[#1769AA] hover:text-[#0F4F82] flex items-center gap-1"
                             >
-                                Log Lengkap &rarr;
+                                Log Lengkap <ArrowUpRight className="w-3.5 h-3.5" />
                             </Link>
                         }
                     >
                         {recentLogs.length === 0 ? (
-                            <div className="text-center py-8 text-slate-400 text-sm">
+                            <div className="text-center py-8 text-[#536170] text-sm">
                                 Belum ada catatan audit.
                             </div>
                         ) : (
-                            <div className="space-y-3">
+                            <div className="space-y-2.5">
                                 {recentLogs.map((log) => (
-                                    <div key={log.id} className="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs">
-                                        <div className="flex items-center justify-between font-bold text-slate-800">
+                                    <div key={log.id} className="p-3 rounded-lg bg-[#F5F7FA] border border-[#D9E2EA] text-xs">
+                                        <div className="flex items-center justify-between font-bold text-[#17202A]">
                                             <span className="capitalize">{log.action.replace('_', ' ')}</span>
-                                            <span className="text-[10px] text-slate-400 font-normal">
-                                                {new Date(log.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+                                            <span className="text-[10px] text-[#536170] font-normal">
+                                                {formatIndonesianTime(log.created_at)}
                                             </span>
                                         </div>
-                                        <div className="text-slate-500 mt-1 flex items-center justify-between text-[11px]">
-                                            <span>Oleh: {log.user?.name || 'Sistem'}</span>
-                                            <span className="font-mono text-slate-400">{log.entity_type}</span>
+                                        <div className="text-[#536170] mt-1 flex items-center justify-between text-[11px]">
+                                            <span>Oleh: <strong>{log.user?.name || 'Sistem'}</strong></span>
+                                            <span className="font-mono text-[10px] text-[#536170] px-1.5 py-0.5 rounded bg-white border border-[#D9E2EA]">{log.entity_type}</span>
                                         </div>
                                     </div>
                                 ))}

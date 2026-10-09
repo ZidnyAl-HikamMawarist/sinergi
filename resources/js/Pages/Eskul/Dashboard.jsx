@@ -18,6 +18,7 @@ import Badge from '@/Components/Badge';
 import Button from '@/Components/Button';
 import Input from '@/Components/Input';
 import Modal from '@/Components/Modal';
+import { formatIndonesianDate } from '@/Utils/format';
 
 export default function EskulDashboard({
     myEskuls = [],
@@ -82,20 +83,20 @@ export default function EskulDashboard({
                 {myEskuls.map((eskul) => (
                     <div
                         key={eskul.id}
-                        className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs flex items-center justify-between"
+                        className="bg-white rounded-xl p-5 border border-[#D9E2EA] shadow-xs flex items-center justify-between hover:border-[#1769AA]/40 transition-colors"
                     >
                         <div className="flex items-center space-x-4">
-                            <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-extrabold text-lg">
-                                <Building2 className="w-7 h-7" />
+                            <div className="w-12 h-12 rounded-lg bg-[#E8F4FB] text-[#1769AA] flex items-center justify-center font-bold text-lg shrink-0">
+                                <Building2 className="w-6 h-6 text-[#1769AA]" />
                             </div>
                             <div>
-                                <h3 className="text-lg font-bold text-slate-900">{eskul.name}</h3>
-                                <p className="text-xs text-slate-500 mt-0.5 max-w-sm line-clamp-1">
+                                <h3 className="text-base font-bold text-[#17202A]">{eskul.name}</h3>
+                                <p className="text-xs text-[#536170] mt-0.5 max-w-sm line-clamp-1">
                                     {eskul.description || 'Ekstrakurikuler aktif sekolah'}
                                 </p>
                                 <div className="mt-2 flex items-center gap-2">
-                                    <span className="inline-flex items-center text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full">
-                                        <Users className="w-3.5 h-3.5 mr-1 text-slate-400" />
+                                    <span className="inline-flex items-center text-xs font-semibold text-[#536170] bg-[#F5F7FA] border border-[#D9E2EA] px-2.5 py-0.5 rounded-md">
+                                        <Users className="w-3.5 h-3.5 mr-1 text-[#1769AA]" />
                                         {eskul.members_count || 0} Anggota Aktif
                                     </span>
                                 </div>
@@ -104,9 +105,9 @@ export default function EskulDashboard({
 
                         <Link
                             href={`/eskul/members?eskul=${eskul.id}`}
-                            className="p-2.5 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-blue-600 transition-colors"
+                            className="p-2 rounded-lg hover:bg-[#E8F4FB] text-[#536170] hover:text-[#1769AA] transition-colors"
                         >
-                            <ArrowRight className="w-5 h-5" />
+                            <ArrowRight className="w-4 h-4" />
                         </Link>
                     </div>
                 ))}
@@ -117,10 +118,10 @@ export default function EskulDashboard({
                 <Card
                     title="Sesi Kegiatan Aktif (Presensi Terbuka)"
                     subtitle="Siswa dapat memindai QR dinamis mereka sekarang"
-                    accentColor="success"
+                    accentColor="green"
                 >
                     {activeSessions.length === 0 ? (
-                        <div className="text-center py-8 text-slate-400 text-sm">
+                        <div className="text-center py-8 text-[#536170] text-sm">
                             Tidak ada sesi yang sedang dibuka saat ini. Klik "Buka Sesi Baru" untuk memulai kegiatan eskul.
                         </div>
                     ) : (
@@ -128,25 +129,25 @@ export default function EskulDashboard({
                             {activeSessions.map((session) => (
                                 <div
                                     key={session.id}
-                                    className="p-5 rounded-2xl bg-emerald-50/60 border border-emerald-200/80 flex flex-col justify-between"
+                                    className="p-4 rounded-xl bg-[#E4F4ED] border border-[#2A9D6F]/40 flex flex-col justify-between"
                                 >
                                     <div>
                                         <div className="flex items-center justify-between mb-2">
                                             <Badge status="dibuka">Sedang Dibuka</Badge>
-                                            <span className="text-xs text-emerald-800 font-semibold">
-                                                {session.session_date}
+                                            <span className="text-xs text-[#2A9D6F] font-bold">
+                                                {formatIndonesianDate(session.session_date)}
                                             </span>
                                         </div>
-                                        <h4 className="text-base font-bold text-slate-900">{session.title}</h4>
-                                        <p className="text-xs text-slate-600 mt-1">
+                                        <h4 className="text-sm font-bold text-[#17202A]">{session.title}</h4>
+                                        <p className="text-xs text-[#536170] mt-1">
                                             {session.extracurricular?.name} &bull; Pukul {session.start_time.substring(0, 5)} - {session.end_time.substring(0, 5)}
                                         </p>
-                                        <div className="mt-3 text-xs font-semibold text-emerald-700">
+                                        <div className="mt-3 text-xs font-bold text-[#2A9D6F]">
                                             ✓ {session.attendances?.length || 0} Siswa sudah presensi
                                         </div>
                                     </div>
 
-                                    <div className="mt-5 pt-3 border-t border-emerald-200/60 flex items-center justify-between gap-2">
+                                    <div className="mt-4 pt-3 border-t border-[#2A9D6F]/30 flex items-center justify-between gap-2">
                                         <Link href={`/eskul/scanner?session=${session.uuid}`}>
                                             <Button variant="success" size="sm">
                                                 <ScanLine className="w-4 h-4 mr-1.5" />
@@ -154,7 +155,7 @@ export default function EskulDashboard({
                                             </Button>
                                         </Link>
                                         <Button
-                                            variant="outline"
+                                            variant="secondary"
                                             size="sm"
                                             onClick={() => handleCloseSession(session.uuid)}
                                         >
@@ -172,27 +173,27 @@ export default function EskulDashboard({
             <Card
                 title="Riwayat Sesi Sebelumnya"
                 subtitle="Daftar kegiatan yang telah diselesaikan"
-                accentColor="primary"
+                accentColor="blue"
             >
                 {recentSessions.length === 0 ? (
-                    <div className="text-center py-8 text-slate-400 text-sm">
+                    <div className="text-center py-8 text-[#536170] text-sm">
                         Belum ada riwayat sesi kegiatan sebelumnya.
                     </div>
                 ) : (
-                    <div className="divide-y divide-slate-100">
+                    <div className="divide-y divide-[#D9E2EA]">
                         {recentSessions.map((session) => (
                             <div key={session.id} className="py-3.5 flex items-center justify-between">
                                 <div>
-                                    <h4 className="text-sm font-bold text-slate-800">{session.title}</h4>
-                                    <p className="text-xs text-slate-500 mt-0.5">
-                                        {session.extracurricular?.name} &bull; {session.session_date} &bull; {session.attendances_count || 0} Hadir
+                                    <h4 className="text-sm font-bold text-[#17202A]">{session.title}</h4>
+                                    <p className="text-xs text-[#536170] mt-0.5">
+                                        {session.extracurricular?.name} &bull; {formatIndonesianDate(session.session_date)} &bull; {session.attendances_count || 0} Hadir
                                     </p>
                                 </div>
                                 <div className="flex items-center space-x-2">
                                     <Badge status={session.status}>{session.status}</Badge>
                                     <Link
                                         href={`/eskul/rekap?session=${session.uuid}`}
-                                        className="text-xs font-bold text-blue-600 hover:text-blue-800 px-2 py-1 rounded-lg hover:bg-blue-50 transition-colors"
+                                        className="text-xs font-bold text-[#1769AA] hover:text-[#0F4F82] px-2.5 py-1 rounded-md hover:bg-[#E8F4FB] transition-colors"
                                     >
                                         Rekap &rarr;
                                     </Link>
@@ -213,13 +214,13 @@ export default function EskulDashboard({
                 <form onSubmit={handleCreateSubmit} className="space-y-4">
                     {myEskuls.length > 1 && (
                         <div>
-                            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            <label className="block text-xs font-bold uppercase tracking-wider text-[#536170] mb-1.5">
                                 Pilih Ekstrakurikuler
                             </label>
                             <select
                                 value={data.extracurricular_id}
                                 onChange={(e) => setData('extracurricular_id', e.target.value)}
-                                className="block w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-500"
+                                className="block w-full rounded-lg border border-[#D9E2EA] bg-white px-3 py-2 text-sm text-[#17202A] focus:outline-none focus:border-[#1769AA] focus:ring-1 focus:ring-[#1769AA]"
                             >
                                 {myEskuls.map((e) => (
                                     <option key={e.id} value={e.id}>{e.name}</option>
@@ -270,8 +271,8 @@ export default function EskulDashboard({
                         />
                     </div>
 
-                    <div className="pt-4 border-t border-slate-100 flex items-center justify-end gap-2">
-                        <Button variant="outline" onClick={() => setCreateModal(false)}>
+                    <div className="pt-4 border-t border-[#D9E2EA] flex items-center justify-end gap-2">
+                        <Button variant="secondary" onClick={() => setCreateModal(false)}>
                             Batal
                         </Button>
                         <Button type="submit" variant="primary" loading={processing}>

@@ -20,6 +20,7 @@ import Badge from '@/Components/Badge';
 import Button from '@/Components/Button';
 import Input from '@/Components/Input';
 import Modal from '@/Components/Modal';
+import { formatIndonesianDate, formatIndonesianTime } from '@/Utils/format';
 
 export default function Scanner({
     openSessions = [],
@@ -198,24 +199,24 @@ export default function Scanner({
             subtitle="Pindai kode QR siswa secara langsung menggunakan kamera atau gunakan checklist manual jika terkendala."
         >
             {/* Session Selector Bar */}
-            <div className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="bg-white rounded-xl p-4 border border-[#D9E2EA] shadow-xs mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#536170] mb-1">
                         Sesi Presensi Aktif
                     </label>
                     {openSessions.length === 0 ? (
-                        <span className="text-sm font-bold text-rose-600">
+                        <span className="text-sm font-bold text-[#E76F51]">
                             Tidak ada sesi kegiatan yang berstatus 'dibuka'. Buka sesi baru di Dashboard Eskul terlebih dahulu.
                         </span>
                     ) : (
                         <select
                             value={selectedSession?.uuid || ''}
                             onChange={(e) => handleSessionChange(e.target.value)}
-                            className="block w-full sm:w-80 rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-sm font-semibold text-slate-800 focus:outline-none focus:border-blue-500"
+                            className="block w-full sm:w-80 rounded-lg border border-[#D9E2EA] bg-white px-3 py-2 text-sm font-semibold text-[#17202A] focus:outline-none focus:border-[#1769AA] focus:ring-1 focus:ring-[#1769AA]"
                         >
                             {openSessions.map((s) => (
                                 <option key={s.id} value={s.uuid}>
-                                    {s.extracurricular?.name}: {s.title} ({s.session_date})
+                                    {s.extracurricular?.name}: {s.title} ({formatIndonesianDate(s.session_date)})
                                 </option>
                             ))}
                         </select>
@@ -227,10 +228,10 @@ export default function Scanner({
                         <button
                             type="button"
                             onClick={() => setActiveTab('camera')}
-                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
                                 activeTab === 'camera'
-                                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
-                                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                    ? 'bg-[#1769AA] text-white shadow-xs'
+                                    : 'bg-white text-[#536170] hover:bg-[#F5F7FA] hover:text-[#123B5D] border border-[#D9E2EA]'
                             }`}
                         >
                             <Camera className="w-4 h-4 inline mr-1.5" />
@@ -239,10 +240,10 @@ export default function Scanner({
                         <button
                             type="button"
                             onClick={() => setActiveTab('manual')}
-                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
                                 activeTab === 'manual'
-                                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
-                                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                    ? 'bg-[#1769AA] text-white shadow-xs'
+                                    : 'bg-white text-[#536170] hover:bg-[#F5F7FA] hover:text-[#123B5D] border border-[#D9E2EA]'
                             }`}
                         >
                             <CheckSquare className="w-4 h-4 inline mr-1.5" />
@@ -257,28 +258,28 @@ export default function Scanner({
                     {/* Main Scanner / Manual Tab */}
                     <div className="lg:col-span-7">
                         {activeTab === 'camera' ? (
-                            <Card title="Arahkan Kamera ke QR Siswa" accentColor="primary">
+                            <Card title="Arahkan Kamera ke QR Siswa" accentColor="blue" className="border-[#D9E2EA]">
                                 {/* Result Alert Banner */}
                                 {scanResult && (
                                     <div
-                                        className={`mb-4 p-4 rounded-2xl border text-xs font-semibold flex items-center justify-between ${
+                                        className={`mb-4 p-3.5 rounded-lg border text-xs font-semibold flex items-center justify-between ${
                                             scanResult.success
-                                                ? 'bg-emerald-50 border-emerald-200 text-emerald-800 animate-scan-success'
-                                                : 'bg-rose-50 border-rose-200 text-rose-800 animate-scan-error'
+                                                ? 'bg-[#E4F4ED] border-[#2A9D6F]/30 text-[#2A9D6F]'
+                                                : 'bg-[#FCE8E3] border-[#E76F51]/30 text-[#E76F51]'
                                         }`}
                                     >
                                         <div className="flex items-center space-x-2">
                                             {scanResult.success ? (
-                                                <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+                                                <CheckCircle2 className="w-5 h-5 text-[#2A9D6F] shrink-0" />
                                             ) : (
-                                                <AlertCircle className="w-5 h-5 text-rose-600 shrink-0" />
+                                                <AlertCircle className="w-5 h-5 text-[#E76F51] shrink-0" />
                                             )}
                                             <span>{scanResult.message}</span>
                                         </div>
                                         <button
                                             type="button"
                                             onClick={() => setScanResult(null)}
-                                            className="p-1 text-slate-400 hover:text-slate-600"
+                                            className="p-1 text-[#536170] hover:text-[#17202A]"
                                         >
                                             <X className="w-4 h-4" />
                                         </button>
@@ -286,14 +287,14 @@ export default function Scanner({
                                 )}
 
                                 {/* Camera Viewport Container */}
-                                <div className="relative rounded-2xl overflow-hidden bg-slate-900 aspect-square max-w-sm mx-auto shadow-inner border-2 border-slate-700">
+                                <div className="relative rounded-xl overflow-hidden bg-[#123B5D] aspect-square max-w-sm mx-auto border-2 border-[#1769AA]">
                                     <div id="qr-reader" className="w-full h-full"></div>
 
                                     {!isScanning && (
                                         <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-xs p-6 text-center">
-                                            <CameraOff className="w-10 h-10 mb-2 text-slate-400" />
-                                            <span className="font-semibold">Kamera belum aktif</span>
-                                            <p className="text-[11px] text-slate-400 mt-1">
+                                            <CameraOff className="w-10 h-10 mb-2 text-[#4EA5D9]" />
+                                            <span className="font-bold">Kamera belum aktif</span>
+                                            <p className="text-[11px] text-[#E8F4FB] mt-1">
                                                 Pastikan izin kamera browser telah diizinkan dan berjalan di HTTPS.
                                             </p>
                                             <Button
@@ -308,7 +309,7 @@ export default function Scanner({
                                     )}
                                 </div>
 
-                                <p className="text-center text-xs text-slate-500 mt-4">
+                                <p className="text-center text-xs text-[#536170] mt-4 font-medium">
                                     Arahkan kamera ke layar ponsel siswa. QR akan otomatis terdeteksi dalam &lt; 1 detik.
                                 </p>
                             </Card>
@@ -316,9 +317,10 @@ export default function Scanner({
                             <Card
                                 title="Checklist Manual Presensi"
                                 subtitle="Gunakan jika siswa tidak membawa ponsel atau kamera bermasalah (wajib mengisi alasan)"
-                                accentColor="accent"
+                                accentColor="yellow"
+                                className="border-[#D9E2EA]"
                             >
-                                <div className="divide-y divide-slate-100 max-h-[500px] overflow-y-auto">
+                                <div className="divide-y divide-[#D9E2EA] max-h-[500px] overflow-y-auto">
                                     {members.map((m) => {
                                         const att = attendances.find((a) => a.user_id === m.user_id);
                                         return (
@@ -327,10 +329,10 @@ export default function Scanner({
                                                 className="py-3 flex items-center justify-between"
                                             >
                                                 <div>
-                                                    <h4 className="text-xs font-bold text-slate-900">
+                                                    <h4 className="text-xs font-bold text-[#17202A]">
                                                         {m.user?.name}
                                                     </h4>
-                                                    <span className="text-[10px] text-slate-400 font-mono">
+                                                    <span className="text-[10px] text-[#536170] font-mono">
                                                         NISN: {m.user?.nisn || '-'} &bull; {m.position}
                                                     </span>
                                                 </div>
@@ -339,12 +341,12 @@ export default function Scanner({
                                                     {att ? (
                                                         <Badge status={att.status}>{att.status}</Badge>
                                                     ) : (
-                                                        <span className="text-[11px] text-slate-400 italic">
+                                                        <span className="text-[11px] text-[#536170] italic">
                                                             Belum Hadir
                                                         </span>
                                                     )}
                                                     <Button
-                                                        variant="outline"
+                                                        variant="secondary"
                                                         size="sm"
                                                         onClick={() => openManualModal(m)}
                                                     >
@@ -364,23 +366,24 @@ export default function Scanner({
                         <Card
                             title={`Tercatat Hadir (${attendances.length})`}
                             subtitle="Daftar kehadiran yang berhasil tervalidasi di sesi ini"
-                            accentColor="success"
+                            accentColor="green"
+                            className="border-[#D9E2EA]"
                         >
                             {attendances.length === 0 ? (
-                                <div className="text-center py-10 text-slate-400 text-xs">
+                                <div className="text-center py-10 text-[#536170] text-xs">
                                     Belum ada siswa yang tercatat hadir. Pindai QR siswa untuk memulai.
                                 </div>
                             ) : (
-                                <div className="divide-y divide-slate-100 max-h-[500px] overflow-y-auto">
+                                <div className="divide-y divide-[#D9E2EA] max-h-[500px] overflow-y-auto">
                                     {attendances.map((att) => (
                                         <div key={att.id} className="py-2.5 flex items-center justify-between">
                                             <div>
-                                                <div className="text-xs font-bold text-slate-900">
+                                                <div className="text-xs font-bold text-[#17202A]">
                                                     {att.student?.name}
                                                 </div>
-                                                <div className="text-[10px] text-slate-400">
-                                                    {att.recorded_at ? new Date(att.recorded_at).toLocaleTimeString('id-ID') : '-'} &bull;{' '}
-                                                    <span className="uppercase font-mono">{att.method}</span>
+                                                <div className="text-[10px] text-[#536170]">
+                                                    {formatIndonesianTime(att.recorded_at)} &bull;{' '}
+                                                    <span className="uppercase font-mono font-semibold">{att.method}</span>
                                                 </div>
                                             </div>
                                             <Badge status={att.status}>{att.status}</Badge>
@@ -402,21 +405,21 @@ export default function Scanner({
             >
                 <form onSubmit={handleManualSubmit} className="space-y-4">
                     {selectedMember && (
-                        <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs">
-                            <span className="text-slate-400 block text-[10px] font-bold uppercase">Nama Siswa:</span>
-                            <span className="font-extrabold text-slate-900 text-sm">{selectedMember.user?.name}</span>
-                            <div className="text-slate-500 text-[11px] mt-0.5">NISN: {selectedMember.user?.nisn || '-'}</div>
+                        <div className="p-3.5 rounded-lg bg-[#F5F7FA] border border-[#D9E2EA] text-xs">
+                            <span className="text-[#536170] block text-[10px] font-bold uppercase">Nama Siswa:</span>
+                            <span className="font-extrabold text-[#17202A] text-sm">{selectedMember.user?.name}</span>
+                            <div className="text-[#536170] text-[11px] mt-0.5">NISN: {selectedMember.user?.nisn || '-'}</div>
                         </div>
                     )}
 
                     <div>
-                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                        <label className="block text-xs font-bold uppercase tracking-wider text-[#536170] mb-1.5">
                             Status Kehadiran
                         </label>
                         <select
                             value={manualData.status}
                             onChange={(e) => setManualData('status', e.target.value)}
-                            className="block w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-500"
+                            className="block w-full rounded-lg border border-[#D9E2EA] bg-white px-3 py-2 text-sm font-semibold text-[#17202A] focus:outline-none focus:border-[#1769AA] focus:ring-1 focus:ring-[#1769AA]"
                         >
                             <option value="hadir">Hadir</option>
                             <option value="izin">Izin</option>
@@ -436,8 +439,8 @@ export default function Scanner({
                         autoFocus
                     />
 
-                    <div className="pt-4 border-t border-slate-100 flex items-center justify-end gap-2">
-                        <Button variant="outline" onClick={() => setManualModal(false)}>
+                    <div className="pt-4 border-t border-[#D9E2EA] flex items-center justify-end gap-2">
+                        <Button variant="secondary" onClick={() => setManualModal(false)}>
                             Batal
                         </Button>
                         <Button

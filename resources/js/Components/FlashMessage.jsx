@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePage } from '@inertiajs/react';
 import { CheckCircle2, AlertCircle, AlertTriangle, X } from 'lucide-react';
 
 export default function FlashMessage() {
     const { flash } = usePage().props;
-    const [dismissed, setDismissed] = React.useState(false);
+    const [dismissed, setDismissed] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setDismissed(false);
     }, [flash]);
 
@@ -15,16 +15,18 @@ export default function FlashMessage() {
     }
 
     return (
-        <div className="mb-6 space-y-2">
+        <div className="mb-5 space-y-2">
             {flash.success && (
-                <div className="flex items-center justify-between p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 shadow-sm animate-fade-in">
-                    <div className="flex items-center space-x-3">
-                        <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-                        <span className="text-sm font-medium">{flash.success}</span>
+                <div className="flex items-center justify-between p-3.5 rounded-lg bg-[#E4F4ED] border border-[#2A9D6F]/30 text-[#2A9D6F] shadow-xs">
+                    <div className="flex items-center space-x-2.5">
+                        <CheckCircle2 className="w-4 h-4 text-[#2A9D6F] shrink-0" />
+                        <span className="text-xs font-bold">{flash.success}</span>
                     </div>
                     <button
+                        type="button"
                         onClick={() => setDismissed(true)}
-                        className="text-emerald-500 hover:text-emerald-700 p-1"
+                        className="text-[#2A9D6F] hover:opacity-75 p-0.5 rounded-md"
+                        aria-label="Tutup"
                     >
                         <X className="w-4 h-4" />
                     </button>
@@ -32,14 +34,16 @@ export default function FlashMessage() {
             )}
 
             {flash.error && (
-                <div className="flex items-center justify-between p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 shadow-sm animate-fade-in">
-                    <div className="flex items-center space-x-3">
-                        <AlertCircle className="w-5 h-5 text-rose-600 shrink-0" />
-                        <span className="text-sm font-medium">{flash.error}</span>
+                <div className="flex items-center justify-between p-3.5 rounded-lg bg-[#FCE8E3] border border-[#E76F51]/30 text-[#E76F51] shadow-xs">
+                    <div className="flex items-center space-x-2.5">
+                        <AlertCircle className="w-4 h-4 text-[#E76F51] shrink-0" />
+                        <span className="text-xs font-bold">{flash.error}</span>
                     </div>
                     <button
+                        type="button"
                         onClick={() => setDismissed(true)}
-                        className="text-rose-500 hover:text-rose-700 p-1"
+                        className="text-[#E76F51] hover:opacity-75 p-0.5 rounded-md"
+                        aria-label="Tutup"
                     >
                         <X className="w-4 h-4" />
                     </button>
@@ -47,14 +51,16 @@ export default function FlashMessage() {
             )}
 
             {flash.warning && (
-                <div className="flex items-center justify-between p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 shadow-sm animate-fade-in">
-                    <div className="flex items-center space-x-3">
-                        <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0" />
-                        <span className="text-sm font-medium">{flash.warning}</span>
+                <div className="flex items-center justify-between p-3.5 rounded-lg bg-[#FFF4D6] border border-[#F4B942]/40 text-[#B27B10] shadow-xs">
+                    <div className="flex items-center space-x-2.5">
+                        <AlertTriangle className="w-4 h-4 text-[#B27B10] shrink-0" />
+                        <span className="text-xs font-bold">{flash.warning}</span>
                     </div>
                     <button
+                        type="button"
                         onClick={() => setDismissed(true)}
-                        className="text-amber-500 hover:text-amber-700 p-1"
+                        className="text-[#B27B10] hover:opacity-75 p-0.5 rounded-md"
+                        aria-label="Tutup"
                     >
                         <X className="w-4 h-4" />
                     </button>

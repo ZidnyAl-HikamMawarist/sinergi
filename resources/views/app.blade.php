@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-slate-50">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-[#F5F7FA]">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,7 +12,7 @@
 
         <!-- PWA Manifest & Mobile Styling -->
         <link rel="manifest" href="/manifest.json">
-        <meta name="theme-color" content="#2563EB">
+        <meta name="theme-color" content="#1769AA">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -21,7 +21,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.jsx'])
         @inertiaHead
     </head>
-    <body class="h-full font-sans antialiased text-slate-800 bg-slate-50 selection:bg-blue-500 selection:text-white">
+    <body class="h-full font-sans antialiased text-[#17202A] bg-[#F5F7FA] selection:bg-[#1769AA] selection:text-white">
         @inertia
         <script>
             if ('serviceWorker' in navigator) {

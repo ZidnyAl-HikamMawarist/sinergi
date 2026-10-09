@@ -1,6 +1,6 @@
 import React from 'react';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Sparkles, Shield, BookOpen, Building2, User, ArrowRight } from 'lucide-react';
+import { Shield, BookOpen, Building2, User, ArrowRight } from 'lucide-react';
 import Badge from '@/Components/Badge';
 
 export default function SelectWorkspace({ workspaces = [] }) {
@@ -17,24 +17,24 @@ export default function SelectWorkspace({ workspaces = [] }) {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-amber-50 flex flex-col justify-center items-center p-4 sm:p-6 selection:bg-blue-600 selection:text-white">
+        <div className="min-h-screen bg-[#F5F7FA] flex flex-col justify-center items-center p-4 sm:p-6 text-[#17202A] selection:bg-[#1769AA] selection:text-white">
             <Head title="Pilih Workspace" />
 
-            <div className="w-full max-w-3xl">
-                <div className="text-center mb-8">
-                    <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold mb-3">
-                        <Sparkles className="w-3.5 h-3.5" />
-                        Multi-Role Switcher
+            <div className="w-full max-w-2xl">
+                <div className="text-center mb-6">
+                    <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-md bg-[#E8F4FB] border border-[#1769AA]/30 text-[#1769AA] text-xs font-bold mb-2.5">
+                        <Building2 className="w-3.5 h-3.5" />
+                        <span>Pemilihan Ruang Kerja</span>
                     </div>
-                    <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                    <h1 className="text-2xl font-extrabold text-[#17202A] tracking-tight">
                         Pilih Workspace Anda
                     </h1>
-                    <p className="mt-2 text-sm text-slate-600">
-                        Halo, <span className="font-bold text-slate-800">{user?.name}</span>! Akun Anda memiliki beberapa peran aktif. Silakan pilih ruang kerja yang ingin Anda kelola.
+                    <p className="mt-1 text-xs sm:text-sm text-[#536170] max-w-md mx-auto">
+                        Selamat datang, <span className="font-semibold text-[#17202A]">{user?.name}</span>. Silakan pilih ruang kerja sesuai tugas Anda.
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {workspaces.map((ws) => {
                         const Icon = getIcon(ws.id);
                         const targetUrl = ws.route === 'admin.dashboard' ? '/admin/dashboard'
@@ -46,26 +46,26 @@ export default function SelectWorkspace({ workspaces = [] }) {
                             <Link
                                 key={ws.id}
                                 href={targetUrl}
-                                className="group bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-blue-300 transition-all duration-200 flex flex-col justify-between hover:-translate-y-1"
+                                className="group bg-white rounded-xl p-5 border border-[#D9E2EA] shadow-xs hover:border-[#1769AA] transition-colors flex flex-col justify-between"
                             >
                                 <div>
-                                    <div className="flex items-center justify-between mb-4">
-                                        <div className="w-12 h-12 rounded-2xl bg-blue-50 group-hover:bg-blue-600 text-blue-600 group-hover:text-white flex items-center justify-center transition-colors shadow-xs">
-                                            <Icon className="w-6 h-6" />
+                                    <div className="flex items-center justify-between mb-3">
+                                        <div className="w-10 h-10 rounded-lg bg-[#E8F4FB] group-hover:bg-[#1769AA] text-[#1769AA] group-hover:text-white flex items-center justify-center transition-colors">
+                                            <Icon className="w-5 h-5" />
                                         </div>
                                         <Badge status={ws.id}>{ws.badge}</Badge>
                                     </div>
-                                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                                    <h2 className="text-sm font-bold text-[#17202A] group-hover:text-[#1769AA] transition-colors">
                                         {ws.name}
-                                    </h3>
-                                    <p className="mt-2 text-xs text-slate-500 leading-relaxed">
+                                    </h2>
+                                    <p className="mt-1 text-xs text-[#536170] leading-relaxed">
                                         {ws.description}
                                     </p>
                                 </div>
 
-                                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-600">
-                                    <span>Buka Workspace</span>
-                                    <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                                <div className="mt-5 pt-3 border-t border-[#D9E2EA] flex items-center justify-between text-xs font-semibold text-[#1769AA]">
+                                    <span>Buka Ruang Kerja</span>
+                                    <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 transition-transform" />
                                 </div>
                             </Link>
                         );

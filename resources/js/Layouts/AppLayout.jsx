@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Head, Link, usePage, router } from '@inertiajs/react';
 import {
-    Sparkles,
     LayoutDashboard,
     Users,
     Calendar,
@@ -17,11 +16,9 @@ import {
     CheckCircle2,
     ScanLine,
     ArrowLeftRight,
-    UserCheck,
     CreditCard
 } from 'lucide-react';
 import FlashMessage from '@/Components/FlashMessage';
-import Badge from '@/Components/Badge';
 
 export default function AppLayout({
     title = '',
@@ -36,7 +33,7 @@ export default function AppLayout({
     const [profileOpen, setProfileOpen] = useState(false);
 
     // Determine current workspace based on route
-    const currentUrl = window.location.pathname;
+    const currentUrl = typeof window !== 'undefined' ? window.location.pathname : '';
     let workspace = 'portal';
     if (currentUrl.startsWith('/admin')) workspace = 'admin';
     else if (currentUrl.startsWith('/kas')) workspace = 'kas';
@@ -79,50 +76,59 @@ export default function AppLayout({
         router.post('/logout');
     };
 
+    const workspaceLabel = {
+        admin: 'Admin OSIS',
+        kas: 'Buku Kas OSIS',
+        eskul: 'Pengurus Eskul',
+        portal: 'Portal Siswa',
+    }[workspace];
+
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col selection:bg-blue-600 selection:text-white">
+        <div className="min-h-screen bg-[#F5F7FA] flex flex-col text-[#17202A] selection:bg-[#1769AA] selection:text-white">
             <Head title={title ? `${title} — SINERGI` : 'SINERGI'} />
 
             {/* Topbar */}
-            <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-slate-200/80 shadow-xs">
+            <header className="sticky top-0 z-40 bg-white border-b border-[#D9E2EA] shadow-xs">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
+                    <div className="flex items-center justify-between h-15">
                         {/* Brand & Mobile Hamburger */}
                         <div className="flex items-center space-x-3">
                             <button
                                 type="button"
                                 onClick={() => setMobileOpen(!mobileOpen)}
-                                className="lg:hidden p-2 rounded-xl text-slate-500 hover:text-slate-700 hover:bg-slate-100 focus:outline-none"
+                                className="lg:hidden p-1.5 rounded-lg text-[#536170] hover:text-[#17202A] hover:bg-[#E8F4FB] focus:outline-none transition-colors"
+                                aria-label="Buka navigasi"
                             >
-                                {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                                {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                             </button>
 
-                            <Link href="/" className="flex items-center space-x-2.5">
-                                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-violet-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
-                                    <Sparkles className="w-5 h-5" />
+                            <Link href="/" className="flex items-center space-x-2.5 group">
+                                <div className="w-8 h-8 rounded-lg bg-[#123B5D] flex items-center justify-center text-white font-bold text-sm shadow-xs group-hover:bg-[#1769AA] transition-colors">
+                                    <Building2 className="w-4.5 h-4.5" />
                                 </div>
-                                <span className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-violet-600 to-indigo-700 bg-clip-text text-transparent">
+                                <span className="text-lg font-extrabold tracking-tight text-[#123B5D] group-hover:text-[#1769AA] transition-colors">
                                     SINERGI
                                 </span>
                             </Link>
 
                             {/* Active Academic Year Pill */}
                             {activeAcademicYear && (
-                                <span className="hidden md:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200/60">
-                                    Th. Ajaran: {activeAcademicYear.name}
+                                <span className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-bold bg-[#E8F4FB] text-[#1769AA] border border-[#1769AA]/25">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#2A9D6F]"></span>
+                                    TA: {activeAcademicYear.name}
                                 </span>
                             )}
                         </div>
 
                         {/* Topbar Right Actions */}
-                        <div className="flex items-center space-x-3">
+                        <div className="flex items-center space-x-2.5">
                             {/* Workspace Switcher Button */}
                             {user && user.roles && user.roles.length > 1 && (
                                 <Link
                                     href="/workspace/select"
-                                    className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+                                    className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-lg bg-white hover:bg-[#E8F4FB] text-[#1769AA] border border-[#D9E2EA] transition-colors shadow-xs"
                                 >
-                                    <ArrowLeftRight className="w-3.5 h-3.5 text-blue-600" />
+                                    <ArrowLeftRight className="w-3.5 h-3.5 text-[#1769AA]" />
                                     Ganti Workspace
                                 </Link>
                             )}
@@ -133,56 +139,56 @@ export default function AppLayout({
                                     <button
                                         type="button"
                                         onClick={() => setProfileOpen(!profileOpen)}
-                                        className="flex items-center space-x-2 p-1.5 rounded-xl hover:bg-slate-100 text-left transition-colors focus:outline-none"
+                                        className="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-[#E8F4FB] text-left transition-colors focus:outline-none focus:ring-2 focus:ring-[#1769AA]"
                                     >
-                                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-violet-600 text-white font-bold text-xs flex items-center justify-center shadow-xs">
+                                        <div className="w-7 h-7 rounded-lg bg-[#123B5D] text-white font-bold text-xs flex items-center justify-center shadow-xs">
                                             {user.name.charAt(0)}
                                         </div>
                                         <div className="hidden sm:block">
-                                            <div className="text-xs font-bold text-slate-800 leading-tight">
+                                            <div className="text-xs font-bold text-[#17202A] leading-tight">
                                                 {user.name}
                                             </div>
-                                            <div className="text-[10px] text-slate-500 font-medium">
+                                            <div className="text-[10px] text-[#536170] font-semibold">
                                                 {user.roles?.[0]?.label || 'Pengguna'}
                                             </div>
                                         </div>
-                                        <ChevronDown className="w-4 h-4 text-slate-400" />
+                                        <ChevronDown className="w-3.5 h-3.5 text-[#536170]" />
                                     </button>
 
                                     {profileOpen && (
                                         <div
-                                            className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-slate-200/80 py-2 z-50 animate-fade-in"
+                                            className="absolute right-0 mt-1.5 w-52 bg-white rounded-xl shadow-lg border border-[#D9E2EA] py-1.5 z-50 overflow-hidden"
                                             onClick={() => setProfileOpen(false)}
                                         >
-                                            <div className="px-4 py-2 border-b border-slate-100">
-                                                <p className="text-xs font-bold text-slate-800 truncate">{user.name}</p>
-                                                <p className="text-[11px] text-slate-500 truncate">{user.email || user.nisn}</p>
+                                            <div className="px-3.5 py-2.5 border-b border-[#D9E2EA] bg-[#F5F7FA]">
+                                                <p className="text-xs font-bold text-[#17202A] truncate">{user.name}</p>
+                                                <p className="text-[11px] text-[#536170] truncate">{user.email || user.nisn}</p>
                                             </div>
 
                                             <Link
                                                 href="/workspace/select"
-                                                className="w-full flex items-center px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 hover:text-blue-600"
+                                                className="w-full flex items-center px-3.5 py-2 text-xs text-[#536170] hover:bg-[#E8F4FB] hover:text-[#1769AA] transition-colors font-medium"
                                             >
-                                                <ArrowLeftRight className="w-4 h-4 mr-2 text-slate-400" />
+                                                <ArrowLeftRight className="w-3.5 h-3.5 mr-2 text-[#1769AA]" />
                                                 Pilih Workspace
                                             </Link>
 
                                             <Link
                                                 href="/password/change"
-                                                className="w-full flex items-center px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 hover:text-blue-600"
+                                                className="w-full flex items-center px-3.5 py-2 text-xs text-[#536170] hover:bg-[#E8F4FB] hover:text-[#1769AA] transition-colors font-medium"
                                             >
-                                                <Shield className="w-4 h-4 mr-2 text-slate-400" />
+                                                <Shield className="w-3.5 h-3.5 mr-2 text-[#536170]" />
                                                 Ganti Kata Sandi
                                             </Link>
 
-                                            <div className="border-t border-slate-100 my-1"></div>
+                                            <div className="border-t border-[#D9E2EA] my-1"></div>
 
                                             <button
                                                 type="button"
                                                 onClick={handleLogout}
-                                                className="w-full flex items-center px-4 py-2 text-xs text-rose-600 hover:bg-rose-50 transition-colors"
+                                                className="w-full flex items-center px-3.5 py-2 text-xs text-[#E76F51] hover:bg-[#FCE8E3] transition-colors font-bold"
                                             >
-                                                <LogOut className="w-4 h-4 mr-2 text-rose-500" />
+                                                <LogOut className="w-3.5 h-3.5 mr-2" />
                                                 Keluar
                                             </button>
                                         </div>
@@ -195,31 +201,32 @@ export default function AppLayout({
             </header>
 
             {/* Main Layout Body */}
-            <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 flex-1 flex flex-col lg:flex-row gap-6">
-                {/* Desktop Sidebar Navigation */}
-                <aside className="hidden lg:block w-64 shrink-0">
-                    <nav className="bg-white rounded-2xl border border-slate-200/80 p-3 shadow-xs space-y-1 sticky top-22">
-                        <div className="px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                            Menu {workspace === 'admin' ? 'Admin OSIS' : workspace === 'kas' ? 'Buku Kas' : workspace === 'eskul' ? 'Eskul' : 'Portal Siswa'}
+            <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-5 flex-1 flex flex-col lg:flex-row gap-5">
+                {/* Desktop Sidebar Navigation: Deep Blue (#123B5D) */}
+                <aside className="hidden lg:block w-60 shrink-0">
+                    <nav className="bg-[#123B5D] rounded-xl border border-[#0F2F4A] p-2.5 shadow-card space-y-1 sticky top-20 text-white">
+                        <div className="px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-slate-300 flex items-center justify-between">
+                            <span>{workspaceLabel}</span>
+                            <span className="w-2 h-2 rounded-full bg-[#F4B942]" title="Workspace Aktif"></span>
                         </div>
 
                         {currentNav.map((item) => {
                             const Icon = item.icon;
-                            const isActive = currentUrl === item.href || currentUrl.startsWith(item.href + '/');
+                            const isActive = currentUrl === item.href || (item.href !== '/' && currentUrl.startsWith(item.href + '/'));
 
                             return (
                                 <Link
                                     key={item.name}
                                     href={item.href}
-                                    className={`flex items-center px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-150 ${
+                                    className={`flex items-center px-3 py-2 text-xs rounded-lg transition-all ${
                                         isActive
-                                            ? 'bg-blue-50 text-blue-700 shadow-xs'
-                                            : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                            ? 'bg-[#E8F4FB] text-[#123B5D] font-bold border-l-4 border-l-[#F4B942] shadow-xs'
+                                            : 'text-slate-200 hover:text-white hover:bg-[#1A4C75] font-medium'
                                     }`}
                                 >
                                     <Icon
-                                        className={`w-4 h-4 mr-3 ${
-                                            isActive ? 'text-blue-600' : 'text-slate-400'
+                                        className={`w-4 h-4 mr-2.5 shrink-0 ${
+                                            isActive ? 'text-[#1769AA]' : 'text-slate-300'
                                         }`}
                                     />
                                     {item.name}
@@ -233,29 +240,36 @@ export default function AppLayout({
                 {mobileOpen && (
                     <div className="lg:hidden fixed inset-0 z-50 flex">
                         <div
-                            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs"
+                            className="fixed inset-0 bg-[#17202A]/50 transition-opacity"
                             onClick={() => setMobileOpen(false)}
+                            aria-hidden="true"
                         ></div>
 
-                        <div className="relative w-72 bg-white h-full shadow-2xl p-5 flex flex-col justify-between">
+                        <div className="relative w-72 bg-[#123B5D] text-white h-full shadow-xl p-5 flex flex-col justify-between">
                             <div>
-                                <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                                <div className="flex items-center justify-between pb-3.5 border-b border-[#1A4C75]">
                                     <div className="flex items-center space-x-2">
-                                        <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center">
-                                            <Sparkles className="w-4 h-4" />
+                                        <div className="w-7 h-7 rounded-lg bg-[#1769AA] text-white flex items-center justify-center font-bold text-xs shadow-xs">
+                                            <Building2 className="w-4 h-4" />
                                         </div>
-                                        <span className="font-extrabold text-slate-900">SINERGI</span>
+                                        <span className="font-extrabold text-white text-base">SINERGI</span>
                                     </div>
                                     <button
                                         type="button"
                                         onClick={() => setMobileOpen(false)}
-                                        className="p-1 rounded-lg text-slate-400 hover:text-slate-600"
+                                        className="p-1 rounded-lg text-slate-300 hover:text-white hover:bg-[#1A4C75]"
+                                        aria-label="Tutup navigasi"
                                     >
                                         <X className="w-5 h-5" />
                                     </button>
                                 </div>
 
-                                <div className="mt-4 space-y-1">
+                                <div className="mt-4 px-2 text-[11px] font-bold uppercase tracking-wider text-slate-300 flex items-center justify-between">
+                                    <span>{workspaceLabel}</span>
+                                    <span className="w-2 h-2 rounded-full bg-[#F4B942]"></span>
+                                </div>
+
+                                <div className="mt-2 space-y-1">
                                     {currentNav.map((item) => {
                                         const Icon = item.icon;
                                         const isActive = currentUrl === item.href;
@@ -265,13 +279,13 @@ export default function AppLayout({
                                                 key={item.name}
                                                 href={item.href}
                                                 onClick={() => setMobileOpen(false)}
-                                                className={`flex items-center px-3.5 py-3 rounded-xl text-sm font-semibold ${
+                                                className={`flex items-center px-3 py-2 text-xs rounded-lg transition-all ${
                                                     isActive
-                                                        ? 'bg-blue-50 text-blue-700'
-                                                        : 'text-slate-600 hover:bg-slate-50'
+                                                        ? 'bg-[#E8F4FB] text-[#123B5D] font-bold border-l-4 border-l-[#F4B942]'
+                                                        : 'text-slate-200 hover:text-white hover:bg-[#1A4C75] font-medium'
                                                 }`}
                                             >
-                                                <Icon className="w-5 h-5 mr-3 text-blue-600" />
+                                                <Icon className={`w-4 h-4 mr-2.5 ${isActive ? 'text-[#1769AA]' : 'text-slate-300'}`} />
                                                 {item.name}
                                             </Link>
                                         );
@@ -279,11 +293,11 @@ export default function AppLayout({
                                 </div>
                             </div>
 
-                            <div className="pt-4 border-t border-slate-100">
+                            <div className="pt-3.5 border-t border-[#1A4C75]">
                                 <button
                                     type="button"
                                     onClick={handleLogout}
-                                    className="w-full flex items-center px-3 py-2 text-sm font-medium text-rose-600 hover:bg-rose-50 rounded-xl"
+                                    className="w-full flex items-center px-3 py-2 text-xs font-bold text-[#E76F51] hover:bg-[#1A4C75] rounded-lg transition-colors"
                                 >
                                     <LogOut className="w-4 h-4 mr-2" />
                                     Keluar
@@ -297,15 +311,15 @@ export default function AppLayout({
                 <main className="flex-1 min-w-0">
                     {/* Page Header */}
                     {(header || subtitle || actions) && (
-                        <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div className="mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-[#D9E2EA]">
                             <div>
                                 {header && (
-                                    <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                                    <h1 className="text-xl sm:text-2xl font-extrabold text-[#17202A] tracking-tight">
                                         {header}
                                     </h1>
                                 )}
                                 {subtitle && (
-                                    <p className="mt-1 text-sm text-slate-500 font-medium">
+                                    <p className="mt-0.5 text-xs sm:text-sm text-[#536170]">
                                         {subtitle}
                                     </p>
                                 )}
@@ -323,7 +337,7 @@ export default function AppLayout({
             </div>
 
             {/* Footer */}
-            <footer className="mt-auto border-t border-slate-200/80 bg-white py-4 text-center text-xs text-slate-400">
+            <footer className="mt-auto border-t border-[#D9E2EA] bg-white py-3.5 text-center text-xs text-[#536170]">
                 <p>&copy; {new Date().getFullYear()} SINERGI — Sistem Integrasi Ekstrakurikuler dan Organisasi</p>
             </footer>
         </div>

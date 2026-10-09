@@ -8,52 +8,64 @@ export default function Badge({
     className = '',
     size = 'md',
 }) {
-    let style = 'bg-slate-100 text-slate-700 border-slate-200';
+    let style = 'bg-[#F5F7FA] text-[#536170] border-[#D9E2EA]';
 
     // Status Presensi
     if (status === 'hadir') {
-        style = 'bg-emerald-100 text-emerald-800 border-emerald-300 font-semibold';
+        style = 'bg-[#E4F4ED] text-[#2A9D6F] border-[#2A9D6F]/30 font-bold';
     } else if (status === 'izin') {
-        style = 'bg-amber-100 text-amber-800 border-amber-300 font-semibold';
+        style = 'bg-[#FFF4D6] text-[#B27B10] border-[#F4B942]/40 font-bold';
     } else if (status === 'sakit') {
-        style = 'bg-blue-100 text-blue-800 border-blue-300 font-semibold';
+        style = 'bg-[#E8F4FB] text-[#1769AA] border-[#1769AA]/30 font-bold';
     } else if (status === 'alpa') {
-        style = 'bg-rose-100 text-rose-800 border-rose-300 font-semibold';
+        style = 'bg-[#FCE8E3] text-[#E76F51] border-[#E76F51]/30 font-bold';
     }
     // Status Transaksi Kas
     else if (status === 'valid') {
-        style = 'bg-emerald-100 text-emerald-800 border-emerald-300 font-semibold';
+        style = 'bg-[#E4F4ED] text-[#2A9D6F] border-[#2A9D6F]/30 font-bold';
     } else if (status === 'void') {
-        style = 'bg-slate-100 text-slate-500 border-slate-300 line-through';
+        style = 'bg-[#F5F7FA] text-[#536170] border-[#D9E2EA] line-through font-medium';
     }
     // Status Aktivitas & Umum
     else if (status === 'aktif' || status === 'dibuka') {
-        style = 'bg-emerald-100 text-emerald-800 border-emerald-300 font-semibold';
+        style = 'bg-[#E4F4ED] text-[#2A9D6F] border-[#2A9D6F]/30 font-bold';
     } else if (status === 'draft') {
-        style = 'bg-amber-100 text-amber-800 border-amber-300 font-semibold';
+        style = 'bg-[#FFF4D6] text-[#B27B10] border-[#F4B942]/40 font-bold';
     } else if (status === 'ditutup' || status === 'nonaktif') {
-        style = 'bg-slate-100 text-slate-600 border-slate-300';
+        style = 'bg-[#F5F7FA] text-[#536170] border-[#D9E2EA] font-medium';
+    }
+    // Variants explicitly requested
+    else if (variant === 'primary' || variant === 'blue') {
+        style = 'bg-[#E8F4FB] text-[#1769AA] border-[#1769AA]/30 font-bold';
+    } else if (variant === 'success' || variant === 'green') {
+        style = 'bg-[#E4F4ED] text-[#2A9D6F] border-[#2A9D6F]/30 font-bold';
+    } else if (variant === 'warning' || variant === 'yellow') {
+        style = 'bg-[#FFF4D6] text-[#B27B10] border-[#F4B942]/40 font-bold';
+    } else if (variant === 'danger' || variant === 'coral') {
+        style = 'bg-[#FCE8E3] text-[#E76F51] border-[#E76F51]/30 font-bold';
+    } else if (variant === 'navy') {
+        style = 'bg-[#123B5D] text-white border-transparent font-bold';
     }
     // Roles
     else if (role === 'super_admin' || role === 'admin') {
-        style = 'bg-violet-100 text-violet-800 border-violet-300 font-semibold';
+        style = 'bg-[#123B5D] text-white border-transparent font-bold';
     } else if (role === 'bendahara') {
-        style = 'bg-emerald-100 text-emerald-800 border-emerald-300 font-semibold';
+        style = 'bg-[#FFF4D6] text-[#B27B10] border-[#F4B942]/40 font-bold';
     } else if (role === 'pengurus_eskul') {
-        style = 'bg-blue-100 text-blue-800 border-blue-300 font-semibold';
+        style = 'bg-[#E8F4FB] text-[#1769AA] border-[#1769AA]/30 font-bold';
     } else if (role === 'siswa') {
-        style = 'bg-slate-100 text-slate-700 border-slate-300 font-medium';
+        style = 'bg-[#F5F7FA] text-[#536170] border-[#D9E2EA] font-bold';
     }
 
     const sizes = {
         sm: 'px-2 py-0.5 text-[11px]',
-        md: 'px-2.5 py-1 text-xs',
-        lg: 'px-3 py-1.5 text-sm',
+        md: 'px-2.5 py-0.5 text-xs',
+        lg: 'px-3 py-1 text-sm',
     };
 
     return (
         <span
-            className={`inline-flex items-center rounded-full border tracking-wide uppercase ${style} ${sizes[size]} ${className}`}
+            className={`inline-flex items-center rounded-md border tracking-wide uppercase text-[11px] ${style} ${sizes[size] || sizes.md} ${className}`}
         >
             {children}
         </span>

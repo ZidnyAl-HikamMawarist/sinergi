@@ -61,8 +61,8 @@ export default function Students({
             subtitle="Direktori profil siswa, penempatan rombongan belajar, dan eskul aktif"
             actions={
                 <Link href="/admin/import">
-                    <Button variant="secondary" className="flex items-center gap-1.5 text-xs">
-                        <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
+                    <Button variant="secondary" size="sm" className="flex items-center gap-1.5 text-xs">
+                        <FileSpreadsheet className="w-4 h-4 mr-1 text-[#2A9D6F]" />
                         Import Siswa (CSV)
                     </Button>
                 </Link>
@@ -73,14 +73,14 @@ export default function Students({
             {/* Class Quick Selection Pills */}
             <div className="mb-6">
                 <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#536170]">
                         Filter Rombongan Belajar / Kelas
                     </span>
                     {selectedClassId && (
                         <button
                             type="button"
                             onClick={() => handleClassSelect(null)}
-                            className="text-xs text-blue-600 hover:underline font-semibold"
+                            className="text-xs text-[#1769AA] hover:text-[#0F4F82] font-bold"
                         >
                             Reset Filter Kelas
                         </button>
@@ -91,10 +91,10 @@ export default function Students({
                     <button
                         type="button"
                         onClick={() => handleClassSelect(null)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                             !selectedClassId
-                                ? 'bg-blue-600 text-white shadow-xs'
-                                : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                                ? 'bg-[#1769AA] text-white shadow-xs'
+                                : 'bg-white border border-[#D9E2EA] text-[#536170] hover:bg-[#E8F4FB] hover:text-[#1769AA]'
                         }`}
                     >
                         Semua Kelas
@@ -104,18 +104,18 @@ export default function Students({
                             key={cls.id}
                             type="button"
                             onClick={() => handleClassSelect(cls.id)}
-                            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                                 selectedClassId === cls.id
-                                    ? 'bg-blue-600 text-white shadow-xs'
-                                    : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                                    ? 'bg-[#1769AA] text-white shadow-xs'
+                                    : 'bg-white border border-[#D9E2EA] text-[#536170] hover:bg-[#E8F4FB] hover:text-[#1769AA]'
                             }`}
                         >
                             <span>{cls.name}</span>
                             <span
                                 className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
                                     selectedClassId === cls.id
-                                        ? 'bg-blue-700 text-white'
-                                        : 'bg-slate-100 text-slate-600'
+                                        ? 'bg-[#0F4F82] text-white'
+                                        : 'bg-[#E8F4FB] text-[#1769AA]'
                                 }`}
                             >
                                 {cls.enrollments_count ?? 0}
@@ -126,16 +126,16 @@ export default function Students({
             </div>
 
             {/* Search & Filter Form */}
-            <Card className="mb-6">
+            <Card className="mb-6" accentColor="blue">
                 <form onSubmit={handleFilter} className="grid grid-cols-1 sm:grid-cols-4 gap-3">
                     <div className="sm:col-span-2 relative">
-                        <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
+                        <Search className="w-4 h-4 absolute left-3 top-3 text-[#536170]" />
                         <input
                             type="text"
                             placeholder="Cari nama, NISN, atau email..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="w-full pl-9 pr-3 py-2 text-xs border border-[#D9E2EA] rounded-lg focus:border-[#1769AA] focus:ring-1 focus:ring-[#1769AA] focus:outline-none text-[#17202A] bg-white"
                         />
                     </div>
 
@@ -143,7 +143,7 @@ export default function Students({
                         <select
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}
-                            className="w-full text-xs border border-slate-300 rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white"
+                            className="w-full text-xs border border-[#D9E2EA] rounded-lg px-3 py-2 focus:border-[#1769AA] focus:ring-1 focus:ring-[#1769AA] focus:outline-none bg-white text-[#17202A]"
                         >
                             <option value="">Semua Status</option>
                             <option value="aktif">Aktif</option>
@@ -162,12 +162,12 @@ export default function Students({
 
             {/* Students Table */}
             <Card padding={false} className="overflow-hidden">
-                <div className="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between">
+                <div className="p-4 sm:p-5 border-b border-[#D9E2EA] flex items-center justify-between">
                     <div>
-                        <h3 className="text-base font-bold text-slate-900">
+                        <h3 className="text-base font-bold text-[#17202A]">
                             Direktori Siswa ({students.total ?? students.data.length})
                         </h3>
-                        <p className="text-xs text-slate-500">
+                        <p className="text-xs text-[#536170]">
                             Siswa terdaftar dalam database akademik
                         </p>
                     </div>
@@ -175,9 +175,9 @@ export default function Students({
 
                 {students.data.length === 0 ? (
                     <div className="p-12 text-center">
-                        <Users className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                        <h4 className="text-sm font-bold text-slate-700">Tidak Ada Siswa Ditemukan</h4>
-                        <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+                        <Users className="w-12 h-12 text-[#536170] mx-auto mb-3" />
+                        <h4 className="text-sm font-bold text-[#17202A]">Tidak Ada Siswa Ditemukan</h4>
+                        <p className="text-xs text-[#536170] mt-1 max-w-sm mx-auto">
                             Coba sesuaikan kata kunci pencarian atau filter kelas yang Anda pilih.
                         </p>
                     </div>
@@ -185,42 +185,42 @@ export default function Students({
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse text-xs sm:text-sm">
                             <thead>
-                                <tr className="bg-slate-50 border-b border-slate-200/80 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
-                                    <th className="py-3 px-4">Nama Siswa</th>
-                                    <th className="py-3 px-4">NISN</th>
-                                    <th className="py-3 px-4">Kelas</th>
-                                    <th className="py-3 px-4">Eskul Aktif</th>
-                                    <th className="py-3 px-4 text-center">Status</th>
-                                    <th className="py-3 px-4 text-right">Detail</th>
+                                <tr className="bg-[#F5F7FA] border-b border-[#D9E2EA] text-[#536170] font-bold uppercase tracking-wider text-[11px]">
+                                    <th className="py-3 px-4 min-w-[180px]">Nama Siswa</th>
+                                    <th className="py-3 px-4 min-w-[100px]">NISN</th>
+                                    <th className="py-3 px-4 min-w-[80px]">Kelas</th>
+                                    <th className="py-3 px-4 min-w-[130px]">Eskul Aktif</th>
+                                    <th className="py-3 px-4 min-w-[90px] text-center">Status</th>
+                                    <th className="py-3 px-4 min-w-[70px] text-right">Detail</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-100">
+                            <tbody className="divide-y divide-[#D9E2EA]">
                                 {students.data.map((student) => {
                                     const activeClass = student.enrollments?.[0]?.school_class?.name || '-';
                                     const eskuls = student.extracurricular_memberships || [];
 
                                     return (
-                                        <tr key={student.id} className="hover:bg-slate-50/80 transition-colors">
+                                        <tr key={student.id} className="hover:bg-[#F5F7FA] transition-colors">
                                             <td className="py-3.5 px-4">
                                                 <div className="flex items-center space-x-3">
-                                                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-violet-600 text-white font-bold text-xs flex items-center justify-center shrink-0">
+                                                    <div className="w-8 h-8 rounded-full bg-[#123B5D] text-white font-bold text-xs flex items-center justify-center shrink-0">
                                                         {student.name.charAt(0)}
                                                     </div>
                                                     <div>
-                                                        <div className="font-semibold text-slate-900 leading-tight">
+                                                        <div className="font-bold text-[#17202A] leading-tight">
                                                             {student.name}
                                                         </div>
-                                                        <div className="text-[11px] text-slate-400 font-mono">
+                                                        <div className="text-[11px] text-[#536170] font-mono">
                                                             {student.email || '-'}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="py-3.5 px-4 font-mono text-slate-600 text-xs">
+                                            <td className="py-3.5 px-4 font-mono text-[#536170] text-xs">
                                                 {student.nisn || '-'}
                                             </td>
                                             <td className="py-3.5 px-4">
-                                                <span className="font-semibold text-slate-800">
+                                                <span className="font-bold text-[#17202A]">
                                                     {activeClass}
                                                 </span>
                                             </td>
@@ -228,19 +228,19 @@ export default function Students({
                                                 <div className="flex flex-wrap gap-1">
                                                     {eskuls.length > 0 ? (
                                                         eskuls.map((em) => (
-                                                            <Badge key={em.id} variant="neutral">
+                                                            <Badge key={em.id} variant="primary">
                                                                 {em.extracurricular?.name}
                                                             </Badge>
                                                         ))
                                                     ) : (
-                                                        <span className="text-slate-400 text-xs italic">
+                                                        <span className="text-[#536170] text-xs italic">
                                                             Belum ada eskul
                                                         </span>
                                                     )}
                                                 </div>
                                             </td>
                                             <td className="py-3.5 px-4 text-center">
-                                                <Badge variant={student.status === 'aktif' ? 'success' : 'neutral'}>
+                                                <Badge status={student.status}>
                                                     {student.status}
                                                 </Badge>
                                             </td>
@@ -248,7 +248,7 @@ export default function Students({
                                                 <button
                                                     type="button"
                                                     onClick={() => setSelectedStudent(student)}
-                                                    className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                                    className="p-1.5 text-[#1769AA] hover:bg-[#E8F4FB] rounded-md transition-colors"
                                                     title="Lihat Detail Profil"
                                                 >
                                                     <Eye className="w-4 h-4" />
@@ -264,8 +264,8 @@ export default function Students({
 
                 {/* Pagination */}
                 {students.links && students.links.length > 3 && (
-                    <div className="p-4 border-t border-slate-100 flex items-center justify-between">
-                        <div className="text-xs text-slate-500">
+                    <div className="p-4 border-t border-[#D9E2EA] flex items-center justify-between">
+                        <div className="text-xs text-[#536170]">
                             Menampilkan {students.from ?? 0} - {students.to ?? 0} dari {students.total ?? 0} siswa
                         </div>
                         <div className="flex items-center space-x-1">
@@ -274,12 +274,12 @@ export default function Students({
                                     key={idx}
                                     href={link.url || '#'}
                                     dangerouslySetInnerHTML={{ __html: link.label }}
-                                    className={`px-2.5 py-1 text-xs rounded-lg transition-colors ${
+                                    className={`px-2.5 py-1 text-xs rounded-md transition-colors ${
                                         link.active
-                                            ? 'bg-blue-600 text-white font-bold'
+                                            ? 'bg-[#1769AA] text-white font-bold shadow-xs'
                                             : !link.url
-                                            ? 'text-slate-300 cursor-not-allowed'
-                                            : 'text-slate-600 hover:bg-slate-100'
+                                            ? 'text-[#536170]/40 cursor-not-allowed'
+                                            : 'text-[#536170] hover:bg-[#E8F4FB] hover:text-[#1769AA]'
                                     }`}
                                 />
                             ))}
@@ -296,39 +296,39 @@ export default function Students({
             >
                 {selectedStudent && (
                     <div className="space-y-4">
-                        <div className="flex items-center space-x-4 p-4 rounded-2xl bg-blue-50/60 border border-blue-100">
-                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-violet-600 text-white font-extrabold text-xl flex items-center justify-center shadow-md">
+                        <div className="flex items-center space-x-4 p-4 rounded-xl bg-[#E8F4FB] border border-[#1769AA]/20">
+                            <div className="w-12 h-12 rounded-xl bg-[#123B5D] text-white font-bold text-lg flex items-center justify-center shrink-0 shadow-xs">
                                 {selectedStudent.name.charAt(0)}
                             </div>
                             <div>
-                                <h4 className="text-base font-extrabold text-slate-900">{selectedStudent.name}</h4>
-                                <p className="text-xs text-slate-600 font-mono">NISN: {selectedStudent.nisn || '-'}</p>
-                                <p className="text-xs text-slate-500">Email: {selectedStudent.email || '-'}</p>
+                                <h4 className="text-base font-bold text-[#17202A]">{selectedStudent.name}</h4>
+                                <p className="text-xs text-[#536170] font-mono">NISN: {selectedStudent.nisn || '-'}</p>
+                                <p className="text-xs text-[#536170]">Email: {selectedStudent.email || '-'}</p>
                             </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-3 text-xs">
-                            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
-                                <span className="text-slate-400 font-bold block mb-1 uppercase tracking-wider text-[10px]">
+                            <div className="p-3 bg-[#F5F7FA] rounded-xl border border-[#D9E2EA]">
+                                <span className="text-[#536170] font-bold block mb-1 uppercase tracking-wider text-[10px]">
                                     Kelas Saat Ini
                                 </span>
-                                <span className="font-bold text-slate-800 text-sm">
+                                <span className="font-bold text-[#17202A] text-sm">
                                     {selectedStudent.enrollments?.[0]?.school_class?.name || 'Belum Terdaftar'}
                                 </span>
                             </div>
 
-                            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
-                                <span className="text-slate-400 font-bold block mb-1 uppercase tracking-wider text-[10px]">
+                            <div className="p-3 bg-[#F5F7FA] rounded-xl border border-[#D9E2EA]">
+                                <span className="text-[#536170] font-bold block mb-1 uppercase tracking-wider text-[10px]">
                                     Status Akun
                                 </span>
-                                <Badge variant={selectedStudent.status === 'aktif' ? 'success' : 'neutral'}>
+                                <Badge status={selectedStudent.status}>
                                     {selectedStudent.status}
                                 </Badge>
                             </div>
                         </div>
 
                         <div>
-                            <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-2">
+                            <span className="text-xs font-bold text-[#536170] uppercase tracking-wider block mb-2">
                                 Ekstrakurikuler yang Diikuti
                             </span>
                             {selectedStudent.extracurricular_memberships?.length > 0 ? (
@@ -336,22 +336,22 @@ export default function Students({
                                     {selectedStudent.extracurricular_memberships.map((em) => (
                                         <div
                                             key={em.id}
-                                            className="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-white text-xs"
+                                            className="flex items-center justify-between p-2.5 rounded-lg border border-[#D9E2EA] bg-white text-xs"
                                         >
                                             <div className="flex items-center space-x-2">
-                                                <Building2 className="w-4 h-4 text-blue-600" />
-                                                <span className="font-semibold text-slate-800">
+                                                <Building2 className="w-4 h-4 text-[#1769AA]" />
+                                                <span className="font-bold text-[#17202A]">
                                                     {em.extracurricular?.name}
                                                 </span>
                                             </div>
-                                            <Badge variant={em.position === 'Ketua' ? 'primary' : 'neutral'}>
+                                            <Badge variant={em.position === 'Ketua' ? 'warning' : 'primary'}>
                                                 {em.position || 'Anggota'}
                                             </Badge>
                                         </div>
                                     ))}
                                 </div>
                             ) : (
-                                <p className="text-xs text-slate-500 italic p-3 bg-slate-50 rounded-xl text-center">
+                                <p className="text-xs text-[#536170] italic p-3 bg-[#F5F7FA] rounded-lg border border-[#D9E2EA] text-center">
                                     Siswa belum terdaftar pada ekstrakurikuler manapun tahun ini.
                                 </p>
                             )}
@@ -360,7 +360,7 @@ export default function Students({
                         <div className="flex justify-end pt-2">
                             <Button
                                 type="button"
-                                variant="secondary"
+                                variant="outline"
                                 onClick={() => setSelectedStudent(null)}
                             >
                                 Tutup

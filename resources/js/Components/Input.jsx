@@ -14,32 +14,32 @@ export default function Input({
     return (
         <div className="w-full">
             {label && (
-                <label htmlFor={id} className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    {label} {required && <span className="text-rose-500">*</span>}
+                <label htmlFor={id} className="block text-xs font-bold text-[#17202A] mb-1.5">
+                    {label} {required && <span className="text-[#E76F51] font-bold">*</span>}
                 </label>
             )}
-            <div className="relative rounded-xl shadow-xs">
+            <div className="relative rounded-lg shadow-xs">
                 {Icon && (
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                        <Icon className="h-5 w-5" />
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#536170]">
+                        <Icon className="h-4 w-4" />
                     </div>
                 )}
                 <input
                     id={id}
                     type={type}
                     required={required}
-                    className={`block w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 ${
-                        Icon ? 'pl-10' : ''
+                    className={`block w-full rounded-lg border bg-white px-3.5 py-2 text-sm text-[#17202A] placeholder-[#536170] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 ${
+                        Icon ? 'pl-9' : ''
                     } ${
                         error
-                            ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-400/20'
-                            : 'border-slate-300 focus:border-blue-500 focus:ring-blue-500/20'
+                            ? 'border-[#E76F51] focus:border-[#E76F51] focus:ring-[#E76F51]'
+                            : 'border-[#D9E2EA] focus:border-[#1769AA] focus:ring-[#1769AA]'
                     } ${className}`}
                     {...props}
                 />
             </div>
-            {error && <p className="mt-1.5 text-xs font-medium text-rose-600">{error}</p>}
-            {!error && helperText && <p className="mt-1 text-xs text-slate-500">{helperText}</p>}
+            {error && <p className="mt-1 text-xs font-semibold text-[#E76F51]">{error}</p>}
+            {!error && helperText && <p className="mt-1 text-xs text-[#536170]">{helperText}</p>}
         </div>
     );
 }

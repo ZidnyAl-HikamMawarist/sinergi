@@ -7,90 +7,117 @@
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
-    --color-primary-50: #eff6ff;
-    --color-primary-100: #dbeafe;
-    --color-primary-200: #bfdbfe;
-    --color-primary-300: #93c5fd;
-    --color-primary-400: #60a5fa;
-    --color-primary-500: #3b82f6;
-    --color-primary-600: #2563eb;
-    --color-primary-700: #1d4ed8;
-    --color-primary-800: #1e40af;
-    --color-primary-900: #1e3a8a;
+    /* SINERGI Master Palette V2: Colorful, Human, Energetic */
+    --color-brand: #1769aa;
+    --color-brand-dark: #123b5d;
+    --color-brand-hover: #0f4f82;
+    --color-sky: #4ea5d9;
+    --color-brand-soft: #e8f4fb;
 
-    --color-secondary-50: #f5f3ff;
-    --color-secondary-100: #ede9fe;
-    --color-secondary-200: #ddd6fe;
-    --color-secondary-300: #c4b5fd;
-    --color-secondary-400: #a78bfa;
-    --color-secondary-500: #8b5cf6;
-    --color-secondary-600: #7c3aed;
-    --color-secondary-700: #6d28d9;
+    /* Warm Accents */
+    --color-accent-yellow: #f4b942;
+    --color-accent-yellow-soft: #fff4d6;
+    --color-accent-coral: #e76f51;
+    --color-accent-coral-soft: #fce8e3;
+    --color-accent-green: #2a9d6f;
+    --color-accent-green-soft: #e4f4ed;
+    --color-cream: #fff9f0;
 
-    --color-accent-50: #fffbeb;
-    --color-accent-100: #fef3c7;
-    --color-accent-200: #fde68a;
-    --color-accent-400: #fbbf24;
-    --color-accent-500: #f59e0b;
-    --color-accent-600: #d97706;
+    /* Clean Surfaces & Typography */
+    --color-surface: #ffffff;
+    --color-background: #f5f7fa;
+    --color-page: #f5f7fa;
+    --color-text: #17202a;
+    --color-dark: #17202a;
+    --color-muted: #536170;
+    --color-border: #d9e2ea;
 
-    --color-success-50: #ecfdf5;
-    --color-success-100: #d1fae5;
-    --color-success-400: #34d399;
-    --color-success-500: #10b981;
-    --color-success-600: #059669;
-    --color-success-700: #047857;
+    /* Semantic Aliases */
+    --color-primary-blue: #1769aa;
+    --color-primary-hover: #0f4f82;
+    --color-brand-navy: #123b5d;
+    --color-blue-soft: #e8f4fb;
+    --color-blue-tint: #f5f8fc;
+    --color-ink: #17202a;
+    --color-body: #536170;
+    --color-success: #2a9d6f;
+    --color-warning: #f4b942;
+    --color-danger: #e76f51;
 
-    --color-danger-50: #fff1f2;
-    --color-danger-100: #ffe4e6;
-    --color-danger-400: #fb7185;
-    --color-danger-500: #f43f5e;
-    --color-danger-600: #e11d48;
-    --color-danger-700: #be123c;
+    /* Primary scale */
+    --color-primary-50: #f5f8fc;
+    --color-primary-100: #e8f4fb;
+    --color-primary-200: #c9e4f5;
+    --color-primary-300: #93c9ed;
+    --color-primary-400: #4ea5d9;
+    --color-primary-500: #2689c4;
+    --color-primary-600: #1769aa;
+    --color-primary-700: #125488;
+    --color-primary-800: #0f4f82;
+    --color-primary-900: #123b5d;
 
-    --color-warning-50: #fefce8;
-    --color-warning-100: #fef9c3;
-    --color-warning-400: #facc15;
-    --color-warning-500: #eab308;
-    --color-warning-600: #ca8a04;
+    /* Success / Green scale */
+    --color-success-50: #e4f4ed;
+    --color-success-100: #c5e7d8;
+    --color-success-500: #2a9d6f;
+    --color-success-600: #23825c;
+    --color-success-700: #1c684a;
 
-    --shadow-primary: 0 4px 14px rgba(59, 130, 246, 0.35);
-    --shadow-success: 0 4px 14px rgba(16, 185, 129, 0.30);
-    --shadow-danger: 0 4px 14px rgba(244, 63, 94, 0.30);
-    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(59, 130, 246, 0.06);
-    --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.10), 0 8px 24px rgba(59, 130, 246, 0.10);
+    /* Warning / Yellow scale */
+    --color-warning-50: #fff4d6;
+    --color-warning-100: #fee8ad;
+    --color-warning-500: #f4b942;
+    --color-warning-600: #dfa330;
+    --color-warning-700: #b27b10;
+
+    /* Danger / Coral scale */
+    --color-danger-50: #fce8e3;
+    --color-danger-100: #f8cfc5;
+    --color-danger-500: #e76f51;
+    --color-danger-600: #cf5b3f;
+    --color-danger-700: #ab472f;
+
+    /* Shadows: Subtle and tactile, zero glowing or floating slop */
+    --shadow-subtle: 0 1px 2px 0 rgba(23, 32, 42, 0.04);
+    --shadow-card: 0 2px 6px 0 rgba(18, 59, 93, 0.05), 0 1px 2px 0 rgba(18, 59, 93, 0.03);
+    --shadow-card-hover: 0 4px 12px 0 rgba(18, 59, 93, 0.08);
 }
 
 :root {
     --card-bg: #ffffff;
-    --card-border: #e2e8f0;
-    --card-radius: 1rem;
+    --card-border: #d9e2ea;
+    --card-radius: 0.75rem;
 }
 
-/* Custom design system keyframes */
+body {
+    background-color: #f5f7fa;
+    color: #17202a;
+}
+
+/* Functional scanner keyframes without flashy neon */
 @keyframes scanSuccess {
     0% { background-color: #ffffff; }
-    30% { background-color: #d1fae5; }
+    30% { background-color: #e4f4ed; }
     100% { background-color: #ffffff; }
 }
 
 @keyframes scanError {
     0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-4px); }
-    40%, 80% { transform: translateX(4px); }
+    20%, 60% { transform: translateX(-3px); }
+    40%, 80% { transform: translateX(3px); }
 }
 
 @keyframes countdownPulse {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.6; }
+    50% { opacity: 0.65; }
 }
 
 .animate-scan-success {
-    animation: scanSuccess 0.6s ease-out;
+    animation: scanSuccess 0.5s ease-out;
 }
 
 .animate-scan-error {
-    animation: scanError 0.4s ease-in-out;
+    animation: scanError 0.35s ease-in-out;
 }
 
 .animate-countdown-pulse {
