@@ -81,7 +81,7 @@ export default function AdminDashboard({
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Recent Sessions */}
-                <div className="lg:col-span-2">
+                <div className="lg:col-span-2 min-w-0">
                     <Card
                         title="Sesi Kegiatan Terbaru"
                         subtitle="Pantau kegiatan eskul yang sedang atau baru selesai digelar"
@@ -102,22 +102,22 @@ export default function AdminDashboard({
                         ) : (
                             <div className="divide-y divide-[#D9E2EA]">
                                 {recentSessions.map((session) => (
-                                    <div key={session.id} className="py-3.5 flex items-center justify-between">
-                                        <div className="flex items-center space-x-3">
+                                    <div key={session.id} className="py-3.5 flex items-center justify-between gap-3">
+                                        <div className="flex items-center space-x-3 min-w-0">
                                             <div className="w-10 h-10 rounded-lg bg-[#E8F4FB] text-[#1769AA] flex items-center justify-center font-bold text-xs shrink-0">
                                                 <Calendar className="w-5 h-5 text-[#1769AA]" />
                                             </div>
-                                            <div>
-                                                <h4 className="text-sm font-bold text-[#17202A]">
+                                            <div className="min-w-0">
+                                                <h4 className="text-sm font-bold text-[#17202A] truncate">
                                                     {session.title}
                                                 </h4>
-                                                <p className="text-xs text-[#536170] mt-0.5">
+                                                <p className="text-xs text-[#536170] mt-0.5 truncate">
                                                     {session.extracurricular?.name} &bull; {formatIndonesianDate(session.session_date)}
                                                 </p>
                                             </div>
                                         </div>
 
-                                        <div className="flex items-center space-x-2">
+                                        <div className="flex items-center space-x-2 shrink-0">
                                             <Badge status={session.status}>{session.status}</Badge>
                                         </div>
                                     </div>
@@ -128,7 +128,7 @@ export default function AdminDashboard({
                 </div>
 
                 {/* Audit Logs Quick View */}
-                <div>
+                <div className="min-w-0">
                     <Card
                         title="Audit Log Sistem"
                         subtitle="Catatan keamanan mutlak (append-only)"

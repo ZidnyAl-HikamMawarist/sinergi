@@ -5,7 +5,9 @@ export default function Card({
     title,
     subtitle,
     action,
+    actions,
     accentColor,
+    padding = true,
     className = '',
 }) {
     const accentStyles = {
@@ -21,22 +23,24 @@ export default function Card({
         neutral: 'border-t-4 border-t-[#536170]',
     };
 
+    const cardAction = action || actions;
+
     return (
         <div
             className={`bg-white rounded-xl border border-[#D9E2EA] shadow-xs overflow-hidden ${
                 accentColor ? accentStyles[accentColor] || '' : ''
             } ${className}`}
         >
-            {(title || action) && (
-                <div className="px-5 py-3.5 border-b border-[#D9E2EA] bg-[#F5F7FA] flex items-center justify-between gap-4">
-                    <div>
+            {(title || cardAction) && (
+                <div className="px-5 py-3.5 border-b border-[#D9E2EA] bg-[#F5F7FA] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="min-w-0">
                         {title && <h3 className="text-sm font-bold text-[#17202A]">{title}</h3>}
                         {subtitle && <p className="text-xs text-[#536170] mt-0.5 font-medium">{subtitle}</p>}
                     </div>
-                    {action && <div>{action}</div>}
+                    {cardAction && <div className="shrink-0">{cardAction}</div>}
                 </div>
             )}
-            <div className="p-5">{children}</div>
+            <div className={padding ? 'p-5' : ''}>{children}</div>
         </div>
     );
 }

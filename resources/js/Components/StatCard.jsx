@@ -93,38 +93,45 @@ export default function StatCard({
     const isVeryLong = valString.length > 15;
     const isLong = valString.length > 9;
     const valueSizeClass = isVeryLong
-        ? 'text-sm sm:text-base lg:text-xs xl:text-sm font-extrabold'
+        ? 'text-lg sm:text-xl lg:text-lg xl:text-xl'
         : isLong
-        ? 'text-base sm:text-lg lg:text-[15px] xl:text-lg 2xl:text-xl font-extrabold'
-        : 'text-2xl sm:text-3xl font-extrabold';
+        ? 'text-xl sm:text-2xl lg:text-xl xl:text-2xl'
+        : 'text-2xl sm:text-3xl';
 
     return (
         <div
-            className={`rounded-xl p-4 sm:p-5 border ${scheme.cardBorder} ${scheme.cardBg} ${scheme.accentBorder} shadow-xs ${className}`}
+            className={`rounded-xl p-4 sm:p-5 border ${scheme.cardBorder} ${scheme.cardBg} ${scheme.accentBorder} shadow-xs flex flex-col justify-between ${className}`}
         >
-            <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0 flex-1">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#536170] block truncate">
+            <div>
+                {/* Header Row: Label & Icon */}
+                <div className="flex items-center justify-between gap-2">
+                    <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#536170] leading-snug">
                         {title}
                     </span>
+                    {Icon && (
+                        <div className={`p-2 rounded-lg shrink-0 ${scheme.iconBg}`}>
+                            <Icon className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+                        </div>
+                    )}
+                </div>
+
+                {/* Metric Value: Full Width */}
+                <div className="mt-2.5">
                     <div
-                        className={`${valueSizeClass} ${scheme.valueText} tracking-tight mt-1.5 whitespace-nowrap`}
+                        className={`${valueSizeClass} font-extrabold ${scheme.valueText} tracking-tight leading-tight break-normal`}
                         title={valString}
                     >
                         {value}
                     </div>
-                    {subtitle && (
-                        <p className="mt-1 text-xs text-[#536170] truncate font-medium">
-                            {subtitle}
-                        </p>
-                    )}
                 </div>
-                {Icon && (
-                    <div className={`p-2.5 rounded-lg shrink-0 ${scheme.iconBg}`}>
-                        <Icon className="w-5 h-5" />
-                    </div>
-                )}
             </div>
+
+            {/* Subtitle: Full Width without Truncate */}
+            {subtitle && (
+                <p className="mt-2 text-xs text-[#536170] font-medium leading-relaxed break-words">
+                    {subtitle}
+                </p>
+            )}
         </div>
     );
 }

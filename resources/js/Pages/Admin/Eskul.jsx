@@ -101,7 +101,7 @@ export default function Eskul({
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* List of Eskuls */}
-                <div className="lg:col-span-1 space-y-3">
+                <div className="lg:col-span-1 min-w-0 space-y-3">
                     <div className="flex items-center justify-between px-1">
                         <span className="text-xs font-bold uppercase tracking-wider text-[#536170]">
                             Daftar Eskul ({eskuls.length})
@@ -165,7 +165,7 @@ export default function Eskul({
                 </div>
 
                 {/* Selected Eskul Details & Members Workspace */}
-                <div className="lg:col-span-2">
+                <div className="lg:col-span-2 min-w-0">
                     {selectedEskul ? (
                         <div className="space-y-6">
                             {/* Workspace Header Card */}
@@ -236,60 +236,108 @@ export default function Eskul({
                                         </p>
                                     </div>
                                 ) : (
-                                    <div className="overflow-x-auto">
-                                        <table className="w-full text-left border-collapse text-xs sm:text-sm">
-                                            <thead>
-                                                <tr className="bg-[#F5F7FA] border-b border-[#D9E2EA] text-[#536170] font-bold uppercase tracking-wider text-[11px]">
-                                                    <th className="py-3 px-4 min-w-[200px]">Nama Siswa</th>
-                                                    <th className="py-3 px-4 min-w-[110px]">NISN</th>
-                                                    <th className="py-3 px-4 min-w-[90px]">Kelas</th>
-                                                    <th className="py-3 px-4 min-w-[110px]">Jabatan</th>
-                                                    <th className="py-3 px-4 min-w-[120px]">Bergabung</th>
-                                                    <th className="py-3 px-4 min-w-[90px] text-right">Aksi</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="divide-y divide-[#D9E2EA]">
-                                                {members.map((member) => (
-                                                    <tr key={member.id} className="hover:bg-[#F9FBFC] transition-colors">
-                                                        <td className="py-3 px-4">
-                                                            <div className="flex items-center gap-2.5">
-                                                                <div className="w-7 h-7 rounded-md bg-[#123B5D] text-white text-xs font-bold flex items-center justify-center shrink-0">
-                                                                    {member.user?.name ? member.user.name.charAt(0).toUpperCase() : 'S'}
-                                                                </div>
-                                                                <span className="font-bold text-[#17202A] whitespace-nowrap">
-                                                                    {member.user?.name}
-                                                                </span>
+                                    <>
+                                        {/* Mobile Card List View (sm:hidden) */}
+                                        <div className="block sm:hidden divide-y divide-[#D9E2EA]">
+                                            {members.map((member) => (
+                                                <div key={member.id} className="p-4 space-y-3">
+                                                    <div className="flex items-start justify-between gap-2">
+                                                        <div className="flex items-center gap-2.5 min-w-0">
+                                                            <div className="w-8 h-8 rounded-lg bg-[#123B5D] text-white text-xs font-bold flex items-center justify-center shrink-0">
+                                                                {member.user?.name ? member.user.name.charAt(0).toUpperCase() : 'S'}
                                                             </div>
-                                                        </td>
-                                                        <td className="py-3 px-4 font-mono text-[#536170] text-xs whitespace-nowrap">
-                                                            {member.user?.nisn || '-'}
-                                                        </td>
-                                                        <td className="py-3 px-4 text-[#536170] whitespace-nowrap">
+                                                            <div className="min-w-0">
+                                                                <div className="font-bold text-[#17202A] text-sm truncate">
+                                                                    {member.user?.name}
+                                                                </div>
+                                                                <div className="font-mono text-[#536170] text-xs">
+                                                                    NISN: {member.user?.nisn || '-'}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <Badge status={member.position === 'Ketua' ? 'ketua' : member.position === 'Wakil' ? 'wakil' : 'anggota'}>
+                                                            {member.position || 'Anggota'}
+                                                        </Badge>
+                                                    </div>
+
+                                                    <div className="flex items-center justify-between text-xs pt-1 border-t border-[#F0F4F8]">
+                                                        <div className="text-[#536170] truncate mr-2">
+                                                            <span className="font-semibold text-[#17202A]">Kelas:</span>{' '}
                                                             {member.user?.student_profile?.class_room?.name || '-'}
-                                                        </td>
-                                                        <td className="py-3 px-4 whitespace-nowrap">
-                                                            <Badge status={member.position === 'Ketua' ? 'ketua' : member.position === 'Wakil' ? 'wakil' : 'anggota'}>
-                                                                {member.position || 'Anggota'}
-                                                            </Badge>
-                                                        </td>
-                                                        <td className="py-3 px-4 text-[#536170] text-xs whitespace-nowrap font-medium">
-                                                            {member.joined_at ? formatIndonesianDate(member.joined_at) : '-'}
-                                                        </td>
-                                                        <td className="py-3 px-4 text-right whitespace-nowrap">
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => handleRemoveMember(member.id)}
-                                                                className="text-xs text-[#E76F51] hover:text-[#d35b3e] font-bold px-2.5 py-1 hover:bg-[#FCE8E3] rounded-md transition-colors"
-                                                                title="Nonaktifkan Anggota"
-                                                            >
-                                                                Keluarkan
-                                                            </button>
-                                                        </td>
+                                                            <span className="mx-2 text-[#D9E2EA]">|</span>
+                                                            <span>
+                                                                {member.joined_at ? formatIndonesianDate(member.joined_at) : '-'}
+                                                            </span>
+                                                        </div>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleRemoveMember(member.id)}
+                                                            className="text-xs text-[#E76F51] hover:text-[#d35b3e] font-bold px-2 py-1 hover:bg-[#FCE8E3] rounded-md transition-colors shrink-0"
+                                                            title="Nonaktifkan Anggota"
+                                                        >
+                                                            Keluarkan
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        {/* Desktop/Tablet Table View (hidden sm:block) */}
+                                        <div className="hidden sm:block overflow-x-auto w-full">
+                                            <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                                                <thead>
+                                                    <tr className="bg-[#F5F7FA] border-b border-[#D9E2EA] text-[#536170] font-bold uppercase tracking-wider text-[11px]">
+                                                        <th className="py-3 px-4 min-w-[180px]">Nama Siswa</th>
+                                                        <th className="py-3 px-4 min-w-[100px]">NISN</th>
+                                                        <th className="py-3 px-4 min-w-[90px]">Kelas</th>
+                                                        <th className="py-3 px-4 min-w-[100px]">Jabatan</th>
+                                                        <th className="py-3 px-4 min-w-[120px]">Bergabung</th>
+                                                        <th className="py-3 px-4 min-w-[80px] text-right">Aksi</th>
                                                     </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                </thead>
+                                                <tbody className="divide-y divide-[#D9E2EA]">
+                                                    {members.map((member) => (
+                                                        <tr key={member.id} className="hover:bg-[#F9FBFC] transition-colors">
+                                                            <td className="py-3 px-4">
+                                                                <div className="flex items-center gap-2.5">
+                                                                    <div className="w-7 h-7 rounded-md bg-[#123B5D] text-white text-xs font-bold flex items-center justify-center shrink-0">
+                                                                        {member.user?.name ? member.user.name.charAt(0).toUpperCase() : 'S'}
+                                                                    </div>
+                                                                    <span className="font-bold text-[#17202A] whitespace-nowrap">
+                                                                        {member.user?.name}
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                            <td className="py-3 px-4 font-mono text-[#536170] text-xs whitespace-nowrap">
+                                                                {member.user?.nisn || '-'}
+                                                            </td>
+                                                            <td className="py-3 px-4 text-[#536170] whitespace-nowrap">
+                                                                {member.user?.student_profile?.class_room?.name || '-'}
+                                                            </td>
+                                                            <td className="py-3 px-4 whitespace-nowrap">
+                                                                <Badge status={member.position === 'Ketua' ? 'ketua' : member.position === 'Wakil' ? 'wakil' : 'anggota'}>
+                                                                    {member.position || 'Anggota'}
+                                                                </Badge>
+                                                            </td>
+                                                            <td className="py-3 px-4 text-[#536170] text-xs whitespace-nowrap font-medium">
+                                                                {member.joined_at ? formatIndonesianDate(member.joined_at) : '-'}
+                                                            </td>
+                                                            <td className="py-3 px-4 text-right whitespace-nowrap">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleRemoveMember(member.id)}
+                                                                    className="text-xs text-[#E76F51] hover:text-[#d35b3e] font-bold px-2.5 py-1 hover:bg-[#FCE8E3] rounded-md transition-colors"
+                                                                    title="Nonaktifkan Anggota"
+                                                                >
+                                                                    Keluarkan
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </>
                                 )}
                             </div>
                         </div>

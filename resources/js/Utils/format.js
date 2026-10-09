@@ -18,11 +18,15 @@ export function formatIndonesianDate(dateInput, options = {}) {
     try {
         let date;
         if (typeof dateInput === 'string') {
-            // If it's a plain YYYY-MM-DD date, append local noon in WIB to prevent day-shifting
-            if (/^\d{4}-\d{2}-\d{2}$/.test(dateInput)) {
-                date = new Date(`${dateInput}T12:00:00+07:00`);
+            const trimmed = dateInput.trim();
+            // If it's a plain YYYY-MM-DD date, treat as noon WIB to avoid any midnight timezone shifts
+            if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+                date = new Date(`${trimmed}T12:00:00+07:00`);
+            } else if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/.test(trimmed)) {
+                // Space-separated SQL datetime without timezone (e.g. 2026-10-06 14:30:00)
+                date = new Date(`${trimmed.replace(' ', 'T')}+07:00`);
             } else {
-                date = new Date(dateInput);
+                date = new Date(trimmed);
             }
         } else {
             date = dateInput;
@@ -54,7 +58,18 @@ export function formatIndonesianDateTime(dateInput, options = {}) {
     if (!dateInput) return '-';
 
     try {
-        const date = new Date(dateInput);
+        let date;
+        if (typeof dateInput === 'string') {
+            const trimmed = dateInput.trim();
+            if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/.test(trimmed)) {
+                date = new Date(`${trimmed.replace(' ', 'T')}+07:00`);
+            } else {
+                date = new Date(trimmed);
+            }
+        } else {
+            date = dateInput;
+        }
+
         if (isNaN(date.getTime())) return String(dateInput);
 
         const dateStr = new Intl.DateTimeFormat('id-ID', {
@@ -88,7 +103,18 @@ export function formatIndonesianTime(dateInput) {
     if (!dateInput) return '-';
 
     try {
-        const date = new Date(dateInput);
+        let date;
+        if (typeof dateInput === 'string') {
+            const trimmed = dateInput.trim();
+            if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/.test(trimmed)) {
+                date = new Date(`${trimmed.replace(' ', 'T')}+07:00`);
+            } else {
+                date = new Date(trimmed);
+            }
+        } else {
+            date = dateInput;
+        }
+
         if (isNaN(date.getTime())) return String(dateInput);
 
         const timeStr = new Intl.DateTimeFormat('id-ID', {
@@ -108,13 +134,14 @@ export function formatIndonesianTime(dateInput) {
  * Format currency into standard Indonesian Rupiah format.
  * Example: 1500000 -> 'Rp 1.500.000'
  *
- * @param {number} amount
+ * @param {number|string} amount
  * @returns {string}
  */
 export function formatRupiah(amount) {
+    const num = typeof amount === 'number' ? amount : Number(amount) || 0;
     return new Intl.NumberFormat('id-ID', {
         style: 'currency',
         currency: 'IDR',
         maximumFractionDigits: 0,
-    }).format(amount || 0);
+    }).format(num);
 }

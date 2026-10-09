@@ -179,7 +179,7 @@ export default function Members({
             </Card>
 
             {/* Structure Summary Metric Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <StatCard
                     title="Total Anggota Aktif"
                     value={members.length}
@@ -212,7 +212,7 @@ export default function Members({
                 subtitle="Data administratif keanggotaan resmi yang berhak mengikuti kegiatan dan presensi QR"
                 accentColor="blue"
                 actions={
-                    <div className="relative w-64">
+                    <div className="relative w-full sm:w-64">
                         <Search className="w-4 h-4 text-[#536170] absolute left-3 top-1/2 -translate-y-1/2" />
                         <input
                             type="text"
@@ -229,64 +229,112 @@ export default function Members({
                         {search ? 'Tidak ada anggota yang cocok dengan pencarian.' : 'Belum ada anggota di ekstrakurikuler ini.'}
                     </div>
                 ) : (
-                    <div className="overflow-x-auto -mx-5">
-                        <table className="w-full text-left text-xs text-[#536170]">
-                            <thead className="bg-[#F5F7FA] text-[#536170] font-bold border-y border-[#D9E2EA] uppercase tracking-wider text-[11px]">
-                                <tr>
-                                    <th className="px-5 py-3 w-12 text-center">No</th>
-                                    <th className="px-5 py-3">Nama Anggota & Email</th>
-                                    <th className="px-5 py-3">NISN</th>
-                                    <th className="px-5 py-3">Kelas</th>
-                                    <th className="px-5 py-3">Jabatan</th>
-                                    <th className="px-5 py-3">Tanggal Gabung</th>
-                                    <th className="px-5 py-3 text-right">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-[#D9E2EA]">
-                                {filteredMembers.map((member, index) => {
-                                    const className = member.user?.enrollments?.[0]?.school_class?.name || '-';
-                                    return (
-                                        <tr key={member.id} className="hover:bg-[#F5F7FA] transition-colors">
-                                            <td className="px-5 py-3.5 text-center font-medium text-[#536170]">
-                                                {index + 1}
-                                            </td>
-                                            <td className="px-5 py-3.5">
-                                                <div className="font-bold text-[#17202A] flex items-center gap-1.5">
-                                                    {member.user?.name}
+                    <>
+                        {/* Mobile Member Cards (sm:hidden) */}
+                        <div className="block sm:hidden divide-y divide-[#D9E2EA] -mx-5 -my-5">
+                            {filteredMembers.map((member, index) => {
+                                const className = member.user?.enrollments?.[0]?.school_class?.name || '-';
+                                return (
+                                    <div key={member.id} className="p-4 space-y-3">
+                                        <div className="flex items-start justify-between gap-2">
+                                            <div className="flex items-center gap-2.5 min-w-0">
+                                                <div className="w-8 h-8 rounded-lg bg-[#123B5D] text-white text-xs font-bold flex items-center justify-center shrink-0">
+                                                    {member.user?.name ? member.user.name.charAt(0).toUpperCase() : 'S'}
                                                 </div>
-                                                <div className="text-[#536170] text-[11px]">
-                                                    {member.user?.email || '-'}
+                                                <div className="min-w-0">
+                                                    <div className="font-bold text-[#17202A] text-sm truncate">
+                                                        {member.user?.name}
+                                                    </div>
+                                                    <div className="text-[#536170] text-[11px] truncate">
+                                                        {member.user?.email || '-'}
+                                                    </div>
                                                 </div>
-                                            </td>
-                                            <td className="px-5 py-3.5 font-mono text-[#536170]">
-                                                {member.user?.nisn || '-'}
-                                            </td>
-                                            <td className="px-5 py-3.5 font-bold text-[#1769AA]">
-                                                {className}
-                                            </td>
-                                            <td className="px-5 py-3.5">
-                                                {getPositionBadge(member.position)}
-                                            </td>
-                                            <td className="px-5 py-3.5 text-[#536170] whitespace-nowrap">
-                                                {member.joined_at ? formatIndonesianDate(member.joined_at) : '-'}
-                                            </td>
-                                            <td className="px-5 py-3.5 text-right whitespace-nowrap">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => handleOpenDelete(member)}
-                                                    className="inline-flex items-center text-xs font-semibold text-[#E76F51] hover:text-[#d35b3e] hover:bg-[#FCE8E3] px-2 py-1 rounded-md transition-colors"
-                                                    title="Nonaktifkan anggota"
-                                                >
-                                                    <UserMinus className="w-3.5 h-3.5 mr-1" />
-                                                    Keluarkan
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
+                                            </div>
+                                            <div>{getPositionBadge(member.position)}</div>
+                                        </div>
+
+                                        <div className="flex items-center justify-between text-xs pt-1 border-t border-[#F0F4F8]">
+                                            <div className="text-[#536170] truncate mr-2">
+                                                <span className="font-semibold text-[#17202A]">NISN:</span>{' '}
+                                                <span className="font-mono">{member.user?.nisn || '-'}</span>
+                                                <span className="mx-1.5 text-[#D9E2EA]">|</span>
+                                                <span className="font-semibold text-[#1769AA]">{className}</span>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => handleOpenDelete(member)}
+                                                className="inline-flex items-center text-xs font-semibold text-[#E76F51] hover:text-[#d35b3e] hover:bg-[#FCE8E3] px-2 py-1 rounded-md transition-colors shrink-0"
+                                                title="Nonaktifkan anggota"
+                                            >
+                                                <UserMinus className="w-3.5 h-3.5 mr-1" />
+                                                Keluarkan
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        {/* Desktop/Tablet Table (hidden sm:block) */}
+                        <div className="hidden sm:block overflow-x-auto -mx-5 -my-5">
+                            <table className="w-full text-left text-xs text-[#536170]">
+                                <thead className="bg-[#F5F7FA] text-[#536170] font-bold border-b border-[#D9E2EA] uppercase tracking-wider text-[11px]">
+                                    <tr>
+                                        <th className="px-5 py-3 w-12 text-center">No</th>
+                                        <th className="px-5 py-3 min-w-[180px]">Nama Anggota & Email</th>
+                                        <th className="px-5 py-3 min-w-[100px]">NISN</th>
+                                        <th className="px-5 py-3 min-w-[80px]">Kelas</th>
+                                        <th className="px-5 py-3 min-w-[100px]">Jabatan</th>
+                                        <th className="px-5 py-3 min-w-[110px]">Tanggal Gabung</th>
+                                        <th className="px-5 py-3 min-w-[90px] text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-[#D9E2EA]">
+                                    {filteredMembers.map((member, index) => {
+                                        const className = member.user?.enrollments?.[0]?.school_class?.name || '-';
+                                        return (
+                                            <tr key={member.id} className="hover:bg-[#F5F7FA] transition-colors">
+                                                <td className="px-5 py-3.5 text-center font-medium text-[#536170]">
+                                                    {index + 1}
+                                                </td>
+                                                <td className="px-5 py-3.5">
+                                                    <div className="font-bold text-[#17202A] flex items-center gap-1.5 whitespace-nowrap">
+                                                        {member.user?.name}
+                                                    </div>
+                                                    <div className="text-[#536170] text-[11px] whitespace-nowrap">
+                                                        {member.user?.email || '-'}
+                                                    </div>
+                                                </td>
+                                                <td className="px-5 py-3.5 font-mono text-[#536170] whitespace-nowrap">
+                                                    {member.user?.nisn || '-'}
+                                                </td>
+                                                <td className="px-5 py-3.5 font-bold text-[#1769AA] whitespace-nowrap">
+                                                    {className}
+                                                </td>
+                                                <td className="px-5 py-3.5 whitespace-nowrap">
+                                                    {getPositionBadge(member.position)}
+                                                </td>
+                                                <td className="px-5 py-3.5 text-[#536170] whitespace-nowrap">
+                                                    {member.joined_at ? formatIndonesianDate(member.joined_at) : '-'}
+                                                </td>
+                                                <td className="px-5 py-3.5 text-right whitespace-nowrap">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleOpenDelete(member)}
+                                                        className="inline-flex items-center text-xs font-semibold text-[#E76F51] hover:text-[#d35b3e] hover:bg-[#FCE8E3] px-2 py-1 rounded-md transition-colors"
+                                                        title="Nonaktifkan anggota"
+                                                    >
+                                                        <UserMinus className="w-3.5 h-3.5 mr-1" />
+                                                        Keluarkan
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                    </>
                 )}
             </Card>
 

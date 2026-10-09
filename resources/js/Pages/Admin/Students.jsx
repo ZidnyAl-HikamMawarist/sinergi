@@ -186,12 +186,12 @@ export default function Students({
                         <table className="w-full text-left border-collapse text-xs sm:text-sm">
                             <thead>
                                 <tr className="bg-[#F5F7FA] border-b border-[#D9E2EA] text-[#536170] font-bold uppercase tracking-wider text-[11px]">
-                                    <th className="py-3 px-4">Nama Siswa</th>
-                                    <th className="py-3 px-4">NISN</th>
-                                    <th className="py-3 px-4">Kelas</th>
-                                    <th className="py-3 px-4">Eskul Aktif</th>
-                                    <th className="py-3 px-4 text-center">Status</th>
-                                    <th className="py-3 px-4 text-right">Detail</th>
+                                    <th className="py-3 px-4 min-w-[180px]">Nama Siswa</th>
+                                    <th className="py-3 px-4 min-w-[100px]">NISN</th>
+                                    <th className="py-3 px-4 min-w-[80px]">Kelas</th>
+                                    <th className="py-3 px-4 min-w-[130px]">Eskul Aktif</th>
+                                    <th className="py-3 px-4 min-w-[90px] text-center">Status</th>
+                                    <th className="py-3 px-4 min-w-[70px] text-right">Detail</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-[#D9E2EA]">
