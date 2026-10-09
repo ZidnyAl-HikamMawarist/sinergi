@@ -62,6 +62,7 @@ class HandleInertiaRequests extends Middleware
                 'id' => $activeYear->id,
                 'name' => $activeYear->name,
             ] : null,
+            'appTimezone' => config('app.timezone', 'Asia/Jakarta'),
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),

@@ -31,3 +31,14 @@
   - Works even when student mobile data/internet quota is depleted (only the officer's device requires active connection).
   - Zero queue bottleneck when scaling: 50–100+ members can be routed through multiple parallel officer checkpoints (Gate 1, Gate 2).
 
+## ADR 006: Timezone & Temporal Consistency — Dual UTC Invariance & Asia/Jakarta Operational Scope
+- **Status:** Accepted
+- **Context:** SINERGI operates exclusively for Indonesian educational institutions, primarily in the Western Indonesia Time zone (WIB / `Asia/Jakarta`, UTC+7). System features (dynamic QR code generation, 60s countdown refresh, manual attendance grace periods, audit timestamps, and financial ledger dates) require absolute synchronization regardless of student or administrator device settings.
+- **Decision:**
+  1. **Application Timezone:** Set `config('app.timezone')` to `Asia/Jakarta` (WIB) as the canonical operational timezone for business logic, logging, and attendance windows.
+  2. **Storage Invariance:** Dynamic QR cryptographic tokens encode Unix epoch integers (`time()`), ensuring mathematical invariance across midnight and timezone changes.
+  3. **Display Formatting:** User-facing date/time formatting on frontend (`resources/js/Utils/date.js`) and backend response messages explicitly target `Asia/Jakarta` with WIB designation.
+  4. **Midnight Rollover:** Tokens generated immediately before midnight (e.g. 23:59:50) remain valid across the 00:00:00 boundary because expiration is evaluated via integer seconds delta, not date strings.
+- **Consequences:** Eliminates time-skew discrepancies between student mobile phones and school server scanner instances.
+
+
