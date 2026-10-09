@@ -6,6 +6,7 @@ import StatCard from '@/Components/StatCard';
 import Badge from '@/Components/Badge';
 import Button from '@/Components/Button';
 import Modal from '@/Components/Modal';
+import { formatIndonesianDate } from '@/Utils/format';
 import {
     Users,
     UserPlus,
@@ -195,7 +196,7 @@ export default function Members({
                     title="Wakil Ketua"
                     value={wakilCount}
                     icon={ShieldCheck}
-                    color="blue"
+                    color="sky"
                 />
                 <StatCard
                     title="Anggota Terdaftar"
@@ -267,11 +268,7 @@ export default function Members({
                                                 {getPositionBadge(member.position)}
                                             </td>
                                             <td className="px-5 py-3.5 text-[#536170] whitespace-nowrap">
-                                                {member.joined_at ? new Date(member.joined_at).toLocaleDateString('id-ID', {
-                                                    day: 'numeric',
-                                                    month: 'short',
-                                                    year: 'numeric'
-                                                }) : '-'}
+                                                {member.joined_at ? formatIndonesianDate(member.joined_at) : '-'}
                                             </td>
                                             <td className="px-5 py-3.5 text-right whitespace-nowrap">
                                                 <button

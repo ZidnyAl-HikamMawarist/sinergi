@@ -11,6 +11,7 @@ import {
 import AppLayout from '@/Layouts/AppLayout';
 import Card from '@/Components/Card';
 import Badge from '@/Components/Badge';
+import { formatIndonesianDate } from '@/Utils/format';
 
 export default function PortalDashboard({
     student = {},
@@ -217,7 +218,7 @@ export default function PortalDashboard({
                                             </div>
                                             <div className="text-[11px] text-[#536170] mt-0.5">
                                                 {att.activity_session?.extracurricular?.name} &bull;{' '}
-                                                {att.recorded_at ? new Date(att.recorded_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-'}
+                                                {formatIndonesianDate(att.recorded_at)}
                                             </div>
                                             {att.note && (
                                                 <div className="text-[10px] text-[#536170] italic mt-0.5">

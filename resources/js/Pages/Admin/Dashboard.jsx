@@ -17,18 +17,13 @@ import Card from '@/Components/Card';
 import Badge from '@/Components/Badge';
 import Button from '@/Components/Button';
 
+import { formatIndonesianDate, formatIndonesianTime, formatRupiah } from '@/Utils/format';
+
 export default function AdminDashboard({
     stats = {},
     recentSessions = [],
     recentLogs = [],
 }) {
-    const formatRupiah = (val) => {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            maximumFractionDigits: 0,
-        }).format(val || 0);
-    };
 
     return (
         <AppLayout
@@ -73,7 +68,7 @@ export default function AdminDashboard({
                     value={stats.totalSessions || 0}
                     subtitle="Tercatat periode ini"
                     icon={Calendar}
-                    color="blue"
+                    color="sky"
                 />
                 <StatCard
                     title="Saldo Kas OSIS"
@@ -117,7 +112,7 @@ export default function AdminDashboard({
                                                     {session.title}
                                                 </h4>
                                                 <p className="text-xs text-[#536170] mt-0.5">
-                                                    {session.extracurricular?.name} &bull; {session.session_date}
+                                                    {session.extracurricular?.name} &bull; {formatIndonesianDate(session.session_date)}
                                                 </p>
                                             </div>
                                         </div>
@@ -158,7 +153,7 @@ export default function AdminDashboard({
                                         <div className="flex items-center justify-between font-bold text-[#17202A]">
                                             <span className="capitalize">{log.action.replace('_', ' ')}</span>
                                             <span className="text-[10px] text-[#536170] font-normal">
-                                                {new Date(log.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+                                                {formatIndonesianTime(log.created_at)}
                                             </span>
                                         </div>
                                         <div className="text-[#536170] mt-1 flex items-center justify-between text-[11px]">

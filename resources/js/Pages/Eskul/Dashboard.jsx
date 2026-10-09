@@ -18,6 +18,7 @@ import Badge from '@/Components/Badge';
 import Button from '@/Components/Button';
 import Input from '@/Components/Input';
 import Modal from '@/Components/Modal';
+import { formatIndonesianDate } from '@/Utils/format';
 
 export default function EskulDashboard({
     myEskuls = [],
@@ -134,7 +135,7 @@ export default function EskulDashboard({
                                         <div className="flex items-center justify-between mb-2">
                                             <Badge status="dibuka">Sedang Dibuka</Badge>
                                             <span className="text-xs text-[#2A9D6F] font-bold">
-                                                {session.session_date}
+                                                {formatIndonesianDate(session.session_date)}
                                             </span>
                                         </div>
                                         <h4 className="text-sm font-bold text-[#17202A]">{session.title}</h4>
@@ -185,7 +186,7 @@ export default function EskulDashboard({
                                 <div>
                                     <h4 className="text-sm font-bold text-[#17202A]">{session.title}</h4>
                                     <p className="text-xs text-[#536170] mt-0.5">
-                                        {session.extracurricular?.name} &bull; {session.session_date} &bull; {session.attendances_count || 0} Hadir
+                                        {session.extracurricular?.name} &bull; {formatIndonesianDate(session.session_date)} &bull; {session.attendances_count || 0} Hadir
                                     </p>
                                 </div>
                                 <div className="flex items-center space-x-2">

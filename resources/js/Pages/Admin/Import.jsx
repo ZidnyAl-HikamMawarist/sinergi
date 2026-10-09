@@ -13,6 +13,7 @@ import AppLayout from '@/Layouts/AppLayout';
 import Card from '@/Components/Card';
 import Badge from '@/Components/Badge';
 import Button from '@/Components/Button';
+import { formatIndonesianDate } from '@/Utils/format';
 
 export default function Import({ batches = [] }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -127,7 +128,7 @@ export default function Import({ batches = [] }) {
                                                 <span className="text-[#E76F51] font-semibold">!{batch.error_rows} error</span>
                                             </div>
                                             <div className="text-[10px] text-[#536170] mt-0.5">
-                                                Diupload oleh {batch.uploader?.name} &bull; {new Date(batch.created_at).toLocaleDateString('id-ID')}
+                                                Diupload oleh {batch.uploader?.name} &bull; {formatIndonesianDate(batch.created_at)}
                                             </div>
                                         </div>
 

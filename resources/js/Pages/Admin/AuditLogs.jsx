@@ -4,6 +4,7 @@ import { Shield, Filter, Search, Clock, User, Globe } from 'lucide-react';
 import AppLayout from '@/Layouts/AppLayout';
 import Card from '@/Components/Card';
 import Button from '@/Components/Button';
+import { formatIndonesianDateTime } from '@/Utils/format';
 
 export default function AuditLogs({ logs = { data: [] }, users = [], filters = {} }) {
     const [action, setAction] = React.useState(filters.action || '');
@@ -154,7 +155,7 @@ export default function AuditLogs({ logs = { data: [] }, users = [], filters = {
                                     return (
                                         <tr key={log.id} className="hover:bg-[#F5F7FA] transition-colors">
                                             <td className="px-5 py-3 whitespace-nowrap text-[#536170] font-mono text-[11px]">
-                                                {new Date(log.created_at).toLocaleString('id-ID')}
+                                                {formatIndonesianDateTime(log.created_at)}
                                             </td>
                                             <td className="px-5 py-3 font-bold text-[#17202A] whitespace-nowrap">
                                                 {log.user?.name || 'Sistem / Anonim'}

@@ -10,69 +10,107 @@ export default function StatCard({
 }) {
     const colorStyles = {
         primary: {
-            bg: 'bg-[#E8F4FB] text-[#1769AA]',
-            border: 'border-l-4 border-l-[#1769AA]',
-            badge: 'text-[#1769AA]',
+            cardBg: 'bg-[#F2F8FD]',
+            cardBorder: 'border-[#CDE3F3]',
+            accentBorder: 'border-l-4 border-l-[#1769AA]',
+            iconBg: 'bg-[#E8F4FB] text-[#1769AA]',
+            valueText: 'text-[#123B5D]',
         },
         blue: {
-            bg: 'bg-[#E8F4FB] text-[#1769AA]',
-            border: 'border-l-4 border-l-[#1769AA]',
-            badge: 'text-[#1769AA]',
+            cardBg: 'bg-[#F2F8FD]',
+            cardBorder: 'border-[#CDE3F3]',
+            accentBorder: 'border-l-4 border-l-[#1769AA]',
+            iconBg: 'bg-[#E8F4FB] text-[#1769AA]',
+            valueText: 'text-[#123B5D]',
+        },
+        sky: {
+            cardBg: 'bg-[#F4F9FC]',
+            cardBorder: 'border-[#CFE5F5]',
+            accentBorder: 'border-l-4 border-l-[#4EA5D9]',
+            iconBg: 'bg-[#E8F4FB] text-[#1769AA]',
+            valueText: 'text-[#123B5D]',
         },
         success: {
-            bg: 'bg-[#E4F4ED] text-[#2A9D6F]',
-            border: 'border-l-4 border-l-[#2A9D6F]',
-            badge: 'text-[#2A9D6F]',
+            cardBg: 'bg-[#F0F9F5]',
+            cardBorder: 'border-[#C5E8D8]',
+            accentBorder: 'border-l-4 border-l-[#2A9D6F]',
+            iconBg: 'bg-[#E4F4ED] text-[#2A9D6F]',
+            valueText: 'text-[#1B6D4C]',
         },
         green: {
-            bg: 'bg-[#E4F4ED] text-[#2A9D6F]',
-            border: 'border-l-4 border-l-[#2A9D6F]',
-            badge: 'text-[#2A9D6F]',
+            cardBg: 'bg-[#F0F9F5]',
+            cardBorder: 'border-[#C5E8D8]',
+            accentBorder: 'border-l-4 border-l-[#2A9D6F]',
+            iconBg: 'bg-[#E4F4ED] text-[#2A9D6F]',
+            valueText: 'text-[#1B6D4C]',
         },
         warning: {
-            bg: 'bg-[#FFF4D6] text-[#B27B10]',
-            border: 'border-l-4 border-l-[#F4B942]',
-            badge: 'text-[#B27B10]',
+            cardBg: 'bg-[#FFFBF0]',
+            cardBorder: 'border-[#FCE7BA]',
+            accentBorder: 'border-l-4 border-l-[#F4B942]',
+            iconBg: 'bg-[#FFF4D6] text-[#B27B10]',
+            valueText: 'text-[#8C5D07]',
         },
         yellow: {
-            bg: 'bg-[#FFF4D6] text-[#B27B10]',
-            border: 'border-l-4 border-l-[#F4B942]',
-            badge: 'text-[#B27B10]',
+            cardBg: 'bg-[#FFFBF0]',
+            cardBorder: 'border-[#FCE7BA]',
+            accentBorder: 'border-l-4 border-l-[#F4B942]',
+            iconBg: 'bg-[#FFF4D6] text-[#B27B10]',
+            valueText: 'text-[#8C5D07]',
         },
         accent: {
-            bg: 'bg-[#FFF4D6] text-[#B27B10]',
-            border: 'border-l-4 border-l-[#F4B942]',
-            badge: 'text-[#B27B10]',
+            cardBg: 'bg-[#FFFBF0]',
+            cardBorder: 'border-[#FCE7BA]',
+            accentBorder: 'border-l-4 border-l-[#F4B942]',
+            iconBg: 'bg-[#FFF4D6] text-[#B27B10]',
+            valueText: 'text-[#8C5D07]',
         },
         danger: {
-            bg: 'bg-[#FCE8E3] text-[#E76F51]',
-            border: 'border-l-4 border-l-[#E76F51]',
-            badge: 'text-[#E76F51]',
+            cardBg: 'bg-[#FDF4F2]',
+            cardBorder: 'border-[#F9CFC5]',
+            accentBorder: 'border-l-4 border-l-[#E76F51]',
+            iconBg: 'bg-[#FCE8E3] text-[#E76F51]',
+            valueText: 'text-[#B84226]',
         },
         coral: {
-            bg: 'bg-[#FCE8E3] text-[#E76F51]',
-            border: 'border-l-4 border-l-[#E76F51]',
-            badge: 'text-[#E76F51]',
+            cardBg: 'bg-[#FDF4F2]',
+            cardBorder: 'border-[#F9CFC5]',
+            accentBorder: 'border-l-4 border-l-[#E76F51]',
+            iconBg: 'bg-[#FCE8E3] text-[#E76F51]',
+            valueText: 'text-[#B84226]',
         },
         neutral: {
-            bg: 'bg-[#F5F7FA] text-[#536170]',
-            border: 'border-l-4 border-l-[#536170]',
-            badge: 'text-[#536170]',
+            cardBg: 'bg-[#F8FAFC]',
+            cardBorder: 'border-[#D9E2EA]',
+            accentBorder: 'border-l-4 border-l-[#536170]',
+            iconBg: 'bg-[#F5F7FA] text-[#536170]',
+            valueText: 'text-[#17202A]',
         },
     };
 
     const scheme = colorStyles[color] || colorStyles.primary;
+    const valString = String(value ?? '');
+    const isVeryLong = valString.length > 15;
+    const isLong = valString.length > 9;
+    const valueSizeClass = isVeryLong
+        ? 'text-sm sm:text-base lg:text-xs xl:text-sm font-extrabold'
+        : isLong
+        ? 'text-base sm:text-lg lg:text-[15px] xl:text-lg 2xl:text-xl font-extrabold'
+        : 'text-2xl sm:text-3xl font-extrabold';
 
     return (
         <div
-            className={`bg-white rounded-xl p-5 border border-[#D9E2EA] shadow-xs ${scheme.border} ${className}`}
+            className={`rounded-xl p-4 sm:p-5 border ${scheme.cardBorder} ${scheme.cardBg} ${scheme.accentBorder} shadow-xs ${className}`}
         >
-            <div className="flex items-start justify-between gap-3">
+            <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0 flex-1">
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#536170] block truncate">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#536170] block truncate">
                         {title}
                     </span>
-                    <div className="text-2xl sm:text-3xl font-extrabold text-[#17202A] tracking-tight mt-1.5 truncate">
+                    <div
+                        className={`${valueSizeClass} ${scheme.valueText} tracking-tight mt-1.5 whitespace-nowrap`}
+                        title={valString}
+                    >
                         {value}
                     </div>
                     {subtitle && (
@@ -82,7 +120,7 @@ export default function StatCard({
                     )}
                 </div>
                 {Icon && (
-                    <div className={`p-2.5 rounded-lg shrink-0 ${scheme.bg}`}>
+                    <div className={`p-2.5 rounded-lg shrink-0 ${scheme.iconBg}`}>
                         <Icon className="w-5 h-5" />
                     </div>
                 )}

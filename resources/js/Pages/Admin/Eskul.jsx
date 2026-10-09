@@ -19,6 +19,7 @@ import {
     SlidersHorizontal,
     Sparkles
 } from 'lucide-react';
+import { formatIndonesianDate } from '@/Utils/format';
 
 export default function Eskul({
     eskuls = [],
@@ -116,39 +117,43 @@ export default function Eskul({
                                     onClick={() => handleSelectEskul(eskul.uuid)}
                                     className={`p-4 rounded-xl border transition-all cursor-pointer ${
                                         isSelected
-                                            ? 'bg-[#E8F4FB] border-[#1769AA] border-l-4 shadow-sm'
-                                            : 'bg-white border-[#D9E2EA] hover:border-[#1769AA]/40 hover:bg-[#F5F7FA]'
+                                            ? 'bg-[#F0F7FC] border-[#1769AA] border-l-4 shadow-xs'
+                                            : 'bg-white border-[#D9E2EA] hover:border-[#1769AA]/40 hover:bg-[#F9FBFC]'
                                     }`}
                                 >
                                     <div className="flex items-start justify-between">
                                         <div className="flex items-center space-x-3">
                                             <div
-                                                className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold text-sm ${
+                                                className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold text-sm shrink-0 ${
                                                     isSelected
-                                                        ? 'bg-[#123B5D] text-white'
+                                                        ? 'bg-[#1769AA] text-white'
                                                         : 'bg-[#E8F4FB] text-[#1769AA]'
                                                 }`}
                                             >
                                                 <Building2 className="w-5 h-5" />
                                             </div>
-                                            <div>
-                                                <h3 className="font-bold text-sm text-[#17202A]">{eskul.name}</h3>
-                                                <p className="text-xs text-[#536170] line-clamp-1">
+                                            <div className="min-w-0">
+                                                <h3 className={`font-bold text-sm truncate ${isSelected ? 'text-[#123B5D]' : 'text-[#17202A]'}`}>
+                                                    {eskul.name}
+                                                </h3>
+                                                <p className="text-xs text-[#536170] line-clamp-1 mt-0.5">
                                                     {eskul.description || 'Tidak ada deskripsi'}
                                                 </p>
                                             </div>
                                         </div>
-                                        <Badge variant={eskul.status === 'aktif' ? 'success' : 'neutral'}>
+                                        <Badge status={eskul.status}>
                                             {eskul.status}
                                         </Badge>
                                     </div>
 
-                                    <div className="mt-3 pt-3 border-t border-[#D9E2EA] flex items-center justify-between text-xs text-[#536170]">
-                                        <span className="flex items-center gap-1.5 font-medium">
+                                    <div className={`mt-3 pt-2.5 border-t flex items-center justify-between text-xs ${
+                                        isSelected ? 'border-[#D0E4F3]' : 'border-[#D9E2EA]'
+                                    }`}>
+                                        <span className={`flex items-center gap-1.5 font-medium ${isSelected ? 'text-[#1769AA]' : 'text-[#536170]'}`}>
                                             <Users className="w-3.5 h-3.5 text-[#1769AA]" />
                                             {eskul.members_count ?? 0} Anggota
                                         </span>
-                                        <span className="flex items-center gap-1.5 font-medium">
+                                        <span className={`flex items-center gap-1.5 font-medium ${isSelected ? 'text-[#2A9D6F]' : 'text-[#536170]'}`}>
                                             <Calendar className="w-3.5 h-3.5 text-[#2A9D6F]" />
                                             {eskul.activity_sessions_count ?? 0} Sesi
                                         </span>
@@ -159,46 +164,65 @@ export default function Eskul({
                     </div>
                 </div>
 
-                {/* Selected Eskul Details & Members */}
+                {/* Selected Eskul Details & Members Workspace */}
                 <div className="lg:col-span-2">
                     {selectedEskul ? (
                         <div className="space-y-6">
-                            <Card className="border-l-4 border-l-[#1769AA] border-[#D9E2EA]">
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                    <div>
-                                        <div className="flex items-center space-x-2">
-                                            <h2 className="text-xl font-bold text-[#17202A]">
-                                                {selectedEskul.name}
-                                            </h2>
-                                            <Badge variant={selectedEskul.status === 'aktif' ? 'success' : 'neutral'}>
-                                                {selectedEskul.status}
-                                            </Badge>
+                            {/* Workspace Header Card */}
+                            <div className="bg-white rounded-xl border border-[#D9E2EA] border-t-4 border-t-[#1769AA] p-5 sm:p-6 shadow-xs">
+                                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                                    <div className="flex items-start space-x-3.5">
+                                        <div className="w-12 h-12 rounded-xl bg-[#123B5D] text-white flex items-center justify-center font-bold text-lg shrink-0">
+                                            <Building2 className="w-6 h-6 text-white" />
                                         </div>
-                                        <p className="mt-1 text-xs text-[#536170]">
-                                            {selectedEskul.description || 'Ekstrakurikuler resmi di lingkungan sekolah.'}
-                                        </p>
+                                        <div>
+                                            <div className="flex items-center space-x-2.5 flex-wrap gap-y-1">
+                                                <h2 className="text-xl sm:text-2xl font-black text-[#17202A] tracking-tight">
+                                                    {selectedEskul.name}
+                                                </h2>
+                                                <Badge status={selectedEskul.status}>
+                                                    {selectedEskul.status}
+                                                </Badge>
+                                            </div>
+                                            <p className="mt-1.5 text-xs sm:text-sm text-[#536170] leading-relaxed max-w-2xl">
+                                                {selectedEskul.description || 'Ekstrakurikuler resmi di lingkungan sekolah.'}
+                                            </p>
+                                        </div>
                                     </div>
 
                                     <Button
                                         onClick={() => setAddMemberModalOpen(true)}
                                         variant="primary"
-                                        className="flex items-center gap-1.5 self-start sm:self-auto text-xs"
+                                        size="sm"
+                                        className="flex items-center gap-1.5 self-start sm:self-auto shrink-0 text-xs font-bold"
                                     >
-                                        <UserPlus className="w-3.5 h-3.5" />
+                                        <UserPlus className="w-4 h-4 mr-1" />
                                         Tambah Anggota
                                     </Button>
                                 </div>
-                            </Card>
 
-                            {/* Members Table */}
-                            <Card padding={false} className="overflow-hidden border-[#D9E2EA]">
-                                <div className="p-4 sm:p-5 border-b border-[#D9E2EA] flex items-center justify-between">
+                                {/* Workspace Metric Summary Chips */}
+                                <div className="mt-5 pt-4 border-t border-[#D9E2EA] flex flex-wrap gap-2.5">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#F2F8FD] border border-[#CDE3F3] text-xs font-bold text-[#1769AA]">
+                                        <Users className="w-4 h-4 text-[#1769AA]" />
+                                        <span>{members.length} Anggota Terdaftar</span>
+                                    </div>
+                                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#F0F9F5] border border-[#C5E8D8] text-xs font-bold text-[#2A9D6F]">
+                                        <Calendar className="w-4 h-4 text-[#2A9D6F]" />
+                                        <span>{selectedEskul.activity_sessions_count ?? 0} Sesi Kegiatan</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Members Table Workspace */}
+                            <div className="bg-white rounded-xl border border-[#D9E2EA] shadow-xs overflow-hidden">
+                                <div className="p-4 sm:p-5 border-b border-[#D9E2EA] bg-[#F8FAFC] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                                     <div>
-                                        <h3 className="text-base font-bold text-[#17202A]">
+                                        <h3 className="text-sm sm:text-base font-bold text-[#17202A]">
                                             Daftar Anggota Aktif ({members.length})
                                         </h3>
                                         <p className="text-xs text-[#536170]">
-                                            Tahun Ajaran aktif yang sedang berjalan
+                                            Tahun ajaran aktif yang sedang berjalan
                                         </p>
                                     </div>
                                 </div>
@@ -216,39 +240,46 @@ export default function Eskul({
                                         <table className="w-full text-left border-collapse text-xs sm:text-sm">
                                             <thead>
                                                 <tr className="bg-[#F5F7FA] border-b border-[#D9E2EA] text-[#536170] font-bold uppercase tracking-wider text-[11px]">
-                                                    <th className="py-3 px-4">Nama Siswa</th>
-                                                    <th className="py-3 px-4">NISN</th>
-                                                    <th className="py-3 px-4">Kelas</th>
-                                                    <th className="py-3 px-4">Jabatan</th>
-                                                    <th className="py-3 px-4">Bergabung</th>
-                                                    <th className="py-3 px-4 text-right">Aksi</th>
+                                                    <th className="py-3 px-4 min-w-[200px]">Nama Siswa</th>
+                                                    <th className="py-3 px-4 min-w-[110px]">NISN</th>
+                                                    <th className="py-3 px-4 min-w-[90px]">Kelas</th>
+                                                    <th className="py-3 px-4 min-w-[110px]">Jabatan</th>
+                                                    <th className="py-3 px-4 min-w-[120px]">Bergabung</th>
+                                                    <th className="py-3 px-4 min-w-[90px] text-right">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-[#D9E2EA]">
                                                 {members.map((member) => (
-                                                    <tr key={member.id} className="hover:bg-[#F5F7FA] transition-colors">
-                                                        <td className="py-3.5 px-4 font-bold text-[#17202A]">
-                                                            {member.user?.name}
+                                                    <tr key={member.id} className="hover:bg-[#F9FBFC] transition-colors">
+                                                        <td className="py-3 px-4">
+                                                            <div className="flex items-center gap-2.5">
+                                                                <div className="w-7 h-7 rounded-md bg-[#123B5D] text-white text-xs font-bold flex items-center justify-center shrink-0">
+                                                                    {member.user?.name ? member.user.name.charAt(0).toUpperCase() : 'S'}
+                                                                </div>
+                                                                <span className="font-bold text-[#17202A] whitespace-nowrap">
+                                                                    {member.user?.name}
+                                                                </span>
+                                                            </div>
                                                         </td>
-                                                        <td className="py-3.5 px-4 font-mono text-[#536170] text-xs">
+                                                        <td className="py-3 px-4 font-mono text-[#536170] text-xs whitespace-nowrap">
                                                             {member.user?.nisn || '-'}
                                                         </td>
-                                                        <td className="py-3.5 px-4 text-[#536170]">
+                                                        <td className="py-3 px-4 text-[#536170] whitespace-nowrap">
                                                             {member.user?.student_profile?.class_room?.name || '-'}
                                                         </td>
-                                                        <td className="py-3.5 px-4">
-                                                            <Badge variant={member.position === 'Ketua' ? 'warning' : 'neutral'}>
+                                                        <td className="py-3 px-4 whitespace-nowrap">
+                                                            <Badge status={member.position === 'Ketua' ? 'ketua' : member.position === 'Wakil' ? 'wakil' : 'anggota'}>
                                                                 {member.position || 'Anggota'}
                                                             </Badge>
                                                         </td>
-                                                        <td className="py-3.5 px-4 text-[#536170] text-xs">
-                                                            {member.joined_at ? new Date(member.joined_at).toLocaleDateString('id-ID') : '-'}
+                                                        <td className="py-3 px-4 text-[#536170] text-xs whitespace-nowrap font-medium">
+                                                            {member.joined_at ? formatIndonesianDate(member.joined_at) : '-'}
                                                         </td>
-                                                        <td className="py-3.5 px-4 text-right">
+                                                        <td className="py-3 px-4 text-right whitespace-nowrap">
                                                             <button
                                                                 type="button"
                                                                 onClick={() => handleRemoveMember(member.id)}
-                                                                className="text-xs text-[#E76F51] hover:text-[#d35b3e] font-semibold px-2 py-0.5 hover:bg-[#FCE8E3] rounded-md transition-colors"
+                                                                className="text-xs text-[#E76F51] hover:text-[#d35b3e] font-bold px-2.5 py-1 hover:bg-[#FCE8E3] rounded-md transition-colors"
                                                                 title="Nonaktifkan Anggota"
                                                             >
                                                                 Keluarkan
@@ -260,14 +291,14 @@ export default function Eskul({
                                         </table>
                                     </div>
                                 )}
-                            </Card>
+                            </div>
                         </div>
                     ) : (
-                        <Card className="text-center py-12 border-[#D9E2EA]">
+                        <div className="bg-white rounded-xl border border-[#D9E2EA] p-12 text-center shadow-xs">
                             <Building2 className="w-12 h-12 text-[#536170] mx-auto mb-3 opacity-60" />
                             <h3 className="text-base font-bold text-[#17202A]">Pilih Ekstrakurikuler</h3>
                             <p className="text-xs text-[#536170] mt-1">Pilih eskul dari menu sebelah kiri untuk melihat detail.</p>
-                        </Card>
+                        </div>
                     )}
                 </div>
             </div>

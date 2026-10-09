@@ -20,6 +20,7 @@ import Badge from '@/Components/Badge';
 import Button from '@/Components/Button';
 import Input from '@/Components/Input';
 import Modal from '@/Components/Modal';
+import { formatIndonesianDate, formatIndonesianTime } from '@/Utils/format';
 
 export default function Scanner({
     openSessions = [],
@@ -215,7 +216,7 @@ export default function Scanner({
                         >
                             {openSessions.map((s) => (
                                 <option key={s.id} value={s.uuid}>
-                                    {s.extracurricular?.name}: {s.title} ({s.session_date})
+                                    {s.extracurricular?.name}: {s.title} ({formatIndonesianDate(s.session_date)})
                                 </option>
                             ))}
                         </select>
@@ -381,7 +382,7 @@ export default function Scanner({
                                                     {att.student?.name}
                                                 </div>
                                                 <div className="text-[10px] text-[#536170]">
-                                                    {att.recorded_at ? new Date(att.recorded_at).toLocaleTimeString('id-ID') : '-'} &bull;{' '}
+                                                    {formatIndonesianTime(att.recorded_at)} &bull;{' '}
                                                     <span className="uppercase font-mono font-semibold">{att.method}</span>
                                                 </div>
                                             </div>

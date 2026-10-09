@@ -22,6 +22,7 @@ import Badge from '@/Components/Badge';
 import Button from '@/Components/Button';
 import Input from '@/Components/Input';
 import Modal from '@/Components/Modal';
+import { formatIndonesianDate, formatRupiah } from '@/Utils/format';
 
 export default function KasDashboard({
     stats = {},
@@ -67,14 +68,6 @@ export default function KasDashboard({
     } = useForm({
         void_reason: '',
     });
-
-    const formatRupiah = (val) => {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            maximumFractionDigits: 0,
-        }).format(val || 0);
-    };
 
     const handleCreateSubmit = (e) => {
         e.preventDefault();
@@ -348,7 +341,7 @@ export default function KasDashboard({
                                                 }`}
                                             >
                                                 <td className="px-5 py-3.5 font-medium text-[#536170] whitespace-nowrap">
-                                                    {tx.transaction_date}
+                                                    {formatIndonesianDate(tx.transaction_date)}
                                                 </td>
                                                 <td className="px-5 py-3.5">
                                                     <div className={`font-bold text-[#17202A] ${isVoid ? 'line-through' : ''}`}>

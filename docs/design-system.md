@@ -87,11 +87,24 @@ All tokens are centralized in `resources/css/app.css` and applied across compone
 - **Radius:** `rounded-lg` (8–10px) — never extreme pills.
 
 ### Stat Cards (`StatCard.jsx`)
-Semantic accenting on a clean white surface:
-- **Blue (`border-l-4 border-l-[#1769AA]`):** Attendance sessions, general activity, total volume.
-- **Green (`border-l-4 border-l-[#2A9D6F]`):** Active extracurriculars, valid attendees, positive inflows.
-- **Yellow (`border-l-4 border-l-[#F4B942]`):** Cash balances, financial metrics, student leadership.
-- **Coral (`border-l-4 border-l-[#E76F51]`):** Problem rows, voids, warnings, alerts.
+Enhanced in V3 with a **controlled surface-tint system** and **responsive typography**:
+- **Blue (`color="blue"` or `"primary"`):** Card surface `bg-[#F2F8FD]`, border `border-[#CDE3F3]`, accent `border-l-4 border-l-[#1769AA]`, icon container `bg-[#E8F4FB] text-[#1769AA]`, value `text-[#123B5D]`.
+- **Sky (`color="sky"`):** Distinct blue treatment for sessions: `bg-[#F4F9FC]`, border `border-[#CFE5F5]`, accent `border-l-4 border-l-[#4EA5D9]`, icon container `bg-[#E8F4FB] text-[#1769AA]`.
+- **Green (`color="green"` or `"success"`):** Card surface `bg-[#F0F9F5]`, border `border-[#C5E8D8]`, accent `border-l-4 border-l-[#2A9D6F]`, icon container `bg-[#E4F4ED] text-[#2A9D6F]`, value `text-[#1B6D4C]`.
+- **Yellow (`color="yellow"` or `"warning"`):** Card surface `bg-[#FFFBF0]`, border `border-[#FCE7BA]`, accent `border-l-4 border-l-[#F4B942]`, icon container `bg-[#FFF4D6] text-[#B27B10]`, value `text-[#8C5D07]`.
+- **Coral (`color="coral"` or `"danger"`):** Card surface `bg-[#FDF4F2]`, border `border-[#F9CFC5]`, accent `border-l-4 border-l-[#E76F51]`, icon container `bg-[#FCE8E3] text-[#E76F51]`, value `text-[#B84226]`.
+- **Responsive Sizing:** Dynamic typography automatically steps down font size for long metrics (e.g. Rupiah currency `Rp 15.000.000`) to guarantee no awkward ellipses or layout breaking.
+
+### Extracurricular Purposeful Workspace (`Admin/Eskul.jsx`)
+- **Selected Item:** Distinct brand-blue surface tint (`bg-[#F0F7FC] border-[#1769AA] border-l-4`), high-contrast icon container (`bg-[#1769AA] text-white`), clean count dividers.
+- **Detail Workspace Header:** Dedicated workspace identity header card with prominent eskul branding, status, description, summary metric chips (Anggota & Sesi), and primary action button.
+- **Member Table:** Explicit column minimum widths, student initials badge, and localized date presentation preventing multi-line breaking.
+
+### Date & Currency Utilities (`resources/js/Utils/format.js`)
+- **Indonesian Date (`formatIndonesianDate`):** Localized into `id-ID` in `Asia/Jakarta` (WIB).
+- **Indonesian Date & Time (`formatIndonesianDateTime`):** Includes explicit `WIB` timezone suffix without altering underlying database timestamps or security tokens.
+- **Indonesian Time (`formatIndonesianTime`):** Formats 24h clock with `WIB`.
+- **Rupiah Currency (`formatRupiah`):** Standardizes currency formatting across all dashboards.
 
 ### Status Badges (`Badge.jsx`)
 - **Success (`hadir`, `aktif`, `valid`, `commit`):** `#2A9D6F` text on `#E4F4ED` soft surface.
