@@ -24,6 +24,13 @@
     <body class="h-full font-sans antialiased text-[#17202A] bg-[#F5F7FA] selection:bg-[#1769AA] selection:text-white">
         @inertia
         <script>
+            // Handle bfcache restoration: reload if page was restored from back-forward cache
+            window.addEventListener('pageshow', (event) => {
+                if (event.persisted) {
+                    window.location.reload();
+                }
+            });
+
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
                     navigator.serviceWorker.register('/sw.js').catch(err => {
