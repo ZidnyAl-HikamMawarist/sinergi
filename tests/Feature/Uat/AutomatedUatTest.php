@@ -227,4 +227,50 @@ class AutomatedUatTest extends TestCase
         $backKasResponse = $this->get('/kas/dashboard');
         $backKasResponse->assertRedirect('/login');
     }
+
+    /**
+     * UAT SCENARIO 6: OSIS PRESIDIUM & SECRETARY E-ARSIP LIFECYCLE
+     * Flow: login ketua osis → dashboard osis → 10 sekbid permendiknas → login sekretaris → generate nomor surat → create letter → archive letter
+     */
+    public function test_uat_osis_lifecycle(): void
+    {
+        // 1. Ketua OSIS login and access OSIS Dashboard
+        $ketua = User::where('email', 'ketua.osis@sinergi.test')->firstOrFail();
+        $this->actingAs($ketua)->get('/osis/dashboard')->assertStatus(200);
+
+        // 2. Access 10 Sekbid Permendiknas 39/2008
+        $sekbidResponse = $this->actingAs($ketua)->get('/osis/sekbid');
+        $sekbidResponse->assertStatus(200);
+        $sekbidPage = $sekbidResponse->viewData('page');
+        $this->assertCount(10, $sekbidPage['props']['sekbids']);
+
+        // 3. Sekretaris OSIS login and access E-Arsip
+        $sekretaris = User::where('email', 'sekretaris@sinergi.test')->firstOrFail();
+        $this->actingAs($sekretaris)->get('/osis/arsip')->assertStatus(200);
+
+        // 4. Generate Nomor Surat Resmi
+        $genResponse = $this->actingAs($sekretaris)->getJson('/osis/arsip/generate-nomor?classification=UND');
+        $genResponse->assertStatus(200);
+        $nomorResmi = $genResponse->json('reference_number');
+        $this->assertNotEmpty($nomorResmi);
+
+        // 5. Store Outgoing Letter in E-Arsip
+        $createResponse = $this->actingAs($sekretaris)->post('/osis/arsip', [
+            'type' => 'keluar',
+            'reference_number' => $nomorResmi,
+            'classification_code' => 'UND',
+            'sender_or_recipient' => 'Kepala Sekolah SMAN 1',
+            'subject' => 'Permohonan Izin Kegiatan Pekan Olahraga Siswa',
+            'letter_date' => now()->toDateString(),
+            'received_or_sent_date' => now()->toDateString(),
+            'description' => 'Disposisi permohonan fasilitas sarpras',
+            'status' => 'disetujui',
+        ]);
+        $createResponse->assertRedirect();
+        $this->assertDatabaseHas('letters', [
+            'reference_number' => $nomorResmi,
+            'type' => 'keluar',
+            'status' => 'disetujui',
+        ]);
+    }
 }

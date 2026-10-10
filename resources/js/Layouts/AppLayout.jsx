@@ -17,7 +17,9 @@ import {
     ScanLine,
     ArrowLeftRight,
     CreditCard,
-    BarChart3
+    BarChart3,
+    FolderArchive,
+    Compass
 } from 'lucide-react';
 import FlashMessage from '@/Components/FlashMessage';
 
@@ -37,13 +39,14 @@ export default function AppLayout({
     const currentUrl = typeof window !== 'undefined' ? window.location.pathname : '';
     let workspace = 'portal';
     if (currentUrl.startsWith('/admin')) workspace = 'admin';
+    else if (currentUrl.startsWith('/osis')) workspace = 'osis';
     else if (currentUrl.startsWith('/kas')) workspace = 'kas';
     else if (currentUrl.startsWith('/eskul')) workspace = 'eskul';
 
     // Navigation links per workspace
     const navItems = {
         admin: [
-            { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+            { name: 'Dashboard Sistem', href: '/admin/dashboard', icon: LayoutDashboard },
             { name: 'Eskul & Pembina', href: '/admin/eskul', icon: Building2 },
             { name: 'Siswa & Kelas', href: '/admin/students', icon: Users },
             { name: 'Rekap Presensi', href: '/admin/presensi/rekap', icon: CheckCircle2 },
@@ -51,6 +54,14 @@ export default function AppLayout({
             { name: 'Buku Kas (Audit)', href: '/kas/dashboard', icon: BookOpen },
             { name: 'Import Data', href: '/admin/import', icon: FileSpreadsheet },
             { name: 'Audit Log', href: '/admin/audit-logs', icon: Shield },
+        ],
+        osis: [
+            { name: 'Dashboard Presidium', href: '/osis/dashboard', icon: LayoutDashboard },
+            { name: 'E-Arsip Surat', href: '/osis/arsip', icon: FolderArchive },
+            { name: '10 Sekbid Permendiknas', href: '/osis/sekbid', icon: Compass },
+            { name: 'Buku Kas OSIS', href: '/kas/dashboard', icon: BookOpen },
+            { name: 'Monitoring Eskul', href: '/admin/eskul', icon: Building2 },
+            { name: 'Jadwal Kegiatan', href: '/eskul/sessions', icon: Calendar },
         ],
         kas: [
             { name: 'Buku Kas', href: '/kas/dashboard', icon: BookOpen },
@@ -87,7 +98,8 @@ export default function AppLayout({
     };
 
     const workspaceLabel = {
-        admin: 'Admin OSIS',
+        admin: 'Admin Sekolah',
+        osis: 'Presidium OSIS',
         kas: 'Buku Kas OSIS',
         eskul: 'Pengurus Eskul',
         portal: 'Portal Siswa',

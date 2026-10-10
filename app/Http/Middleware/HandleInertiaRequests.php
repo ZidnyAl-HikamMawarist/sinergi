@@ -48,6 +48,11 @@ class HandleInertiaRequests extends Middleware
                 'is_super_admin' => $user->isSuperAdmin(),
                 'is_admin' => $user->isAdmin($activeYear?->id),
                 'is_bendahara' => $user->isBendahara($activeYear?->id),
+                'is_presidium' => $user->isPresidiumOsis($activeYear?->id),
+                'is_ketua_osis' => $user->isKetuaOsis($activeYear?->id),
+                'is_wakil_ketua_osis' => $user->isWakilKetuaOsis($activeYear?->id),
+                'is_sekretaris_osis' => $user->isSekretarisOsis($activeYear?->id),
+                'is_anggota_osis' => $user->isAnggotaOsis($activeYear?->id),
                 'is_pengurus' => $user->isPengurusEskul(null, $activeYear?->id),
                 'is_siswa' => $user->isSiswa($activeYear?->id),
             ];

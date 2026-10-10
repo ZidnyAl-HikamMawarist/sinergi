@@ -14,6 +14,9 @@ use App\Http\Controllers\Eskul\EskulDashboardController;
 use App\Http\Controllers\Eskul\EskulMemberController;
 use App\Http\Controllers\Kas\CashTransactionController;
 use App\Http\Controllers\Kas\KasDashboardController;
+use App\Http\Controllers\Osis\LetterArchiveController;
+use App\Http\Controllers\Osis\OsisDashboardController;
+use App\Http\Controllers\Osis\OsisSekbidController;
 use App\Http\Controllers\Portal\PortalDashboardController;
 use App\Http\Controllers\WorkspaceController;
 use Illuminate\Support\Facades\Route;
@@ -93,5 +96,18 @@ Route::middleware('auth')->group(function () {
         Route::post('/import/{batch:uuid}/commit', [StudentImportController::class, 'commit'])->name('import.commit');
         Route::get('/import/{batch:uuid}/credentials', [StudentImportController::class, 'downloadCredentials'])->name('import.credentials');
         Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index');
+    });
+
+    // 5. Presidium & Pengurus OSIS Workspace
+    Route::prefix('osis')->name('osis.')->middleware('role:ketua_osis,wakil_ketua_osis,sekretaris_osis,bendahara,ketua_sekbid,sekretaris_sekbid,anggota_osis,admin,super_admin')->group(function () {
+        Route::get('/dashboard', [OsisDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/sekbid', [OsisSekbidController::class, 'index'])->name('sekbid.index');
+
+        // E-Arsip Surat Menyurat OSIS
+        Route::get('/arsip', [LetterArchiveController::class, 'index'])->name('arsip.index');
+        Route::post('/arsip', [LetterArchiveController::class, 'store'])->name('arsip.store');
+        Route::get('/arsip/generate-nomor', [LetterArchiveController::class, 'generateReferenceNumber'])->name('arsip.generate-nomor');
+        Route::get('/arsip/{uuid}/file', [LetterArchiveController::class, 'showFile'])->name('arsip.file');
+        Route::post('/arsip/{uuid}/status', [LetterArchiveController::class, 'updateStatus'])->name('arsip.status');
     });
 });

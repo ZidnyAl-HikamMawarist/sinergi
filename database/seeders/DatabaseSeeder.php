@@ -7,6 +7,7 @@ use App\Models\AppSetting;
 use App\Models\CashCategory;
 use App\Models\Extracurricular;
 use App\Models\ExtracurricularMember;
+use App\Models\Letter;
 use App\Models\Role;
 use App\Models\SchoolClass;
 use App\Models\StudentEnrollment;
@@ -26,8 +27,14 @@ class DatabaseSeeder extends Seeder
         // 1. Roles
         $roles = [
             ['name' => 'super_admin', 'label' => 'Super Administrator'],
-            ['name' => 'admin', 'label' => 'Admin Inti OSIS'],
-            ['name' => 'bendahara', 'label' => 'Bendahara'],
+            ['name' => 'admin', 'label' => 'Admin Sekolah / Pembina'],
+            ['name' => 'ketua_osis', 'label' => 'Ketua OSIS'],
+            ['name' => 'wakil_ketua_osis', 'label' => 'Wakil Ketua OSIS'],
+            ['name' => 'sekretaris_osis', 'label' => 'Sekretaris OSIS'],
+            ['name' => 'bendahara', 'label' => 'Bendahara OSIS'],
+            ['name' => 'ketua_sekbid', 'label' => 'Ketua Seksi Bidang'],
+            ['name' => 'sekretaris_sekbid', 'label' => 'Sekretaris Seksi Bidang'],
+            ['name' => 'anggota_osis', 'label' => 'Anggota OSIS'],
             ['name' => 'pengurus_eskul', 'label' => 'Pengurus Ekstrakurikuler'],
             ['name' => 'siswa', 'label' => 'Siswa'],
         ];
@@ -36,6 +43,9 @@ class DatabaseSeeder extends Seeder
         foreach ($roles as $r) {
             $roleModels[$r['name']] = Role::firstOrCreate(['name' => $r['name']], $r);
         }
+
+        // Call Official 10 Sekbid Seeder per Permendiknas No. 39/2008
+        $this->call(OsisSekbidSeeder::class);
 
         // 2. Active Academic Year
         $academicYear = AcademicYear::firstOrCreate(
@@ -97,12 +107,12 @@ class DatabaseSeeder extends Seeder
             $roleModels['super_admin']->id => ['academic_year_id' => $academicYear->id],
         ]);
 
-        // Admin OSIS
+        // Admin Sekolah / Pembina
         $admin = User::firstOrCreate(
             ['email' => 'admin@sinergi.test'],
             [
                 'uuid' => (string) Str::uuid(),
-                'name' => 'Zidny Al Hikam (Ketua OSIS)',
+                'name' => 'Bapak H. Wahyudi, M.Pd (Pembina / Admin Sekolah)',
                 'password' => $defaultPassword,
                 'status' => 'aktif',
                 'must_change_password' => false,
@@ -112,11 +122,63 @@ class DatabaseSeeder extends Seeder
             $roleModels['admin']->id => ['academic_year_id' => $academicYear->id],
         ]);
 
+        // Ketua OSIS
+        $ketuaOsis = User::firstOrCreate(
+            ['email' => 'ketua.osis@sinergi.test'],
+            [
+                'uuid' => (string) Str::uuid(),
+                'nisn' => '0051234550',
+                'name' => 'Zidny Al Hikam (Ketua OSIS)',
+                'password' => $defaultPassword,
+                'status' => 'aktif',
+                'must_change_password' => false,
+            ]
+        );
+        $ketuaOsis->roles()->syncWithoutDetaching([
+            $roleModels['ketua_osis']->id => ['academic_year_id' => $academicYear->id],
+            $roleModels['siswa']->id => ['academic_year_id' => $academicYear->id],
+        ]);
+
+        // Wakil Ketua OSIS
+        $wakilOsis = User::firstOrCreate(
+            ['email' => 'wakil.osis@sinergi.test'],
+            [
+                'uuid' => (string) Str::uuid(),
+                'nisn' => '0051234551',
+                'name' => 'Ahmad Fauzi (Wakil Ketua OSIS)',
+                'password' => $defaultPassword,
+                'status' => 'aktif',
+                'must_change_password' => false,
+            ]
+        );
+        $wakilOsis->roles()->syncWithoutDetaching([
+            $roleModels['wakil_ketua_osis']->id => ['academic_year_id' => $academicYear->id],
+            $roleModels['siswa']->id => ['academic_year_id' => $academicYear->id],
+        ]);
+
+        // Sekretaris OSIS
+        $sekretaris = User::firstOrCreate(
+            ['email' => 'sekretaris@sinergi.test'],
+            [
+                'uuid' => (string) Str::uuid(),
+                'nisn' => '0051234552',
+                'name' => 'Anindya Putri (Sekretaris OSIS)',
+                'password' => $defaultPassword,
+                'status' => 'aktif',
+                'must_change_password' => false,
+            ]
+        );
+        $sekretaris->roles()->syncWithoutDetaching([
+            $roleModels['sekretaris_osis']->id => ['academic_year_id' => $academicYear->id],
+            $roleModels['siswa']->id => ['academic_year_id' => $academicYear->id],
+        ]);
+
         // Bendahara
         $bendahara = User::firstOrCreate(
             ['email' => 'bendahara@sinergi.test'],
             [
                 'uuid' => (string) Str::uuid(),
+                'nisn' => '0051234553',
                 'name' => 'Siti Rahma (Bendahara OSIS)',
                 'password' => $defaultPassword,
                 'status' => 'aktif',
@@ -222,6 +284,40 @@ class DatabaseSeeder extends Seeder
             [
                 'position' => 'anggota',
                 'joined_at' => '2026-07-20',
+            ]
+        );
+
+        // 7. Seed Initial E-Arsip Letters
+        Letter::firstOrCreate(
+            ['reference_number' => '421/045/Disdik/X/2026'],
+            [
+                'academic_year_id' => $academicYear->id,
+                'type' => 'masuk',
+                'classification_code' => 'UND',
+                'sender_or_recipient' => 'Dinas Pendidikan Provinsi / Balai Wilayah Kesiswaan',
+                'subject' => 'Undangan Sarasehan & Temu Forum Ketua OSIS Pelajar Berprestasi',
+                'letter_date' => '2026-10-05',
+                'received_or_sent_date' => '2026-10-06',
+                'description' => 'Delegasi 2 orang pengurus presidium OSIS untuk menghadiri sarasehan kepemimpinan pelajar.',
+                'status' => 'diarsipkan',
+                'created_by' => $sekretaris->id,
+            ]
+        );
+
+        Letter::firstOrCreate(
+            ['reference_number' => '001/OSIS/UND/X/2026'],
+            [
+                'academic_year_id' => $academicYear->id,
+                'type' => 'keluar',
+                'classification_code' => 'UND',
+                'sender_or_recipient' => 'Seluruh Ketua Ekstrakurikuler & Sekbid 1 s.d. 10',
+                'subject' => 'Undangan Rapat Koordinasi Sinergi Program Kerja Triwulan I',
+                'letter_date' => '2026-10-08',
+                'received_or_sent_date' => '2026-10-08',
+                'description' => 'Rapat koordinasi penyelarasan kalender kegiatan seluruh sekbid dan ekstrakurikuler di Aula Utama.',
+                'status' => 'disetujui',
+                'created_by' => $sekretaris->id,
+                'approved_by' => $ketuaOsis->id,
             ]
         );
     }
