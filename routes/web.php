@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\StudentImportController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Eskul\ActivitySessionController;
+use App\Http\Controllers\Eskul\AttendanceAnalyticsController;
 use App\Http\Controllers\Eskul\AttendanceController;
 use App\Http\Controllers\Eskul\AttendanceRecapController;
 use App\Http\Controllers\Eskul\EskulDashboardController;
@@ -59,6 +60,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/attendance/manual', [AttendanceController::class, 'manual'])->name('attendance.manual');
         Route::get('/rekap', [AttendanceRecapController::class, 'index'])->name('rekap');
         Route::get('/rekap/export', [AttendanceRecapController::class, 'exportCsv'])->name('rekap.export');
+        Route::get('/analytics', [AttendanceAnalyticsController::class, 'index'])->name('analytics');
         Route::get('/sessions', [EskulDashboardController::class, 'index'])->name('sessions.index');
         Route::get('/members', [EskulMemberController::class, 'index'])->name('members.index');
         Route::post('/members', [EskulMemberController::class, 'store'])->name('members.store');
