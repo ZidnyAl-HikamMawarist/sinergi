@@ -31,6 +31,8 @@ Dokumen ini adalah **Single Source of Truth** arsitektur SINERGI. Setiap agen AI
 | `extracurricular_members` | `id`, unique(`extracurricular_id`, `user_id`, `academic_year_id`) | `extracurricular_id -> extracurriculars.id`, `user_id -> users.id`, `academic_year_id -> academic_years.id` | **`position: ketua\|wakil\|anggota`** *(lowercase)*, `joined_at`, `left_at` | Anggota keluar diisi `left_at`, tidak dihapus permanen |
 | `osis_sekbids` | `id`, `number` (unique, 1-10) | - | `number`, `name`, `short_title`, `description`, `official_duties` (json), `coordinating_eskuls` (json), `is_active` (boolean) | Master 10 Sekbid resmi Permendiknas No. 39/2008 |
 | `letters` | `id`, `uuid` (unique) | `academic_year_id -> academic_years.id`, `created_by -> users.id`, `approved_by -> users.id` | `type: masuk\|keluar`, `reference_number`, `classification_code`, `sender_or_recipient`, `subject`, `letter_date`, `received_or_sent_date`, `status: draft\|diajukan\|disetujui\|diarsipkan`, `file_path`, `file_name`, `file_size`, `file_mime` | E-Arsip surat OSIS dengan penomoran resmi baku dan private file streaming |
+| `osis_programs` | `id`, `uuid` (unique) | `academic_year_id -> academic_years.id`, `osis_sekbid_id -> osis_sekbids.id`, `proposed_by -> users.id`, `approved_by -> users.id` | `name`, `description`, `objective`, `target_audience`, `start_date`, `end_date`, `estimated_budget`, `status: usulan\|disetujui\|ditolak\|berjalan\|terlaksana`, `notes` | Manajemen Program Kerja Sekbid 1-10; pengesahan oleh Presidium/Admin |
+| `osis_meetings` | `id`, `uuid` (unique) | `academic_year_id -> academic_years.id`, `osis_sekbid_id -> osis_sekbids.id` (nullable), `leader_id -> users.id`, `notetaker_id -> users.id` | `title`, `type: pleno\|presidium\|koordinasi_sekbid\|evaluasi`, `meeting_date`, `start_time`, `end_time`, `location`, `agenda`, `minutes`, `action_items`, `status: dijadwalkan\|berlangsung\|selesai\|dibatalkan` | Agenda rapat & notulensi digital terpusat lintas presidium dan sekbid |
 | `activity_sessions`| `id`, `uuid` (unique) | `extracurricular_id -> extracurriculars.id`, `academic_year_id -> academic_years.id`, `created_by -> users.id` | `title`, `session_date`, `start_time`, `end_time`, `status: draft\|dibuka\|ditutup`, `opened_at`, `closed_at` | Presensi hanya sah saat status `dibuka` |
 | `attendances` | `id`, unique(`activity_session_id`, `user_id`) | `activity_session_id -> activity_sessions.id`, `user_id -> users.id`, `recorded_by -> users.id` | `status: hadir\|izin\|sakit\|alpa`, `method: qr\|manual`, `recorded_at`, `note` | Satu siswa hanya absen 1x per sesi |
 | `qr_token_uses` | `id`, `token_hash` (unique)| `user_id -> users.id` | `used_at` (datetime) | Perlindungan replay token QR dinamis (HMAC 60s) |
@@ -70,6 +72,13 @@ Dokumen ini adalah **Single Source of Truth** arsitektur SINERGI. Setiap agen AI
 | | `GET /admin/audit-logs` | `admin.audit-logs.index` | `Admin\AuditLogController@index` | `AuditLog` | `Pages/Admin/AuditLogs.jsx` |
 | **Presidium OSIS** | `GET /osis/dashboard` | `osis.dashboard` | `Osis\OsisDashboardController@index` | `OsisSekbid`, `Letter`, `ActivitySession` | `Pages/Osis/Dashboard.jsx` |
 | | `GET /osis/sekbid` | `osis.sekbid.index` | `Osis\OsisSekbidController@index` | `OsisSekbid` | `Pages/Osis/Sekbid/Index.jsx` |
+| **Program Kerja OSIS** | `GET /osis/program` | `osis.program.index` | `Osis\OsisProgramController@index` | `OsisProgram`, `OsisSekbid` | `Pages/Osis/Program/Index.jsx` |
+| | `POST /osis/program` | `osis.program.store` | `Osis\OsisProgramController@store` | `OsisProgram` | Redirect / Flash |
+| | `POST /osis/program/{uuid}/approve` | `osis.program.approve` | `Osis\OsisProgramController@approve` | `OsisProgram` | Redirect / Flash (Presidium Only) |
+| | `POST /osis/program/{uuid}/status` | `osis.program.status` | `Osis\OsisProgramController@updateStatus` | `OsisProgram` | Redirect / Flash |
+| **Agenda & Rapat OSIS** | `GET /osis/agenda` | `osis.agenda.index` | `Osis\OsisMeetingController@index` | `OsisMeeting`, `OsisSekbid` | `Pages/Osis/Agenda/Index.jsx` |
+| | `POST /osis/agenda` | `osis.agenda.store` | `Osis\OsisMeetingController@store` | `OsisMeeting` | Redirect / Flash |
+| | `POST /osis/agenda/{uuid}/notulensi` | `osis.agenda.notulensi` | `Osis\OsisMeetingController@updateMinutes` | `OsisMeeting` | Redirect / Flash |
 | **E-Arsip OSIS** | `GET /osis/arsip` | `osis.arsip.index` | `Osis\LetterArchiveController@index` | `Letter` | `Pages/Osis/Arsip/Index.jsx` |
 | | `POST /osis/arsip` | `osis.arsip.store` | `Osis\LetterArchiveController@store` | `Letter` | Redirect / Flash |
 | | `GET /osis/arsip/generate-nomor` | `osis.arsip.generate-nomor` | `Osis\LetterArchiveController@generateReferenceNumber` | `Letter` | JSON (`reference_number`) |
@@ -90,6 +99,7 @@ Dokumen ini adalah **Single Source of Truth** arsitektur SINERGI. Setiap agen AI
 ---
 
 ## 5. Changelog Fitur & Arsitektur
+* **2026-10-11** [feat/osis-proker-agenda]: Implementasi modul Program Kerja Sekbid 1 s.d. 10 (usulan, validasi presidium, pelacakan anggaran & status pelaksanaan) serta modul Agenda Rapat OSIS dan Notulensi Digital (Pleno, Presidium, Koordinasi Sekbid, Evaluasi) berpedoman ketat pada Permendiknas No. 39 Tahun 2008.
 * **2026-10-11** [feat/osis-org-matrix]: Pemisahan arsitektural Dashboard Admin Sekolah (`/admin`) dan Presidium OSIS (`/osis`), penambahan modul E-Arsip Surat Sekretaris OSIS (Surat Masuk, Surat Keluar, generator nomor otomatis format resmi, upload berkas terproteksi), serta implementasi master 10 Seksi Bidang OSIS berlandaskan hukum Permendiknas No. 39 Tahun 2008.
 * **2026-10-11** [feat/analytics]: Menambahkan modul `AttendanceAnalyticsController`, halaman `Analytics.jsx`, navigasi sidebar `eskul.analytics`, serta metrik *participation tiers* (tinggi >=80%, sedang 50-79%, rendah <50% / at-risk).
 * **2026-10-10** [perf/query]: Mengoptimalkan query dashboard kas menjadi agregasi kondisional tunggal dan scoping keanggotaan siswa.

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OsisSekbid extends Model
 {
@@ -32,5 +33,15 @@ class OsisSekbid extends Model
         return $this->belongsToMany(User::class, 'role_user')
             ->withPivot(['id', 'academic_year_id', 'role_id', 'assigned_by'])
             ->withTimestamps();
+    }
+
+    public function programs(): HasMany
+    {
+        return $this->hasMany(OsisProgram::class);
+    }
+
+    public function meetings(): HasMany
+    {
+        return $this->hasMany(OsisMeeting::class);
     }
 }

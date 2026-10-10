@@ -19,7 +19,8 @@ import {
     CreditCard,
     BarChart3,
     FolderArchive,
-    Compass
+    Compass,
+    Target
 } from 'lucide-react';
 import FlashMessage from '@/Components/FlashMessage';
 
@@ -57,11 +58,12 @@ export default function AppLayout({
         ],
         osis: [
             { name: 'Dashboard Presidium', href: '/osis/dashboard', icon: LayoutDashboard },
+            { name: 'Program Kerja Sekbid', href: '/osis/program', icon: Target },
             { name: 'E-Arsip Surat', href: '/osis/arsip', icon: FolderArchive },
+            { name: 'Agenda & Rapat', href: '/osis/agenda', icon: Calendar },
             { name: '10 Sekbid Permendiknas', href: '/osis/sekbid', icon: Compass },
             { name: 'Buku Kas OSIS', href: '/kas/dashboard', icon: BookOpen },
             { name: 'Monitoring Eskul', href: '/admin/eskul', icon: Building2 },
-            { name: 'Jadwal Kegiatan', href: '/eskul/sessions', icon: Calendar },
         ],
         kas: [
             { name: 'Buku Kas', href: '/kas/dashboard', icon: BookOpen },

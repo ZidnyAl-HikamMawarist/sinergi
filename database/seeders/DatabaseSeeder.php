@@ -8,6 +8,9 @@ use App\Models\CashCategory;
 use App\Models\Extracurricular;
 use App\Models\ExtracurricularMember;
 use App\Models\Letter;
+use App\Models\OsisMeeting;
+use App\Models\OsisProgram;
+use App\Models\OsisSekbid;
 use App\Models\Role;
 use App\Models\SchoolClass;
 use App\Models\StudentEnrollment;
@@ -189,6 +192,27 @@ class DatabaseSeeder extends Seeder
             $roleModels['bendahara']->id => ['academic_year_id' => $academicYear->id],
         ]);
 
+        // Ketua Sekbid 1 (Keimanan & Ketakwaan)
+        $sekbid1 = OsisSekbid::where('number', 1)->first();
+        $ketuaSekbid1 = User::firstOrCreate(
+            ['email' => 'sekbid1@sinergi.test'],
+            [
+                'uuid' => (string) Str::uuid(),
+                'nisn' => '0051234554',
+                'name' => 'Muhammad Farhan (Ketua Sekbid 1)',
+                'password' => $defaultPassword,
+                'status' => 'aktif',
+                'must_change_password' => false,
+            ]
+        );
+        $ketuaSekbid1->roles()->syncWithoutDetaching([
+            $roleModels['ketua_sekbid']->id => [
+                'academic_year_id' => $academicYear->id,
+                'osis_sekbid_id' => $sekbid1?->id,
+            ],
+            $roleModels['siswa']->id => ['academic_year_id' => $academicYear->id],
+        ]);
+
         // 6. Extracurriculars
         $pramuka = Extracurricular::firstOrCreate(
             ['name' => 'Pramuka'],
@@ -318,6 +342,79 @@ class DatabaseSeeder extends Seeder
                 'status' => 'disetujui',
                 'created_by' => $sekretaris->id,
                 'approved_by' => $ketuaOsis->id,
+            ]
+        );
+
+        // 8. Seed Initial Program Kerja OSIS (Permendiknas No. 39/2008)
+        $sekbid9 = OsisSekbid::where('number', 9)->first();
+        if ($sekbid1) {
+            OsisProgram::firstOrCreate(
+                ['name' => 'Kajian Akbar Toleransi & Peringatan Maulid Nabi Pelajar'],
+                [
+                    'academic_year_id' => $academicYear->id,
+                    'osis_sekbid_id' => $sekbid1->id,
+                    'description' => 'Program pembinaan keimanan lintas rohis dan sarasehan toleransi beragama di lingkungan sekolah.',
+                    'target_audience' => 'Seluruh Siswa Muslim & Delegasi OSIS',
+                    'start_date' => '2026-10-20',
+                    'end_date' => '2026-10-21',
+                    'estimated_budget' => 2500000,
+                    'status' => 'disetujui',
+                    'pic_user_id' => $ketuaSekbid1->id,
+                    'approval_note' => 'Disetujui. Koordinasikan penggunaan sound system dengan sarpras.',
+                    'approved_by' => $ketuaOsis->id,
+                    'approved_at' => now(),
+                    'created_by' => $ketuaSekbid1->id,
+                ]
+            );
+        }
+
+        if ($sekbid9) {
+            OsisProgram::firstOrCreate(
+                ['name' => 'Workshop Literasi Digital & Pemrograman Web Sinergi'],
+                [
+                    'academic_year_id' => $academicYear->id,
+                    'osis_sekbid_id' => $sekbid9->id,
+                    'description' => 'Pelatihan pemanfaatan TIK untuk edukasi, coding pemula, dan media informasi digital OSIS.',
+                    'target_audience' => 'Anggota IT Club & Perwakilan Kelas X-XI',
+                    'start_date' => '2026-11-05',
+                    'end_date' => '2026-11-06',
+                    'estimated_budget' => 1750000,
+                    'status' => 'diajukan',
+                    'pic_user_id' => $ketuaOsis->id,
+                    'created_by' => $ketuaOsis->id,
+                ]
+            );
+        }
+
+        // 9. Seed Initial Agenda / Rapat OSIS
+        OsisMeeting::firstOrCreate(
+            ['title' => 'Rapat Pleno Koordinasi Program Kerja Triwulan I'],
+            [
+                'academic_year_id' => $academicYear->id,
+                'meeting_type' => 'pleno',
+                'meeting_date' => '2026-10-15',
+                'start_time' => '13:30',
+                'end_time' => '16:00',
+                'location' => 'Aula Utama & Ruang Multimedia',
+                'agenda_description' => 'Penyelarasan jadwal 10 Sekbid Permendiknas 39/2008 dengan kalender akademik sekolah.',
+                'status' => 'dijadwalkan',
+                'created_by' => $ketuaOsis->id,
+            ]
+        );
+
+        OsisMeeting::firstOrCreate(
+            ['title' => 'Sidang Evaluasi Kinerja Bulanan Presidium OSIS'],
+            [
+                'academic_year_id' => $academicYear->id,
+                'meeting_type' => 'presidium',
+                'meeting_date' => '2026-10-02',
+                'start_time' => '14:00',
+                'end_time' => '15:30',
+                'location' => 'Ruang Sekretariat OSIS',
+                'agenda_description' => 'Evaluasi serapan dana kas awal dan penerbitan nomor surat resmi.',
+                'status' => 'selesai',
+                'minutes_of_meeting' => 'Disepakati pembagian tugas pembuatan disposisi surat masuk oleh sekretaris dan sinkronisasi presensi QR eskul.',
+                'created_by' => $sekretaris->id,
             ]
         );
     }

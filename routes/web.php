@@ -16,6 +16,8 @@ use App\Http\Controllers\Kas\CashTransactionController;
 use App\Http\Controllers\Kas\KasDashboardController;
 use App\Http\Controllers\Osis\LetterArchiveController;
 use App\Http\Controllers\Osis\OsisDashboardController;
+use App\Http\Controllers\Osis\OsisMeetingController;
+use App\Http\Controllers\Osis\OsisProgramController;
 use App\Http\Controllers\Osis\OsisSekbidController;
 use App\Http\Controllers\Portal\PortalDashboardController;
 use App\Http\Controllers\WorkspaceController;
@@ -109,5 +111,16 @@ Route::middleware('auth')->group(function () {
         Route::get('/arsip/generate-nomor', [LetterArchiveController::class, 'generateReferenceNumber'])->name('arsip.generate-nomor');
         Route::get('/arsip/{uuid}/file', [LetterArchiveController::class, 'showFile'])->name('arsip.file');
         Route::post('/arsip/{uuid}/status', [LetterArchiveController::class, 'updateStatus'])->name('arsip.status');
+
+        // Program Kerja Sekbid 1 s.d. 10
+        Route::get('/program', [OsisProgramController::class, 'index'])->name('program.index');
+        Route::post('/program', [OsisProgramController::class, 'store'])->name('program.store');
+        Route::post('/program/{uuid}/approve', [OsisProgramController::class, 'approve'])->name('program.approve');
+        Route::post('/program/{uuid}/status', [OsisProgramController::class, 'updateStatus'])->name('program.status');
+
+        // Agenda & Rapat Internal OSIS
+        Route::get('/agenda', [OsisMeetingController::class, 'index'])->name('agenda.index');
+        Route::post('/agenda', [OsisMeetingController::class, 'store'])->name('agenda.store');
+        Route::post('/agenda/{uuid}/notulen', [OsisMeetingController::class, 'updateMinutes'])->name('agenda.notulen');
     });
 });
