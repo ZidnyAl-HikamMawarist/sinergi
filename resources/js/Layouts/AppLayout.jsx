@@ -16,7 +16,8 @@ import {
     CheckCircle2,
     ScanLine,
     ArrowLeftRight,
-    CreditCard
+    CreditCard,
+    BarChart3
 } from 'lucide-react';
 import FlashMessage from '@/Components/FlashMessage';
 
@@ -46,6 +47,7 @@ export default function AppLayout({
             { name: 'Eskul & Pembina', href: '/admin/eskul', icon: Building2 },
             { name: 'Siswa & Kelas', href: '/admin/students', icon: Users },
             { name: 'Rekap Presensi', href: '/admin/presensi/rekap', icon: CheckCircle2 },
+            { name: 'Analitik Eskul', href: '/eskul/analytics', icon: BarChart3 },
             { name: 'Buku Kas (Audit)', href: '/kas/dashboard', icon: BookOpen },
             { name: 'Import Data', href: '/admin/import', icon: FileSpreadsheet },
             { name: 'Audit Log', href: '/admin/audit-logs', icon: Shield },
@@ -61,6 +63,7 @@ export default function AppLayout({
             { name: 'Scanner QR', href: '/eskul/scanner', icon: ScanLine },
             { name: 'Anggota Eskul', href: '/eskul/members', icon: Users },
             { name: 'Rekap Kehadiran', href: '/eskul/rekap', icon: CheckCircle2 },
+            { name: 'Analitik Kehadiran', href: '/eskul/analytics', icon: BarChart3 },
         ],
         portal: [
             { name: 'ID Digital QR', href: '/portal/dashboard', icon: QrCode },
@@ -93,6 +96,14 @@ export default function AppLayout({
     return (
         <div className="min-h-screen bg-[#F5F7FA] flex flex-col text-[#17202A] selection:bg-[#1769AA] selection:text-white">
             <Head title={title ? `${title} — SINERGI` : 'SINERGI'} />
+
+            {/* Skip to Content for Screen Readers and Keyboard Navigation */}
+            <a
+                href="#main-content"
+                className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#1769AA] focus:text-white focus:rounded-lg focus:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1769AA]"
+            >
+                Lewati ke konten utama
+            </a>
 
             {/* Topbar */}
             <header className="sticky top-0 z-40 bg-white border-b border-[#D9E2EA] shadow-xs">
@@ -315,7 +326,7 @@ export default function AppLayout({
                 )}
 
                 {/* Main Content Area */}
-                <main className="flex-1 min-w-0">
+                <main id="main-content" tabIndex={-1} className="flex-1 min-w-0 focus:outline-none">
                     {/* Page Header */}
                     {(header || subtitle || actions) && (
                         <div className="mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-[#D9E2EA]">
