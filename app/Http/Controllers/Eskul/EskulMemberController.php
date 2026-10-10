@@ -42,7 +42,9 @@ class EskulMemberController extends Controller
         $availableStudents = collect();
 
         if ($selectedEskul) {
-            $members = ExtracurricularMember::with(['user.enrollments.schoolClass'])
+            $members = ExtracurricularMember::with([
+                'user.enrollments' => fn ($q) => $q->when($yearId, fn ($sq) => $sq->where('academic_year_id', $yearId))->with('schoolClass'),
+            ])
                 ->where('extracurricular_id', $selectedEskul->id)
                 ->when($yearId, fn ($q) => $q->where('academic_year_id', $yearId))
                 ->whereNull('left_at')
@@ -54,7 +56,7 @@ class EskulMemberController extends Controller
             $availableStudents = User::where('status', 'aktif')
                 ->whereHas('roles', fn ($q) => $q->where('name', 'siswa'))
                 ->whereNotIn('id', $enrolledUserIds)
-                ->with('enrollments.schoolClass')
+                ->with(['enrollments' => fn ($q) => $q->when($yearId, fn ($sq) => $sq->where('academic_year_id', $yearId))->with('schoolClass')])
                 ->take(50)
                 ->get();
         }
