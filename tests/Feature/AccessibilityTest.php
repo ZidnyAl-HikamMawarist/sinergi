@@ -26,7 +26,7 @@ class AccessibilityTest extends TestCase
 
         $response = $this->actingAs($admin)->get('/admin/dashboard');
 
-        $response->assertStatus(200);
-        $response->assertInertia(fn ($page) => $page->component('Admin/Dashboard'));
+        $page = $response->viewData('page');
+        $this->assertEquals('Admin/Dashboard', $page['component']);
     }
 }

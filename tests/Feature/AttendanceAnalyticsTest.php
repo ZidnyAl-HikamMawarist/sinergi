@@ -136,18 +136,15 @@ class AttendanceAnalyticsTest extends TestCase
         $response = $this->actingAs($this->pengurusA)->get('/eskul/analytics?eskul_id='.$this->eskulA->id);
         $response->assertStatus(200);
 
-        $response->assertInertia(function ($page) {
-            $page->component('Eskul/Analytics')
-                ->has('analytics', function ($analytics) {
-                    $analytics->where('total_active_members', 1)
-                        ->where('total_sessions', 1)
-                        ->where('avg_attendance_rate', 100)
-                        ->has('participation_tier')
-                        ->has('trend', 1)
-                        ->has('top_active_members', 1)
-                        ->etc();
-                });
-        });
+        $page = $response->viewData('page');
+        $this->assertEquals('Eskul/Analytics', $page['component']);
+        $analytics = $page['props']['analytics'];
+        $this->assertEquals(1, $analytics['total_active_members']);
+        $this->assertEquals(1, $analytics['total_sessions']);
+        $this->assertEquals(100, $analytics['avg_attendance_rate']);
+        $this->assertArrayHasKey('participation_tier', $analytics);
+        $this->assertCount(1, $analytics['trend']);
+        $this->assertCount(1, $analytics['top_active_members']);
     }
 
     public function test_admin_can_view_any_extracurricular_analytics(): void
@@ -165,20 +162,18 @@ class AttendanceAnalyticsTest extends TestCase
         $response = $this->actingAs($this->pengurusA)->get('/eskul/analytics?eskul_id='.$this->eskulA->id);
         $response->assertStatus(200);
 
-        $response->assertInertia(function ($page) {
-            $page->component('Eskul/Analytics')
-                ->has('analytics', function ($analytics) {
-                    $analytics->where('total_active_members', 0)
-                        ->where('total_sessions', 0)
-                        ->where('avg_attendance_rate', 0)
-                        ->where('trend', [])
-                        ->where('members_at_risk', [])
-                        ->where('top_active_members', [])
-                        ->where('participation_tier.high', 0)
-                        ->where('participation_tier.moderate', 0)
-                        ->where('participation_tier.low', 0);
-                });
-        });
+        $page = $response->viewData('page');
+        $this->assertEquals('Eskul/Analytics', $page['component']);
+        $analytics = $page['props']['analytics'];
+        $this->assertEquals(0, $analytics['total_active_members']);
+        $this->assertEquals(0, $analytics['total_sessions']);
+        $this->assertEquals(0, $analytics['avg_attendance_rate']);
+        $this->assertEquals([], $analytics['trend']);
+        $this->assertEquals([], $analytics['members_at_risk']);
+        $this->assertEquals([], $analytics['top_active_members']);
+        $this->assertEquals(0, $analytics['participation_tier']['high']);
+        $this->assertEquals(0, $analytics['participation_tier']['moderate']);
+        $this->assertEquals(0, $analytics['participation_tier']['low']);
     }
 
     public function test_computes_participation_tiers_and_identifies_at_risk_members_accurately(): void
