@@ -119,7 +119,21 @@ class OsisMeetingController extends Controller
             'minutes_of_meeting.required' => 'Notulensi hasil rapat wajib diisi.',
         ]);
 
+        $user = $request->user();
+        $activeYear = AcademicYear::active();
         $meeting = OsisMeeting::where('uuid', $uuid)->firstOrFail();
+
+        $isAuthorized = $user->isPresidiumOsis($activeYear?->id)
+            || $user->isSekretarisOsis($activeYear?->id)
+            || $user->isAdmin($activeYear?->id)
+            || $meeting->created_by === $user->id
+            || ($meeting->osis_sekbid_id && $user->isKetuaSekbid($meeting->osis_sekbid_id, $activeYear?->id))
+            || ($meeting->osis_sekbid_id && $user->isSekretarisSekbid($meeting->osis_sekbid_id, $activeYear?->id));
+
+        if (! $isAuthorized) {
+            abort(403, 'Anda tidak memiliki wewenang untuk mengisi atau memperbarui notulensi rapat ini.');
+        }
+
         $status = $request->input('status', 'selesai');
 
         $meeting->update([
@@ -134,7 +148,7 @@ class OsisMeetingController extends Controller
             newValues: [
                 'status' => $meeting->status,
             ],
-            userId: $request->user()->id
+            userId: $user->id
         );
 
         return back()->with('success', 'Notulensi rapat berhasil disimpan.');

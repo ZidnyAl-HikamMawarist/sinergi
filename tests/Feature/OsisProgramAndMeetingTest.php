@@ -125,4 +125,33 @@ class OsisProgramAndMeetingTest extends TestCase
         $this->assertEquals('selesai', $meeting->fresh()->status);
         $this->assertStringContainsString('Futsal, Basket', $meeting->fresh()->minutes_of_meeting);
     }
+
+    public function test_unauthorized_user_cannot_update_program_status(): void
+    {
+        $this->seed();
+        $anggota = User::where('email', 'anggota.osis@sinergi.test')->first();
+        $program = OsisProgram::first();
+
+        // Anggota OSIS biasa yang bukan PIC atau Sekbid pemilik tidak berhak mengubah status
+        $response = $this->actingAs($anggota)->post("/osis/program/{$program->uuid}/status", [
+            'status' => 'terlaksana',
+        ]);
+
+        $response->assertStatus(403);
+    }
+
+    public function test_unauthorized_user_cannot_update_meeting_minutes(): void
+    {
+        $this->seed();
+        $anggota = User::where('email', 'anggota.osis@sinergi.test')->first();
+        $meeting = OsisMeeting::first();
+
+        // Anggota OSIS biasa yang bukan creator/presidium/sekretaris tidak berhak menimpa notulensi
+        $response = $this->actingAs($anggota)->post("/osis/agenda/{$meeting->uuid}/notulen", [
+            'minutes_of_meeting' => 'Pembajakan notulensi oleh pihak tidak berwenang',
+            'status' => 'selesai',
+        ]);
+
+        $response->assertStatus(403);
+    }
 }

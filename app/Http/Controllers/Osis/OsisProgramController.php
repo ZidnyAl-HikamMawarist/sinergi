@@ -174,7 +174,21 @@ class OsisProgramController extends Controller
             'status' => ['required', 'in:berjalan,terlaksana,dibatalkan'],
         ]);
 
+        $user = $request->user();
+        $activeYear = AcademicYear::active();
         $program = OsisProgram::where('uuid', $uuid)->firstOrFail();
+
+        $isAuthorized = $user->isPresidiumOsis($activeYear?->id)
+            || $user->isAdmin($activeYear?->id)
+            || $program->pic_user_id === $user->id
+            || $program->created_by === $user->id
+            || ($user->isKetuaSekbid($program->osis_sekbid_id, $activeYear?->id))
+            || ($user->isSekretarisSekbid($program->osis_sekbid_id, $activeYear?->id));
+
+        if (! $isAuthorized) {
+            abort(403, 'Anda tidak memiliki hak otorisasi untuk mengubah status program kerja ini.');
+        }
+
         $oldStatus = $program->status;
 
         $program->update([
@@ -187,7 +201,7 @@ class OsisProgramController extends Controller
             entityId: $program->id,
             oldValues: ['status' => $oldStatus],
             newValues: ['status' => $program->status],
-            userId: $request->user()->id
+            userId: $user->id
         );
 
         return back()->with('success', "Status program kerja diperbarui menjadi {$program->status}.");

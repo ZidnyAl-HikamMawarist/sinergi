@@ -115,4 +115,18 @@ class LetterArchiveTest extends TestCase
         $response->assertRedirect();
         $this->assertEquals('diarsipkan', $letter->fresh()->status);
     }
+
+    public function test_unauthorized_user_cannot_update_letter_status(): void
+    {
+        $this->seed();
+        $letter = Letter::first();
+        $anggota = User::where('email', 'anggota.osis@sinergi.test')->first();
+
+        // Anggota OSIS biasa tidak berhak menyetujui atau mengarsipkan surat
+        $response = $this->actingAs($anggota)->post("/osis/arsip/{$letter->uuid}/status", [
+            'status' => 'disetujui',
+        ]);
+
+        $response->assertStatus(403);
+    }
 }

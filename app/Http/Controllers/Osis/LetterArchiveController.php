@@ -112,9 +112,16 @@ class LetterArchiveController extends Controller
             $fileMime = $uploaded->getMimeType();
         }
 
+        $user = $request->user();
+        $isApprover = $user->isSekretarisOsis($activeYear->id)
+            || $user->isPresidiumOsis($activeYear->id)
+            || $user->isAdmin($activeYear->id);
+
         $status = $request->input('status');
         if (! $status) {
-            $status = $request->input('type') === 'masuk' ? 'diarsipkan' : 'disetujui';
+            $status = $request->input('type') === 'masuk' ? 'diarsipkan' : ($isApprover ? 'disetujui' : 'diajukan');
+        } elseif (! $isApprover && in_array($status, ['disetujui', 'diarsipkan'])) {
+            $status = 'diajukan';
         }
 
         $letter = Letter::create([
@@ -132,8 +139,8 @@ class LetterArchiveController extends Controller
             'file_name' => $fileName,
             'file_size' => $fileSize,
             'file_mime' => $fileMime,
-            'created_by' => $request->user()->id,
-            'approved_by' => in_array($status, ['disetujui', 'diarsipkan']) ? $request->user()->id : null,
+            'created_by' => $user->id,
+            'approved_by' => in_array($status, ['disetujui', 'diarsipkan']) ? $user->id : null,
         ]);
 
         AuditLog::record(
@@ -146,7 +153,7 @@ class LetterArchiveController extends Controller
                 'subject' => $letter->subject,
                 'status' => $letter->status,
             ],
-            userId: $request->user()->id
+            userId: $user->id
         );
 
         return back()->with('success', 'Surat berhasil dicatat ke dalam E-Arsip OSIS.');
@@ -194,12 +201,22 @@ class LetterArchiveController extends Controller
             'status' => ['required', 'in:draft,diajukan,disetujui,diarsipkan'],
         ]);
 
+        $user = $request->user();
+        $activeYear = AcademicYear::active();
+        $isAuthorized = $user->isSekretarisOsis($activeYear?->id)
+            || $user->isPresidiumOsis($activeYear?->id)
+            || $user->isAdmin($activeYear?->id);
+
+        if (! $isAuthorized) {
+            abort(403, 'Hanya Sekretaris OSIS, Presidium OSIS, atau Admin yang berhak memperbarui status arsip surat.');
+        }
+
         $letter = Letter::where('uuid', $uuid)->firstOrFail();
         $oldStatus = $letter->status;
 
         $letter->update([
             'status' => $request->input('status'),
-            'approved_by' => in_array($request->input('status'), ['disetujui', 'diarsipkan']) ? $request->user()->id : $letter->approved_by,
+            'approved_by' => in_array($request->input('status'), ['disetujui', 'diarsipkan']) ? $user->id : $letter->approved_by,
         ]);
 
         AuditLog::record(
@@ -208,7 +225,7 @@ class LetterArchiveController extends Controller
             entityId: $letter->id,
             oldValues: ['status' => $oldStatus],
             newValues: ['status' => $letter->status],
-            userId: $request->user()->id
+            userId: $user->id
         );
 
         return back()->with('success', "Status surat berhasil diperbarui menjadi {$letter->status}.");

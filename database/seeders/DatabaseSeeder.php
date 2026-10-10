@@ -213,6 +213,23 @@ class DatabaseSeeder extends Seeder
             $roleModels['siswa']->id => ['academic_year_id' => $academicYear->id],
         ]);
 
+        // Anggota OSIS Biasa
+        $anggotaOsis = User::firstOrCreate(
+            ['email' => 'anggota.osis@sinergi.test'],
+            [
+                'uuid' => (string) Str::uuid(),
+                'nisn' => '0051234555',
+                'name' => 'Budi Santoso (Anggota OSIS)',
+                'password' => $defaultPassword,
+                'status' => 'aktif',
+                'must_change_password' => false,
+            ]
+        );
+        $anggotaOsis->roles()->syncWithoutDetaching([
+            $roleModels['anggota_osis']->id => ['academic_year_id' => $academicYear->id],
+            $roleModels['siswa']->id => ['academic_year_id' => $academicYear->id],
+        ]);
+
         // 6. Extracurriculars
         $pramuka = Extracurricular::firstOrCreate(
             ['name' => 'Pramuka'],
