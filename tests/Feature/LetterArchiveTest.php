@@ -129,4 +129,147 @@ class LetterArchiveTest extends TestCase
 
         $response->assertStatus(403);
     }
+
+    public function test_ordinary_member_creating_incoming_letter_without_status_gets_diajukan_and_null_approved_by(): void
+    {
+        $this->seed();
+        $anggota = User::where('email', 'anggota.osis@sinergi.test')->first();
+
+        // Anggota OSIS biasa menginput surat masuk tanpa mengirim field status
+        $response = $this->actingAs($anggota)->post('/osis/arsip', [
+            'type' => 'masuk',
+            'reference_number' => '010/EXT/X/2026',
+            'sender_or_recipient' => 'Kwartir Cabang Pramuka',
+            'subject' => 'Edaran Raimuna Cabang',
+            'letter_date' => '2026-10-10',
+            'received_or_sent_date' => '2026-10-11',
+        ]);
+
+        $response->assertRedirect();
+        $letter = Letter::where('reference_number', '010/EXT/X/2026')->first();
+        $this->assertNotNull($letter);
+        $this->assertEquals('diajukan', $letter->status);
+        $this->assertNull($letter->approved_by);
+    }
+
+    public function test_ordinary_member_sending_diarsipkan_or_disetujui_is_coerced_to_diajukan_with_null_approved_by(): void
+    {
+        $this->seed();
+        $anggota = User::where('email', 'anggota.osis@sinergi.test')->first();
+
+        // 1. Upaya menetapkan status 'diarsipkan' pada surat masuk
+        $response1 = $this->actingAs($anggota)->post('/osis/arsip', [
+            'type' => 'masuk',
+            'reference_number' => '011/EXT/X/2026',
+            'sender_or_recipient' => 'Puskesmas Kecamatan',
+            'subject' => 'Sosialisasi Kesehatan Remaja',
+            'letter_date' => '2026-10-10',
+            'received_or_sent_date' => '2026-10-11',
+            'status' => 'diarsipkan',
+        ]);
+        $response1->assertRedirect();
+        $letter1 = Letter::where('reference_number', '011/EXT/X/2026')->first();
+        $this->assertEquals('diajukan', $letter1->status);
+        $this->assertNull($letter1->approved_by);
+
+        // 2. Upaya menetapkan status 'disetujui' pada surat keluar
+        $response2 = $this->actingAs($anggota)->post('/osis/arsip', [
+            'type' => 'keluar',
+            'reference_number' => '012/OSIS/UND/X/2026',
+            'sender_or_recipient' => 'Ekstrakurikuler Paskibra',
+            'subject' => 'Pemberitahuan Seleksi Pasukan',
+            'letter_date' => '2026-10-10',
+            'received_or_sent_date' => '2026-10-11',
+            'status' => 'disetujui',
+        ]);
+        $response2->assertRedirect();
+        $letter2 = Letter::where('reference_number', '012/OSIS/UND/X/2026')->first();
+        $this->assertEquals('diajukan', $letter2->status);
+        $this->assertNull($letter2->approved_by);
+    }
+
+    public function test_approver_can_create_incoming_as_diarsipkan_and_outgoing_as_disetujui_with_approved_by_set(): void
+    {
+        $this->seed();
+        $sekretaris = User::where('email', 'sekretaris@sinergi.test')->first();
+
+        // 1. Approver input surat masuk -> default 'diarsipkan', approved_by tercatat
+        $responseMasuk = $this->actingAs($sekretaris)->post('/osis/arsip', [
+            'type' => 'masuk',
+            'reference_number' => '020/DINAS/X/2026',
+            'sender_or_recipient' => 'Dinas Pendidikan',
+            'subject' => 'Surat Edaran Lomba',
+            'letter_date' => '2026-10-10',
+            'received_or_sent_date' => '2026-10-11',
+        ]);
+        $responseMasuk->assertRedirect();
+        $letterMasuk = Letter::where('reference_number', '020/DINAS/X/2026')->first();
+        $this->assertEquals('diarsipkan', $letterMasuk->status);
+        $this->assertEquals($sekretaris->id, $letterMasuk->approved_by);
+
+        // 2. Approver input surat keluar -> default 'disetujui', approved_by tercatat
+        $responseKeluar = $this->actingAs($sekretaris)->post('/osis/arsip', [
+            'type' => 'keluar',
+            'reference_number' => '021/OSIS/UND/X/2026',
+            'sender_or_recipient' => 'Kepala Sekolah',
+            'subject' => 'Undangan Rapat Koordinasi',
+            'letter_date' => '2026-10-10',
+            'received_or_sent_date' => '2026-10-11',
+        ]);
+        $responseKeluar->assertRedirect();
+        $letterKeluar = Letter::where('reference_number', '021/OSIS/UND/X/2026')->first();
+        $this->assertEquals('disetujui', $letterKeluar->status);
+        $this->assertEquals($sekretaris->id, $letterKeluar->approved_by);
+    }
+
+    public function test_demoting_approved_or_archived_letter_back_to_draft_is_rejected(): void
+    {
+        $this->seed();
+        $sekretaris = User::where('email', 'sekretaris@sinergi.test')->first();
+        $letter = Letter::where('status', 'diarsipkan')->firstOrFail();
+
+        // Upaya menurunkan surat resmi kembali ke draft
+        $response = $this->actingAs($sekretaris)->post("/osis/arsip/{$letter->uuid}/status", [
+            'status' => 'draft',
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('error');
+        $this->assertEquals('diarsipkan', $letter->fresh()->status);
+    }
+
+    public function test_draft_file_cannot_be_viewed_by_unauthorized_member(): void
+    {
+        $this->seed();
+        $anggota = User::where('email', 'anggota.osis@sinergi.test')->first();
+        $sekretaris = User::where('email', 'sekretaris@sinergi.test')->first();
+
+        Storage::fake('local');
+        $filePath = 'letters/draft_sample.pdf';
+        Storage::disk('local')->put($filePath, 'DRAFT-CONTENT');
+
+        $activeYear = AcademicYear::active();
+        $draftLetter = Letter::create([
+            'academic_year_id' => $activeYear->id,
+            'type' => 'keluar',
+            'reference_number' => '999/OSIS/DRAFT/X/2026',
+            'sender_or_recipient' => 'Pihak Luar',
+            'subject' => 'Draf Rahasia OSIS',
+            'letter_date' => '2026-10-10',
+            'received_or_sent_date' => '2026-10-10',
+            'status' => 'draft',
+            'file_path' => $filePath,
+            'file_name' => 'draft.pdf',
+            'file_mime' => 'application/pdf',
+            'created_by' => $sekretaris->id,
+        ]);
+
+        // Anggota OSIS biasa yang bukan pembuat tidak boleh melihat draf
+        $responseAnggota = $this->actingAs($anggota)->get("/osis/arsip/{$draftLetter->uuid}/file");
+        $responseAnggota->assertStatus(403);
+
+        // Pembuat draf boleh melihat
+        $responseCreator = $this->actingAs($sekretaris)->get("/osis/arsip/{$draftLetter->uuid}/file");
+        $responseCreator->assertOk();
+    }
 }

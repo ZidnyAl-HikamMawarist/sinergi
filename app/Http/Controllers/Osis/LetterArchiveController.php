@@ -117,11 +117,21 @@ class LetterArchiveController extends Controller
             || $user->isPresidiumOsis($activeYear->id)
             || $user->isAdmin($activeYear->id);
 
-        $status = $request->input('status');
-        if (! $status) {
-            $status = $request->input('type') === 'masuk' ? 'diarsipkan' : ($isApprover ? 'disetujui' : 'diajukan');
-        } elseif (! $isApprover && in_array($status, ['disetujui', 'diarsipkan'])) {
-            $status = 'diajukan';
+        $requestedStatus = $request->input('status');
+
+        if ($isApprover) {
+            // Approver dapat menetapkan status secara sah atau memakai default workflow
+            if ($requestedStatus && in_array($requestedStatus, ['draft', 'diajukan', 'disetujui', 'diarsipkan'])) {
+                $status = $requestedStatus;
+            } else {
+                $status = $request->input('type') === 'masuk' ? 'diarsipkan' : 'disetujui';
+            }
+            $approvedBy = in_array($status, ['disetujui', 'diarsipkan']) ? $user->id : null;
+        } else {
+            // Non-approver (anggota osis, bendahara, sekbid):
+            // Status wajib 'diajukan' (atau 'draft' jika diminta secara eksplisit), tidak boleh langsung disetujui/diarsipkan.
+            $status = ($requestedStatus === 'draft') ? 'draft' : 'diajukan';
+            $approvedBy = null;
         }
 
         $letter = Letter::create([
@@ -140,7 +150,7 @@ class LetterArchiveController extends Controller
             'file_size' => $fileSize,
             'file_mime' => $fileMime,
             'created_by' => $user->id,
-            'approved_by' => in_array($status, ['disetujui', 'diarsipkan']) ? $user->id : null,
+            'approved_by' => $approvedBy,
         ]);
 
         AuditLog::record(
@@ -152,6 +162,7 @@ class LetterArchiveController extends Controller
                 'reference_number' => $letter->reference_number,
                 'subject' => $letter->subject,
                 'status' => $letter->status,
+                'approved_by' => $letter->approved_by,
             ],
             userId: $user->id
         );
@@ -184,6 +195,20 @@ class LetterArchiveController extends Controller
             abort(404, 'Berkas surat tidak ditemukan.');
         }
 
+        $user = $request->user();
+        $activeYear = AcademicYear::active();
+
+        // Jika surat masih berstatus 'draft', hanya pembuatnya, Presidium, Sekretaris, atau Admin yang boleh mengakses
+        if ($letter->status === 'draft') {
+            $isStaff = $user->isPresidiumOsis($activeYear?->id)
+                || $user->isSekretarisOsis($activeYear?->id)
+                || $user->isAdmin($activeYear?->id);
+
+            if ($letter->created_by !== $user->id && ! $isStaff) {
+                abort(403, 'Anda tidak memiliki hak untuk melihat draf berkas surat ini.');
+            }
+        }
+
         return Storage::disk('local')->response(
             $letter->file_path,
             $letter->file_name ?? basename($letter->file_path),
@@ -212,19 +237,34 @@ class LetterArchiveController extends Controller
         }
 
         $letter = Letter::where('uuid', $uuid)->firstOrFail();
+
+        // Pemeriksaan Tahun Ajaran: Surat dari tahun ajaran tidak aktif tidak boleh diubah kecuali oleh Admin Sekolah
+        if ($activeYear && $letter->academic_year_id !== $activeYear->id && ! $user->isAdmin($activeYear->id)) {
+            abort(403, 'Tidak dapat memperbarui status surat dari tahun ajaran yang sudah tidak aktif.');
+        }
+
         $oldStatus = $letter->status;
+        $oldApprovedBy = $letter->approved_by;
+        $newStatus = $request->input('status');
+
+        // Validasi Transisi Status: Surat yang sudah resmi disetujui atau diarsipkan tidak boleh dikembalikan ke status draft
+        if (in_array($oldStatus, ['disetujui', 'diarsipkan']) && $newStatus === 'draft') {
+            return back()->with('error', 'Surat yang telah disetujui atau diarsipkan tidak dapat dikembalikan ke status draf.');
+        }
+
+        $newApprovedBy = in_array($newStatus, ['disetujui', 'diarsipkan']) ? $user->id : null;
 
         $letter->update([
-            'status' => $request->input('status'),
-            'approved_by' => in_array($request->input('status'), ['disetujui', 'diarsipkan']) ? $user->id : $letter->approved_by,
+            'status' => $newStatus,
+            'approved_by' => $newApprovedBy,
         ]);
 
         AuditLog::record(
             action: 'update_letter_status',
             entityType: 'Letter',
             entityId: $letter->id,
-            oldValues: ['status' => $oldStatus],
-            newValues: ['status' => $letter->status],
+            oldValues: ['status' => $oldStatus, 'approved_by' => $oldApprovedBy],
+            newValues: ['status' => $letter->status, 'approved_by' => $letter->approved_by],
             userId: $user->id
         );
 
