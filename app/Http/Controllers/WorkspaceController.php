@@ -21,11 +21,26 @@ class WorkspaceController extends Controller
         if ($user->isSuperAdmin() || $roles->contains('name', 'admin')) {
             $availableWorkspaces[] = [
                 'id' => 'admin',
-                'name' => 'Admin Inti OSIS',
-                'description' => 'Kelola akun siswa, penetapan eskul, rekap keseluruhan, dan audit sistem.',
+                'name' => 'Admin Sekolah / Pembina',
+                'description' => 'Kelola akun siswa, penetapan eskul, konfigurasi master sistem, dan audit log keamanan.',
                 'route' => 'admin.dashboard',
-                'badge' => 'Admin',
+                'badge' => 'Admin Sekolah',
                 'color' => 'secondary',
+            ];
+        }
+
+        $osisRoles = $roles->pluck('name')->intersect([
+            'ketua_osis', 'wakil_ketua_osis', 'sekretaris_osis',
+            'ketua_sekbid', 'sekretaris_sekbid', 'anggota_osis',
+        ]);
+        if ($user->isSuperAdmin() || $osisRoles->isNotEmpty()) {
+            $availableWorkspaces[] = [
+                'id' => 'osis',
+                'name' => 'Presidium & Pengurus OSIS',
+                'description' => 'Monitoring 10 Sekbid Permendiknas 39/2008, kelola E-Arsip surat menyurat, dan koordinasi eskul.',
+                'route' => 'osis.dashboard',
+                'badge' => 'OSIS',
+                'color' => 'accent',
             ];
         }
 

@@ -171,6 +171,10 @@ class AuthController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
+        if ($distinctRoles->intersect(['ketua_osis', 'wakil_ketua_osis', 'sekretaris_osis', 'ketua_sekbid', 'sekretaris_sekbid', 'anggota_osis'])->isNotEmpty()) {
+            return redirect()->route('osis.dashboard');
+        }
+
         if ($distinctRoles->contains('bendahara')) {
             return redirect()->route('kas.dashboard');
         }

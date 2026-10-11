@@ -69,7 +69,7 @@ class User extends Authenticatable
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'role_user')
-            ->withPivot(['id', 'academic_year_id', 'extracurricular_id', 'assigned_by'])
+            ->withPivot(['id', 'academic_year_id', 'extracurricular_id', 'osis_sekbid_id', 'assigned_by'])
             ->withTimestamps();
     }
 
@@ -132,6 +132,75 @@ class User extends Authenticatable
     public function isBendahara(?int $academicYearId = null): bool
     {
         return $this->isSuperAdmin() || $this->hasRole('bendahara', $academicYearId);
+    }
+
+    public function isKetuaOsis(?int $academicYearId = null): bool
+    {
+        return $this->isSuperAdmin() || $this->hasRole('ketua_osis', $academicYearId);
+    }
+
+    public function isWakilKetuaOsis(?int $academicYearId = null): bool
+    {
+        return $this->isSuperAdmin() || $this->hasRole('wakil_ketua_osis', $academicYearId);
+    }
+
+    public function isPresidiumOsis(?int $academicYearId = null): bool
+    {
+        return $this->isSuperAdmin() || $this->hasRole(['ketua_osis', 'wakil_ketua_osis', 'admin'], $academicYearId);
+    }
+
+    public function isSekretarisOsis(?int $academicYearId = null): bool
+    {
+        return $this->isSuperAdmin() || $this->hasRole('sekretaris_osis', $academicYearId);
+    }
+
+    public function isKetuaSekbid(?int $sekbidId = null, ?int $academicYearId = null): bool
+    {
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        $activeRoles = $this->getActiveRoles($academicYearId);
+        foreach ($activeRoles as $role) {
+            if ($role->name === 'ketua_sekbid') {
+                if ($sekbidId !== null) {
+                    if ((int) $role->pivot->osis_sekbid_id === (int) $sekbidId) {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public function isSekretarisSekbid(?int $sekbidId = null, ?int $academicYearId = null): bool
+    {
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        $activeRoles = $this->getActiveRoles($academicYearId);
+        foreach ($activeRoles as $role) {
+            if ($role->name === 'sekretaris_sekbid') {
+                if ($sekbidId !== null) {
+                    if ((int) $role->pivot->osis_sekbid_id === (int) $sekbidId) {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public function isAnggotaOsis(?int $academicYearId = null): bool
+    {
+        return $this->isSuperAdmin() || $this->hasRole(['anggota_osis', 'ketua_osis', 'wakil_ketua_osis', 'sekretaris_osis', 'bendahara', 'ketua_sekbid', 'sekretaris_sekbid'], $academicYearId);
     }
 
     public function isPengurusEskul(?int $eskulId = null, ?int $academicYearId = null): bool
