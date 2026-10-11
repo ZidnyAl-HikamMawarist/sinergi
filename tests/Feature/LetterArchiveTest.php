@@ -272,4 +272,144 @@ class LetterArchiveTest extends TestCase
         $responseCreator = $this->actingAs($sekretaris)->get("/osis/arsip/{$draftLetter->uuid}/file");
         $responseCreator->assertOk();
     }
+
+    public function test_approver_can_transition_letter_from_diajukan_to_disetujui_and_to_diarsipkan(): void
+    {
+        $this->seed();
+        $sekretaris = User::where('email', 'sekretaris@sinergi.test')->first();
+        $activeYear = AcademicYear::active();
+
+        $letter = Letter::create([
+            'academic_year_id' => $activeYear->id,
+            'type' => 'keluar',
+            'reference_number' => '101/OSIS/UND/X/2026',
+            'sender_or_recipient' => 'Wakasek Kesiswaan',
+            'subject' => 'Surat Pengajuan',
+            'letter_date' => '2026-10-10',
+            'received_or_sent_date' => '2026-10-10',
+            'status' => 'diajukan',
+            'created_by' => $sekretaris->id,
+        ]);
+
+        // 1. diajukan -> disetujui
+        $responseApprove = $this->actingAs($sekretaris)->post("/osis/arsip/{$letter->uuid}/status", [
+            'status' => 'disetujui',
+        ]);
+        $responseApprove->assertRedirect();
+        $this->assertEquals('disetujui', $letter->fresh()->status);
+        $this->assertEquals($sekretaris->id, $letter->fresh()->approved_by);
+
+        // 2. disetujui -> diarsipkan
+        $responseArchive = $this->actingAs($sekretaris)->post("/osis/arsip/{$letter->uuid}/status", [
+            'status' => 'diarsipkan',
+        ]);
+        $responseArchive->assertRedirect();
+        $this->assertEquals('diarsipkan', $letter->fresh()->status);
+        $this->assertEquals($sekretaris->id, $letter->fresh()->approved_by);
+    }
+
+    public function test_approver_can_return_diajukan_letter_to_draft_for_revision(): void
+    {
+        $this->seed();
+        $sekretaris = User::where('email', 'sekretaris@sinergi.test')->first();
+        $activeYear = AcademicYear::active();
+
+        $letter = Letter::create([
+            'academic_year_id' => $activeYear->id,
+            'type' => 'keluar',
+            'reference_number' => '102/OSIS/UND/X/2026',
+            'sender_or_recipient' => 'Wakasek Kesiswaan',
+            'subject' => 'Surat Pengajuan Belum Selesai',
+            'letter_date' => '2026-10-10',
+            'received_or_sent_date' => '2026-10-10',
+            'status' => 'diajukan',
+            'created_by' => $sekretaris->id,
+        ]);
+
+        // diajukan -> draft (dikembalikan untuk revisi sebelum disetujui)
+        $response = $this->actingAs($sekretaris)->post("/osis/arsip/{$letter->uuid}/status", [
+            'status' => 'draft',
+        ]);
+        $response->assertRedirect();
+        $this->assertEquals('draft', $letter->fresh()->status);
+        $this->assertNull($letter->fresh()->approved_by);
+    }
+
+    public function test_updating_status_on_inactive_academic_year_letter_is_rejected_for_non_admin_and_allowed_for_admin(): void
+    {
+        $this->seed();
+        $sekretaris = User::where('email', 'sekretaris@sinergi.test')->first();
+        $admin = User::where('email', 'admin@sinergi.test')->first();
+
+        // Buat tahun ajaran lampau / tidak aktif
+        $pastYear = AcademicYear::create([
+            'name' => '2024/2025',
+            'start_date' => '2024-07-15',
+            'end_date' => '2025-06-20',
+            'is_active' => false,
+        ]);
+
+        $pastLetter = Letter::create([
+            'academic_year_id' => $pastYear->id,
+            'type' => 'masuk',
+            'reference_number' => '001/PAST/2024',
+            'sender_or_recipient' => 'Dinas Pendidikan',
+            'subject' => 'Surat Tahun Lalu',
+            'letter_date' => '2024-08-10',
+            'received_or_sent_date' => '2024-08-11',
+            'status' => 'diajukan',
+            'created_by' => $sekretaris->id,
+        ]);
+
+        // Sekretaris OSIS tidak boleh mengubah status arsip tahun ajaran lampau
+        $responseSekretaris = $this->actingAs($sekretaris)->post("/osis/arsip/{$pastLetter->uuid}/status", [
+            'status' => 'diarsipkan',
+        ]);
+        $responseSekretaris->assertStatus(403);
+
+        // Admin Sekolah berwenang mengelola arsip lampau
+        $responseAdmin = $this->actingAs($admin)->post("/osis/arsip/{$pastLetter->uuid}/status", [
+            'status' => 'diarsipkan',
+        ]);
+        $responseAdmin->assertRedirect();
+        $this->assertEquals('diarsipkan', $pastLetter->fresh()->status);
+    }
+
+    public function test_non_draft_letter_file_is_accessible_to_all_authorized_osis_members(): void
+    {
+        $this->seed();
+        $anggota = User::where('email', 'anggota.osis@sinergi.test')->first();
+        $siswaBiasa = User::where('email', 'siswa@sinergi.test')->first();
+        $sekretaris = User::where('email', 'sekretaris@sinergi.test')->first();
+
+        Storage::fake('local');
+        $filePath = 'letters/official_circular.pdf';
+        Storage::disk('local')->put($filePath, 'OFFICIAL-CIRCULAR-PDF');
+
+        $activeYear = AcademicYear::active();
+        $officialLetter = Letter::create([
+            'academic_year_id' => $activeYear->id,
+            'type' => 'masuk',
+            'reference_number' => '055/DISDIK/X/2026',
+            'sender_or_recipient' => 'Dinas Pendidikan',
+            'subject' => 'Edaran Resmi Kegiatan Pelajar',
+            'letter_date' => '2026-10-10',
+            'received_or_sent_date' => '2026-10-11',
+            'status' => 'diarsipkan',
+            'file_path' => $filePath,
+            'file_name' => 'edaran.pdf',
+            'file_mime' => 'application/pdf',
+            'created_by' => $sekretaris->id,
+            'approved_by' => $sekretaris->id,
+        ]);
+
+        // 1. Anggota OSIS biasa berhak melihat berkas surat resmi yang sudah diarsipkan
+        $responseAnggota = $this->actingAs($anggota)->get("/osis/arsip/{$officialLetter->uuid}/file");
+        $responseAnggota->assertOk();
+        $responseAnggota->assertHeader('X-Content-Type-Options', 'nosniff');
+
+        // 2. Siswa biasa (non-OSIS) dilarang mengakses berkas arsip surat (HTTP 403 via RoleMiddleware)
+        $responseSiswa = $this->actingAs($siswaBiasa)->get("/osis/arsip/{$officialLetter->uuid}/file");
+        $responseSiswa->assertStatus(403);
+    }
 }
